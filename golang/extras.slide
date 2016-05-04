@@ -1,0 +1,166 @@
+Golang Intro (Extras!)
+5 May 2016
+
+Jacob Hochstetler
+Engineer, Fidelity LLC
+jacob.hochstetler@gmail.com
+
+* Iota
+
+- used in *const* to simplify definitions of incrementing numbers
+- values of iota is reset to 0 whenever the reserved word const appears
+- increments by one after each line
+
+- Ref: [[https://splice.com/blog/iota-elegant-constants-golang/]]
+
+* Iota ...
+
+    type ByteSize float64
+
+    const (
+        _           = iota // ignore first value by assigning to blank identifier
+        KB ByteSize = 1 << (10 * iota)
+        MB
+        GB
+        TB
+        PB
+        EB
+        ZB
+        YB
+    )
+
+- Ref: [[https://github.com/golang/go/wiki/Iota]]
+
+* Iota ...
+
+    // Token represents a lexical token.
+    type Token int
+
+    const (
+        // Illegal represents an illegal/invalid character
+        Illegal Token = iota
+
+        // Whitespace represents a white space (" ", \t, \r, \n) character
+        Whitespace
+
+        // EOF represents end of file
+        EOF
+
+        // MarkerID represents '\id' or '\id1' marker
+        MarkerID
+
+        // MarkerIde represents '\ide' marker
+        MarkerIde
+
+* Closures
+
+- https://gobyexample.com/closures
+- http://www.goinggo.net/2014/06/pitfalls-with-closures-in-go.html
+- http://blog.denevell.org/golang-closures-anonymous-functions.html
+
+* Variadic functions
+
+- can be called with any number of arguments
+- fmt.Println is a common variadic function
+- can be called with individual arguments
+- multiple args in a slice can be passed like this
+
+    func(slice... )
+
+* Variadic functions ...
+
+.play code/function1.go /START OMIT/,/END OMIT/
+
+* Embedding
+
+* Logging
+
+* Files
+
+* Defer, Panic, and Recover
+
+- Yet another mechanism for control flow
+- A _panic_ causes the program stack to begin unwinding and _recover_ can stop it
+- Deferred functions are still executed as the stack unwinds
+- If _recover_ is called inside such a deferred function, the stack stops unwinding
+- The _recover_ returns the value (as an _interface{}_) that was passed to panic
+- A _panic_ cannot be recovered by a different goroutine
+- [[https://blog.golang.org/defer-panic-and-recover]]
+- [[https://github.com/golang/go/wiki/PanicAndRecover]]
+
+* Defer, Panic, and Recover ...
+
+.play code/panic1.go /START MAIN OMIT/,/END MAIN OMIT/
+
+* Defer, Panic, and Recover ...
+
+.play code/panic1.go /START HELPERS OMIT/,/END HELPERS OMIT/
+
+* Defer, Panic, and Recover ...
+
+.play code/panic1.go /START PARSE OMIT/,/END PARSE OMIT/
+
+* Defer, Panic, and Recover ...
+
+.play code/panic1.go /START FIELDS2NUMBERS OMIT/,/END FIELDS2NUMBERS OMIT/
+
+* JSON
+
+* Hello HTTP
+
+.play code/hellohttp.go
+
+* go vet
+
+- Checks for code correctness, beyond what is necessary to compile the code
+
+* Golint
+
+Installation:
+
+    go get -u github.com/golang/lint/golint
+
+Usage:
+
+- Invoke _golint_ with one or more filenames, a directory, or a package named by its import path.
+- Golint uses the same import path syntax as the _go_ command
+- supports relative import paths like ./...
+
+* Godoc
+
+- Document exported variables, constants, functions etc.
+- Documents are regular comments just above the declarations
+- No blank between comment and declarations
+
+    // Package geometry provides methods to calculate area, perimeter etc.
+    package geometry
+
+    // Geometry interface type define methods required for any shape/geometry
+    type Geometry interface {
+        Area() float64
+        Perimeter() float64
+    }
+
+    // Pi represents an aproximate value of Pi
+    const Pi = 3.14
+
+* Godoc ...
+
+- To see documentation for a package:
+
+    godoc fmt
+
+- To see documentation for a particular fuction in a package:
+
+    godoc fmt Sscanf
+
+- Online documentaion: [[https://godoc.org][https://godoc.org]]
+
+* Testing
+
+- Tests are distinguished by file name
+- Test file names end with *_test.go*
+
+* Vim configuration
+
+.code code/vimrc

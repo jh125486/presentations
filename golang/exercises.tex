@@ -1,0 +1,369 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=1cm, bottom=1cm, left=2cm, right=2cm, includefoot, heightrounded]{geometry}
+\usepackage{fontspec}
+\setmainfont{Liberation Serif}
+
+\title{\bf{Golang Workshop Exercises}}
+\author{Jacob Hochstetler \\ Engineer, Fidelity LLC}
+\date{}
+
+\begin{document}
+\maketitle
+
+\centerline{\LARGE\bf Exercises}
+\section*{Exercise 1}
+Write a program to print "Hello, World!" and save this in a
+file named {\it helloworld.go}.  Compile the program and run
+it like this: {\it./helloworld}
+
+\section*{Exercise 2}
+Write a program to print whether the number given as the command line
+argument is even or odd
+
+\section*{Exercise 3}
+Write a program to print sum of all numbers below 50 completely
+divisible by 3 or 5 (i.e., remainder 0)
+
+\section*{Exercise 4}
+
+Write a program to print area and perimeter of a given circle and
+rectangle.  Use {\it struct} to represent circle and rectangle.  The
+type of shape and dimensions can be read from command line as given
+here:
+
+\begin{verbatim}
+$ ./shape circle 2
+Area: 12.56
+Perimeter: 12.56
+$ ./shape rectangle 2 3
+Area: 6
+Perimeter: 8
+\end{verbatim}
+
+\section*{Exercise 5}
+
+Update the previous program (Exercise 4) to use interfaces.
+
+\section*{Exercise 6}
+
+Rewrite the program in Exercise 2 using goroutine and channel.  The
+task is to print sum of all numbers below 50 completely divisible by 3
+or 5 (i.e., remainder 0)
+
+\section*{Exercise 7}
+
+Write a program to download a list of web pages concurrently using
+Goroutines.
+
+\noindent
+Hint: Use this tool for serving junk content for testing:
+https://github.com/baijum/lipsum
+
+\newpage
+
+\centerline{\LARGE\bf Answers}
+\section*{Answer 1}
+
+\begin{enumerate}
+\item Content of {\it helloworld.go}:
+\begin{verbatim}
+package main
+
+import "fmt"
+
+func main() {
+        fmt.Println("Hello, World!")
+}
+\end{verbatim}
+
+\item Build program:
+\begin{verbatim}
+$ go build helloworld.go
+\end{verbatim}
+
+\item Run program and verify output like this:
+\begin{verbatim}
+$ ./helloworld
+Hello, World!
+\end{verbatim}
+\end{enumerate}
+
+\section*{Answer 2}
+\begin{enumerate}
+\item Content of the file {\it evenodd.go}:
+\begin{verbatim}
+package main
+
+import (
+        "fmt"
+        "os"
+        "strconv"
+)
+
+func main() {
+        i := os.Args[1]
+        n, err := strconv.Atoi(i)
+        if err != nil {
+                fmt.Println("Not a number:", i)
+                os.Exit(1)
+        }
+
+        if n%2 == 0 {
+                fmt.Println("even number:", n)
+        } else {
+                fmt.Println("odd number:", n)
+        }
+}
+\end{verbatim}
+
+\item Run program and verify output like this:
+\begin{verbatim}
+$ go run evenodd.go 2
+even number: 2
+$ go run evenodd.go 3
+odd number: 3
+\end{verbatim}
+
+\end{enumerate}
+
+\section*{Answer 3}
+\begin{enumerate}
+\item Content of the file {\it sum.go}:
+\begin{verbatim}
+package main
+
+import "fmt"
+
+func main() {
+        sum := 0
+        for i := 1; i < 50; i++ {
+                if i%3 == 0 {
+                        sum = sum + i
+                } else {
+                        if i%5 == 0 {
+                                sum = sum + i
+                        }
+                }
+        }
+        fmt.Println(sum)
+}
+\end{verbatim}
+
+\item Run program and verify output like this:
+\begin{verbatim}
+$ go run sum.go
+543
+\end{verbatim}
+
+\end{enumerate}
+
+\section*{Answer 4}
+\begin{enumerate}
+\item Content of the file {\it shapes.go}:
+\begin{verbatim}
+package main
+
+import (
+        "fmt"
+        "os"
+        "strconv"
+)
+
+type Rectangle struct {
+        length float64
+        width  float64
+}
+
+type Circle struct {
+        radius float64
+}
+
+func (r Rectangle) Area() float64 {
+        return r.length * r.width
+}
+
+func (r Rectangle) Perimeter() float64 {
+        return 2 * (r.length + r.width)
+}
+
+func (c Circle) Area() float64 {
+        return 3.14 * c.radius * c.radius
+}
+
+// Circumference
+func (c Circle) Perimeter() float64 {
+        return 2 * 3.14 * c.radius
+}
+
+func main() {
+
+        shape := os.Args[1]
+
+        if shape == "circle" {
+
+                r := os.Args[2]
+                radius, _ := strconv.Atoi(r)
+
+                circle := Circle{float64(radius)}
+
+                area := circle.Area()
+                fmt.Println("Area:", area)
+
+                perimeter := circle.Perimeter()
+                fmt.Println("Perimeter:", perimeter)
+
+        } else {
+                w := os.Args[2]
+                h := os.Args[2]
+
+                width, _ := strconv.Atoi(w)
+                height, _ := strconv.Atoi(h)
+
+                rectangle := Rectangle{float64(width), float64(height)}
+
+                area := rectangle.Area()
+                fmt.Println("Area:", area)
+
+                perimeter := rectangle.Perimeter()
+                fmt.Println("Perimeter:", perimeter)
+        }
+}
+\end{verbatim}
+
+\item Run program and verify output like this:
+\begin{verbatim}
+$ go run shapes1.go circle 4
+Area: 50.24
+Perimeter: 25.12
+$ go run shapes1.go rectangle 2 3
+Area: 4
+Perimeter: 8
+\end{verbatim}
+
+\end{enumerate}
+
+\section*{Answer 5}
+\begin{enumerate}
+\item Change the previous source file ({\it shapes.go}) to include the below code:
+\begin{verbatim}
+type Geometry interface {
+        Area() float64
+        Perimeter() float64
+}
+
+func Measure(g Geometry) {
+        area := g.Area()
+        fmt.Println("Area:", area)
+
+        perimeter := g.Perimeter()
+        fmt.Println("Perimeter:", perimeter)
+}
+
+func main() {
+
+        shape := os.Args[1]
+
+        if shape == "circle" {
+
+                r := os.Args[2]
+                radius, _ := strconv.Atoi(r)
+
+                circle := Circle{float64(radius)}
+                Measure(circle)
+
+        } else {
+                w := os.Args[2]
+                h := os.Args[2]
+
+                width, _ := strconv.Atoi(w)
+                height, _ := strconv.Atoi(h)
+
+                rectangle := Rectangle{float64(width), float64(height)}
+                Measure(rectangle)
+        }
+}
+\end{verbatim}
+
+\end{enumerate}
+
+
+\section*{Answer 6}
+\begin{enumerate}
+\item Content of the file {\it newsum.go}:
+\begin{verbatim}
+package main
+
+import "fmt"
+
+func Sum(s chan int) {
+        sum := 0
+        for i := 1; i < 50; i++ {
+                if i%3 == 0 {
+                        sum = sum + i
+                } else {
+                        if i%5 == 0 {
+                                sum = sum + i
+                        }
+                }
+        }
+        s <- sum
+}
+
+func main() {
+        t := make(chan int)
+        go Sum(t)
+        fmt.Println("Sum:", <-t)
+}
+\end{verbatim}
+
+\item Run program and verify output like this:
+\begin{verbatim}
+$ go run sum.go
+543
+\end{verbatim}
+
+\end{enumerate}
+
+\section*{Answer 7}
+\begin{enumerate}
+\item Content of the file {\it download.go}:
+\begin{verbatim}
+package main
+
+import (
+        "io/ioutil"
+        "log"
+        "net/http"
+        "net/url"
+        "sync"
+)
+
+func main() {
+        urls := []string{
+                "http://localhost:9999/1.txt",
+                "http://localhost:9999/2.txt",
+                "http://localhost:9999/3.txt",
+                "http://localhost:9999/4.txt",
+        }
+        var wg sync.WaitGroup
+        for _, u := range urls {
+                wg.Add(1)
+                go func(u string) {
+                        defer wg.Done()
+                        ul, err := url.Parse(u)
+                        fn := ul.Path[1:len(ul.Path)]
+                        res, err := http.Get(u)
+                        if err != nil {
+                                log.Println(err, u)
+                        }
+                        content, _ := ioutil.ReadAll(res.Body)
+                        ioutil.WriteFile(fn, content, 0644)
+                        res.Body.Close()
+                }(u)
+        }
+        wg.Wait()
+}
+\end{verbatim}
+\end{enumerate}
+
+\end{document}
