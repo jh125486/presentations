@@ -4,9 +4,13 @@ import "fmt"
 
 func main() {
 	// START OMIT
-	var age int = 10
-	var tall bool = true
-	var name, place string = "Jacob", "Bangalore"
-	fmt.Printf("%#v, %#v, %#v, %#v\n", age, tall, name, place)
+	var age int = 37
+	var tall bool = false
+	var name, place string = "Jacob", "Denton"
+    
+	fmt.Printf("Age: %v\n", age)
+    fmt.Printf("Tall? %v\n", tall)
+    fmt.Printf("Name: %v\n", name)
+    fmt.Printf("Location: %v\n", place)
 	// END OMIT
 }

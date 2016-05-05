@@ -7,9 +7,7 @@ Cloud Engineer, Fidelity LLC
 jacob.hochstetler@gmail.com
 http://github.com/jh125486
 
-* Software Developer Skills
-
-Skills required for a software developer:
+* Software Developer Requirements
 
 - Operating System
 - Programming Language
@@ -23,17 +21,17 @@ Skills required for a software developer:
 - Operating system with Go support (UNIX, Mac OSX, Plan 9 or Windows)
 - Experience in some other programming language (C, Python, Ruby, Java, etc.)
 - Know how to use [[http://git-scm.com/doc][Git version control system]]
-- Comfortable with command line (Bash, Zsh, CMD, PowerShell etc.)
-- Comfortable with a text editor (Vim, Emacs, VS Code etc.)
-- Install Go plugin for your text editor/IDE: [[https://muthukadan.net/article/golang-vim.html][Vim]], [[http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/][Emacs]] or [[https://marketplace.visualstudio.com/items?itemName=lukehoban.Go][VS Code]]
+- Comfortable with command line (Bash, Zsh, CMD, PowerShell, etc.)
+- Comfortable with a text editor (Vim, Emacs, [[https://www.jetbrains.com][IntelliJ]], [[https://code.visualstudio.com/][VS Code]], etc.)
+- Install Go plugin for your text editor/IDE: [[https://github.com/go-lang-plugin-org/go-lang-idea-plugin][IntelliJ]], [[https://muthukadan.net/article/golang-vim.html][Vim]], [[http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/][Emacs]] or [[https://marketplace.visualstudio.com/items?itemName=lukehoban.Go][VS Code]]
 - Internet connectivity for downloading Go packages
-- The [[https://golang.org/dl/][Go 1.6 compiler]] should be installed
+- The [[https://golang.org/dl/][latest Go compiler]] should be installed
 
 * Agenda
 
 - Intro to Go
-- Running a hello world
 - Reasons to use Go
+- Running a 'hello world' program
 - Development environment setup
 - Types
 - Control structures
@@ -44,65 +42,79 @@ Skills required for a software developer:
 
 * Intro to Go
 
-- General Purpose Programming Language
-- Free/Open Source
+- General purpose programming language
 - Created at Google by Robert Griesemer, Rob Pike and Ken Thompson
-- Development started by their hated of C++
+- Development started by their shared *hatred* of C++ ([[http://www.drdobbs.com/open-source/interview-with-ken-thompson/229502480][_true!_]])
 - Started in 2007, publicly released in November 2009, version 1.0 released May 2012
-- C like syntax (no semicolons)
-- Object Oriented (Composition over inheritance - no classes!)
+- Designed by programmers for programmers!
 
 .image image/gopher1.png
 
 * Intro to Go (continued...)
 
+- C like syntax (no semicolons)
+- Imperative, statically type-checked, dynamically type-safe
 - Compiled (Statically linked)
-- Garbage collected
-- Statically typed
-- Strongly typed
-- Built-in concurrency
-- Two major compilers: gc & gccgo
-- 25 keywords (less than C, C++, Java, Python etc.)
-- Classification (first char is a Unicode upper case letter => exported, ie public)
+- Garbage-collected
+- Opinionated, no warnings, unused local vars and imports are an *error*!
+- Strong support for concurrency through message _passing_
+- Object Oriented(ish) => Composition over inheritance - _no_ classes!
+- Wide OS support: Windows, Linux, Mac OS X, *BSD, Plan 9 etc.
 
 .image image/gopher2.png
 
 * Intro to Go (still...)
-
-- Fast build (in seconds)
+- Fast compilation, efficient execution
+- Compiles to native code, statically linked
+- Built-in testing/benchmarking/coverage framework
 - Unused imports and variables raise compile error
-- Operating Systems: Windows, Linux, Mac OS X, *BSD, Plan 9 etc.
-- CPU Architectures: amd64, 386, arm, etc.
-- Cross compilation
-- Standard library
+- Cross compilation to architectures: amd64, 386, arm, etc.
+- [[https://golang.org/pkg/][Large Standard library]]
 - No exceptions ([[https://blog.golang.org/errors-are-values][Errors are values]])
 - Pointers (But no pointer arithmetic!)
 
 .image image/gopher3.png
 
-* Hello, 地鼠!
-
-.play code/hello.go
-
-- To play with Go programming interactively online: [[http://play.golang.org]]
-- *Activity*: Replace the text with some other language text and run
-
-* Sidebar: Golang in China
-
-[[http://herman.asia/why-is-go-popular-in-china][_Why_ is Golang so popular in China?]]
-
-.image image/alexa_rankings.png
-.caption Alexa site ranking for Golang.org [[http://www.alexa.com/siteinfo/golang.org][(retrieved May 3rd, 2016)]]
-
 * Why Go ?
 
-- [[http://commandcenter.blogspot.in/2012/06/less-is-exponentially-more.html][Simplicity]] (Small [[https://golang.org/ref/spec][spec]], 25 keywords)
+- [[http://commandcenter.blogspot.in/2012/06/less-is-exponentially-more.html][Simplicity]] through a small [[https://golang.org/ref/spec][spec]] with 25 keywords (less than C, C++, Java, Python etc.)
 - Consistency
 - Readability
 - Safety (Type safety, Memory safety)
 - Speed (Compile time & Run time)
 
 .image image/gopher4.png
+
+* Go uses
+- Systems programming
+- Service development
+- Complex event processing
+- General-purpose programs 
+- Text-processing problems
+- Web apps
+- Scripting-like applications...
+
+However, Go is _not_suited_ for *real-time* software because:
+
+- garbage collector
+- automatic memory allocation
+
+* Hello, 世界!
+
+.play code/hello.go
+
+- To play with Go programming interactively online: [[http://play.golang.org]]
+- *Activity*: Replace the text with some other language text and run
+
+* Sidebar: 地鼠 in China
+
+[[http://herman.asia/why-is-go-popular-in-china][Why _is_ Golang so popular in China?]]
+
+- Go has great unicode and Windows support, perhaps vital for 中国的程序员?
+- A high reverence in 中国 for things made by Google?
+
+.image image/alexa_rankings.png
+.caption Alexa site ranking for Golang.org [[http://www.alexa.com/siteinfo/golang.org][(retrieved May 3rd, 2016)]]
 
 * Installing Go Compiler on GNU/Linux
 
@@ -192,18 +204,18 @@ Replace the <username> with your GitHub username or organization name and <proje
 
 * Go Tools
 
-- Run "go help" to see list of available commands
-- Use "go help [command]" for more information about a command
+- Run `go` `help` to see list of available commands
+- `go` `help` `[command]` for more information about a command
 
-Few commonly used commands:
+Commonly used commands:
 
-- build - compile packages and dependencies
-- fmt - run gofmt on package sources
-- get - download and install packages and dependencies
-- install - compile and install packages and dependencies
-- run - compile and run Go program
-- test - test packages
-- version - print Go version
+- `build` => compile packages and dependencies
+- `fmt` => run gofmt on package sources
+- `get` => download and install packages and dependencies
+- `install` => compile and install packages and dependencies
+- `run` => compile and run Go program
+- `test` => test packages
+- `version` => print Go version
 
 * Keywords
 
@@ -220,19 +232,19 @@ Few commonly used commands:
 
 * Built-In Functions
 
-- Close channel: close
-- Length and capacity: len, cap
-- Allocation: new
-- Making slices, maps and channels: make
-- Appending to and copying slices: append, copy
-- Deletion of map elements: delete
-- Manipulating complex numbers: complex, real, imag
-- Handling panics: panic, recover
+- Close channel: `close`
+- Length and capacity: `len`, `cap`
+- Allocation: `new`
+- Making slices, maps and channels: `make`
+- Appending to and copying slices: `append`, `copy`
+- Deletion of map elements: `delete`
+- Manipulating complex numbers: `complex`, `real`, `imag`
+- Handling panics: `panic`, `recover`
 
 * Comments
 
 - Two kinds of comments
-- C Style
+- C style
 
     /* This is a multi-line comment
        ... and this is a the second line
@@ -247,14 +259,18 @@ Few commonly used commands:
 
 * Primitive types
 
-int, uint, int8, uint8, ...
-bool, string
-float32, float64
-complex64, complex128
+`int`, `uint`, `int8`, `uint8`, ...
+`bool`, `string`
+`float32`, `float64`
+`complex64`, `complex128`
 
-.play code/primitive1.go /START OMIT/,/END OMIT/
+.play -edit code/primitive1.go /START OMIT/,/END OMIT/
 
-- [[https://golang.org/pkg/fmt]]
+[[https://golang.org/pkg/fmt][`fmt`]] conversion _verbs_:
+
+- `%v` the value in a default format, for structs, the plus flag (%+v) adds field names
+- `%#v` a Go-syntax representation of the value
+- `%T` a Go-syntax representation of the type of the value
 
 * Variables
 
@@ -282,8 +298,8 @@ complex64, complex128
 * Constants
 
 - Constants are declared like variables, but with the const keyword.
-- Constants can be character, string, Boolean, or numeric values.
-- Constants cannot be declared using the := syntax.
+- Can be Character, String, Boolean, or Numeric values.
+- Cannot be declared using the `:=` syntax.
 
     const Male = true
     const Pi = 3.14
@@ -295,7 +311,7 @@ complex64, complex128
 
 * Type declarations
 
-type [name] [specification]
+`type` `[name]` `[specification]`
 
 - Custom types can be constructed based on built-in types (primitive or composite)
 - Examples:
@@ -303,10 +319,15 @@ type [name] [specification]
     // Celsius represent temperature in celsius (a float64 type)
     type Celsius float64
 
-    // Names represent an array of strings with length as 5
+    // Names represent an array of strings with a capacity of 5
     type Names [5]string
 
-- Function can be bound to types - methods
+- Function can be bound to types (as methods)
+- Example:
+    
+    func (c Celsius) convert() float64 {
+      return c * (9/5) /
+    }
 
 * Structs
 
