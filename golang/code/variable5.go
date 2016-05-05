@@ -4,8 +4,9 @@ import "fmt"
 
 func main() {
 	// START OMIT
-	if 1 < 2 { // HL
-		fmt.Println("1 is less than 2")
-	} // HL
+	i := 42 // int
+	fmt.Println(i)
+	i = 7 // HL
+	fmt.Println(i)
 	// END OMIT
 }

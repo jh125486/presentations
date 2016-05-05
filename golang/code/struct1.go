@@ -8,6 +8,7 @@ func main() {
 		Name string
 		Age  int
 	}{"Jacob", 36}
+    
 	fmt.Printf("%v\n", p)
 	fmt.Printf("%+v\n", p)
 	fmt.Printf("%#v\n", p)

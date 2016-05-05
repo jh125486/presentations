@@ -101,7 +101,7 @@ However, Go is _not_suited_ for *real-time* software because:
 
 * Hello, 世界!
 
-.play code/hello.go
+.play -numbers code/hello.go
 
 - To play with Go programming interactively online: [[http://play.golang.org]]
 - *Activity*: Replace the text with some other language text and run
@@ -264,9 +264,9 @@ Commonly used commands:
 `float32`, `float64`
 `complex64`, `complex128`
 
-.play -edit code/primitive1.go /START OMIT/,/END OMIT/
+.play -edit -numbers code/primitive1.go /START OMIT/,/END OMIT/
 
-[[https://golang.org/pkg/fmt][`fmt`]] conversion _verbs_:
+[[https://golang.org/pkg/fmt][*fmt*]] conversion _verbs_:
 
 - `%v` the value in a default format, for structs, the plus flag (%+v) adds field names
 - `%#v` a Go-syntax representation of the value
@@ -277,23 +277,27 @@ Commonly used commands:
 - Type is explicitly specified but initialized with default zero values
 - The zero value is 0 for numeric types, false for Boolean type and empty string for strings.
 
-.play code/variable1.go /START OMIT/,/END OMIT/
+.play -numbers code/variable1.go /START OMIT/,/END OMIT/
 
 * Variables ...
 
 - Type is explicitly specified and initialized with given values
 
-.play code/variable2.go /START OMIT/,/END OMIT/
+.play -numbers code/variable2.go /START OMIT/,/END OMIT/
 
 * Variables ...
 
-- Type is inferred from the values that is given for initialization
+- Type is inferred from the values that is given for initialization:
 
 .play code/variable3.go /START OMIT/,/END OMIT/
 
-- Short variable declaration inside functions (Similar to above - type is inferred from the values that is given for initialization)
+- [[http://golang.org/ref/spec#Short_variable_declarations][Short variable declaration]] equivalent:
 
 .play code/variable4.go /START OMIT/,/END OMIT/
+
+- Assignment:
+
+.play code/variable5.go /START OMIT/,/END OMIT/
 
 * Constants
 
@@ -316,19 +320,21 @@ Commonly used commands:
 - Custom types can be constructed based on built-in types (primitive or composite):
     // Names represent an array of strings with a capacity of 5
     type Names [5]string
-
-- Function can be bound to types (as methods):
     
-.play -numbers code/types.go /START OMIT/,/END OMIT/
+    // Custom types constructed in a type block
+    type (
+        Celsius    float64 // Celsius represent temperature in celsius
+        Fahrenheit float64 // Fahrenheit represent temperature in fahrenheit
+    )
+    
+- Functions can be bound to types (as methods)
 
 * Structs
 
-- A *struct* is a collection of fields.
-- Struct fields are accessed using a dot.
+- A *struct* is a collection of fields
+- Struct fields are accessed using a dot (*.*)
 
-.play code/struct1.go /START OMIT/,/END OMIT/
-
-* Structs ...
+.play -numbers code/struct1.go /START OMIT/,/END OMIT/
 
 - Person is a _struct_ type
 
@@ -356,9 +362,7 @@ Commonly used commands:
 - Array values can be accessed using the index syntax
 - The expression *s[n]* accesses the nth element, starting from zero.
 
-    colors := [3]string{"Red", "Green", "Blue"}
-    i := colors[1]
-    fmt.Println(i)
+.play -edit code/array1.go /START OMIT/,/END OMIT/
 
 * Slices
 
@@ -382,9 +386,7 @@ Commonly used commands:
 - Slice values can be accessed using the index syntax
 - The expression *s[n]* accesses the nth element, starting from zero.
 
-    colors := []string{"Red", "Green", "Blue"}
-    i := colors[1]
-    fmt.Println(i)
+.play -edit code/slice1.go /START OMIT/,/END OMIT/
 
 - [[http://blog.golang.org/go-slices-usage-and-internals]]
 - [[https://blog.golang.org/slices]]
@@ -407,8 +409,8 @@ Commonly used commands:
 
 * Function declarations
 
-func [name] ([params]) [return value]
-func [name] ([params]) ([return values])
+`func` `[name]` `([params])` `[return` `value]`
+`func` `[name]` `([params])` `([return` `values])`
 
 A function to return sum of two _int_ values:
 
@@ -416,30 +418,30 @@ A function to return sum of two _int_ values:
 
 * Function declarations ...
 
-A function with multiple returned values:
+A function with *multiple* returned values:
 
 .play code/functiondeclaration2.go /START OMIT/,/END OMIT/
 
 * Function declarations ...
 
-Made clearer by naming the return values:
+Made clearer by _naming_ the return values:
 
 .play code/functiondeclaration3.go /START OMIT/,/END OMIT/
 
 * If Conditions
 
 - Syntax inspired by C
-- Curly brace is mandatory
+- Curly braces are mandatory
 
 .play code/if1.go /START OMIT/,/END OMIT/
 
 * If Conditions ...
 
-- The if statement can start with a short statement to execute before the condition
-- Variables declared by the statement are only in scope until the end of the if
-- Variables declared inside an if short statement are also available inside any of the else blocks
+- The *if* statement can start with a _short_statement_ to execute before the condition
+- Vars declared inside the _short_statement_ are also available inside the if/else block
+- Vars declared by the statement are only in scope until the end of the if
 
-.play code/if2.go /START OMIT/,/END OMIT/
+.play -edit -numbers code/if2.go /START OMIT/,/END OMIT/
 
 * Errors
 
@@ -456,7 +458,7 @@ Made clearer by naming the return values:
 
 - Functions often return an error value, and calling code should handle errors by testing whether the error equals *nil*.
 
-.play code/error1.go /START OMIT/,/END OMIT/
+.play -edit -numbers code/error1.go /START OMIT/,/END OMIT/
 
 - A nil error denotes success; a non-nil error denotes failure.
 
@@ -496,9 +498,15 @@ Made clearer by naming the return values:
 
 * Blank identifier
 
-- Underscore (*_*) is the blank identifier
+- Underscore ( *_* ) is the _blank_identifier_
 
-- Blank identifier can be used as import alias to invoke *init* function without using the package
+- The _blank_identifier_ can be used to ignore return values from function
+
+    x, _ := someFunc()
+
+For `imports`:
+
+- Using the _blank_identifier_ as the import alias will only invoke the *init* function of the package, without making the package available for use
 
 
     import (
@@ -507,16 +515,12 @@ Made clearer by naming the return values:
            _ "github.com/lib/pq"
     )
 
-- Blank identifier can be used to ignore return values from function
-
-    x, _ := someFunc()
-
 * For Loop
 
 - The only looping construct (no while loop)
 - Syntax inspired by C
-- No parenthesis (not even optional)
-- Curly brace is mandatory
+- No parenthesis (*not*even*optional*)
+- Curly brace is *mandatory*!
 
 .play code/for1.go /START OMIT/,/END OMIT/
 
@@ -530,45 +534,47 @@ Made clearer by naming the return values:
 
 - An infinite loop can be created by removing the loop condition
 
-.play code/for3.go /START OMIT/,/END OMIT/
+.play -numbers code/for3.go /START OMIT/,/END OMIT/
 
-* Range Loops
+* For Range Loops
 
 - The _range_ form of the _for_ loop iterates over a slice or map.
 
 .play code/range1.go /START OMIT/,/END OMIT/
 
-When ranging over a slice, two values are returned for each iteration.
+When ranging over a slice, two values are returned for each iteration:
 
-- The first is the index, and the second is a copy of the element at that index.
+- The 1st is the index, and the 2nd is a copy of the element at that index.
+- [[https://github.com/golang/go/wiki/Range#reference][1st, 2nd values for primitive types]]
+- [[https://github.com/golang/go/wiki/Range#gotchas][Range gotchas]]
 
-* Range with Maps
+* For Range with Maps
 
-.play code/range2.go /START OMIT/,/END OMIT/
+.play -numbers code/range2.go /START OMIT/,/END OMIT/
+
+*Note*: on line 22 the _blank_identifier_ is used to discard the 1st value  
 
 * Nil slices
 
 - The zero value of a slice is _nil_
 - A _nil_ slice has a length and capacity of 0
 
-.play code/slice1.go /START OMIT/,/END OMIT/
+.play code/nil_slice1.go /START OMIT/,/END OMIT/
 
 * Switch statement
 
 - The cases are evaluated top to bottom until a match is found
 - There is no automatic fall through
 - Cases can be presented in comma-separated lists
-- break statements can be used to terminate a switch early
+- _break_ statements can be used to terminate a switch early
+
+.play -numbers code/switch1.go /START OMIT/,/END OMIT/
 
 * Switch statement ...
 
-.play code/switch1.go /START OMIT/,/END OMIT/
+If the switch has no expression it switches on true (useful to write an _if-else-if-else_ chain)
 
-* Switch statement ...
-
-If the switch has no expression it switches on true (useful to write an if-else-if-else chain)
-
-.play code/switch2.go /START OMIT/,/END OMIT/
+.play -numbers code/switch2.go /START OMIT/,/END OMIT/
 
 * Method declaration
 
@@ -595,12 +601,7 @@ If the switch has no expression it switches on true (useful to write an if-else-
 
 - Method bound to a custom type named Celsius (float64):
 
-    // Celsius represent temperature in celsius (a float64 type)
-    type Celsius float64
-
-    func (c Celsius) Freezing() bool {
-        return c <= 0
-    }
+.play -numbers code/types.go /START OMIT/,/END OMIT/
 
 * Method declaration ...
 
@@ -695,20 +696,20 @@ Why pass by reference instead of pass by value?
 
 * Interface ...
 
-.play code/interface1.go /START OMIT/,/END OMIT/
+.play -numbers code/interface1.go /START OMIT/,/END OMIT/
 
 * Concurrency
 
 - Goroutines are lightweight threads managed by the Go runtime
 - Calling a function with _go_ keyword starts the goroutine
 
-.play code/concurrency1.go /START OMIT/,/END OMIT/
+.play -numbers code/concurrency1.go /START OMIT/,/END OMIT/
 
-- Goroutines can communicate to each other via channels (typed conduit)
+- Goroutines communicate to each other via channels (typed messaging conduits)
 
 * Concurrency ...
 
-- You can send and receive values with the channel operator: <-
+- You can send and receive values with the channel operator: `<-`
 
     ch <- v    // Send v to channel ch.
     v := <-ch  // Receive from ch, and
@@ -725,11 +726,11 @@ Why pass by reference instead of pass by value?
 * Concurrency ...
 
 
-.play code/concurrency2.go /START OMIT/,/END OMIT/
+.play -numbers code/concurrency2.go /START OMIT/,/END OMIT/
 
 * Concurrency ...
 
-.play code/concurrency3.go /START OMIT/,/END OMIT/
+.play -numbers code/concurrency3.go /START OMIT/,/END OMIT/
 
 * WaitGroup
 
@@ -742,11 +743,11 @@ Why pass by reference instead of pass by value?
 
 * WaitGroup ...
 
-.play code/concurrency5.go /START OMIT/,/END OMIT/
+.play -numbers code/concurrency5.go /START OMIT/,/END OMIT/
 
 * WaitGroup ...
 
-.play code/concurrency4.go /START OMIT/,/END OMIT/
+.play -numbers code/concurrency4.go /START OMIT/,/END OMIT/
 
 * Who uses Go?
 

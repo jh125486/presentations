@@ -8,13 +8,16 @@ import (
 func main() {
 	// START OMIT
 	t := time.Now()
-	switch {
+    
+	switch { // HL
 	case t.Hour() < 12:
 		fmt.Println("Good morning!")
-	case t.Hour() < 17:
+	
+    case t.Hour() < 17:
 		fmt.Println("Good afternoon.")
-	default:
+	
+    default:
 		fmt.Println("Good evening.")
-	}
+	} // HL
 	// END OMIT
 }

@@ -10,5 +10,6 @@ func main() {
 		"Orange": 34,
 	}
 	fmt.Printf("%#v\n", fruitWeights)
+    fmt.Println("Length:", len(fruitWeights))
 	// END OMIT
 }

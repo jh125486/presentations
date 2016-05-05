@@ -7,15 +7,17 @@ import (
 
 func main() {
 	// START OMIT
-	switch os := runtime.GOOS; os {
+	switch os := runtime.GOOS; os { // HL
 	case "darwin":
-		fmt.Println("OS X.")
+		fmt.Println("OS X")
+        
 	case "linux":
-		fmt.Println("Linux.")
-	default:
-		// freebsd, openbsd,
-		// plan9, windows...
+		fmt.Println("GNU/Linux")
+        
+    case "windows": fmt.Println("Microsoft Windows")
+        
+	default: // freebsd, openbsd, plan9...
 		fmt.Printf("%s.", os)
-	}
+	} // HL
 	// END OMIT
 }
