@@ -313,21 +313,13 @@ Commonly used commands:
 
 `type` `[name]` `[specification]`
 
-- Custom types can be constructed based on built-in types (primitive or composite)
-- Examples:
-
-    // Celsius represent temperature in celsius (a float64 type)
-    type Celsius float64
-
+- Custom types can be constructed based on built-in types (primitive or composite):
     // Names represent an array of strings with a capacity of 5
     type Names [5]string
 
-- Function can be bound to types (as methods)
-- Example:
+- Function can be bound to types (as methods):
     
-    func (c Celsius) convert() float64 {
-      return c * (9/5) /
-    }
+.play -numbers code/types.go /START OMIT/,/END OMIT/
 
 * Structs
 
