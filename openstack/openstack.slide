@@ -1,0 +1,74 @@
+Openstack
+Future of IaaS Cloud Computing
+23 Mar 2017
+
+Jacob Hochstetler
+Cloud Engineer, Fidelity LLC
+jacob.hochstetler@gmail.com
+http://github.com/jh125486
+
+* IaaS Definition
+
+- Abstracted
+- Self-service (_on-demand_)
+- Utility-based billing
+
+* Prehistory
+
+.image images/evolution.png _ 775
+
+* History
+
+.image images/logo.png _ 400
+
+* Architecture
+
+* Organization
+
+* API/SDKs
+
+- Python @
+- Go @
+- Ruby @
+
+* Components
+
+* Keystone (identity)
+
+- Provides:
+- Released:
+
+* Nova (compute)
+
+- Provides: Cloud-computing fabric controller (clusters/hypervisors/instances)
+- Released:
+
+* Glance (image)
+
+- Provides: Discovery, registration and delivery of images for disks and servers
+- Released:
+
+* Neutron (networking)
+
+- Provides: Manages networks and IP addresses
+- Released:
+
+* Cinder (block storage)
+
+- Provides: Persistent, block-level storage devices for Nova
+- Released:
+
+* Swift (object storage)
+
+- Provides: Scalable redundant storage system
+- Released:
+
+* Heat (orchestration)
+
+- Provides: Templates to orchestrate cloud applications
+- Released:
+
+* Horizon (dashboard UI)
+
+- Provides: A pretty GUI to control (most) Openstack functions
+- Released:
