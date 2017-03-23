@@ -1,5 +1,5 @@
-Openstack
-Future of IaaS Cloud Computing
+OpenStack
+Present & Future of IaaS Cloud Computing
 23 Mar 2017
 
 Jacob Hochstetler
@@ -7,70 +7,136 @@ Cloud Engineer, Fidelity LLC
 jacob.hochstetler@gmail.com
 http://github.com/jh125486
 
-* IaaS Definition
+* Infrastructure-as-a-Service (IaaS)
+
+Definition (per _IETF_):
 
 - Abstracted
 - Self-service (_on-demand_)
 - Utility-based billing
 
+* Cloud computing
+
 * Prehistory
 
-.image images/evolution.png _ 775
+- Mainframes
+- Servers
+- Rise of the Internet
+- Virtualization Revolution
+- The Cloud
+
+.image images/computing_evolution.png _ 1000
+.caption Evolution of _Computing_
 
 * History
 
-.image images/logo.png _ 400
+- July 2010: Rackspace & NASA started initial project
+- Oct 2010: *Austin* OpenStack preview released
+- End 2011: CERN starts building their private cloud (currently over 150k cores)
+- 2012: OpenStack Foundation established
+- 2016: AT&T virtualized over 1/3 of their network using OpenStack
+- 2017: *Ocata* released
 
-* Architecture
+*Future*:
+
+- Software-defined networking (SDN) plugins
+- Network functions virtualization (NFV)
+
 
 * Organization
+- Open-sourced, driven by non-profit foundation
+- 6-month release cycle after each conference
+- Releases are codenamed after a landmark at the conference that begins with the next letter in the alphabet
+- "Big Tent" model, where OpenStack projects can be developed in an Agile manner
+
+.image images/logo.png _ 400
+
+* Releases
+
+~ 2010  *Austin* (Austin, TX): The first design summit took place in Austin, TX
+2011.1 *Bexar* (San Antonio, TX): San Antonio is located in Bexar county
+2011.2 *Cactus*: Cactus is a city in Texas
+2011.3 *Diablo* (Santa Clara, California): Diablo is a city in the bay area near Santa Clara
+2012.1 *Essex* (Boston, Massachusetts): Essex is a city near Boston
+2012.2 *Folsom* (San Francisco, California): Folsom is a city near San Francisco
+2013.1 *Grizzly* (San Diego, California): Grizzly is an element of the state flag of California
+2013.2 *Havana* (Portland, Oregon): Havana is an unincorporated community in Oregon
+2014.1 *Icehouse* (Hong Kong): Ice House is a street in Hong Kong
+2014.2 *Juno* (Atlanta, Georgia): Juno is a locality in Georgia
+2015.1 *Kilo* (Paris, France): Home to the Kilogram, the only SI unit tied to an artifact
+2015.2 *Liberty* (Vancouver, British Columbia): Liberty is a village in Saskatchewan
+2016.1 *Mitaka* (Tokyo, Japan): Mitaka is a city located in Tokyo Metropolis, Japan
+2016.2 *Newton* (Austin, TX): _Newton_House_ is a National Historic Place
+2017.1 *Ocata* (Barcelona, Spain): Ocata is a beach about 20 minutes from of Barcelona
+
+* Architecture
+.image images/arch.png _ 1000
+
+- Completely modular, dependent on _Linux_
+- Almost all components written in _Python_
+- Multi-vendor backends for components (hypervisors/storage/authentication/etc.)
 
 * API/SDKs
+OpenStack provides four different options for interacting with its APIs from _Python_:
 
-- Python @
-- Go @
-- Ruby @
+- [[https://pypi.python.org/pypi/openstacksdk][OpenStack SDK]]
+- _Python_ library [[http://pypi.python.org/pypi/shade][shade]]
+- Per-project client libraries
+- Direct REST calls via keystoneauth
+
+APIs for other languages:
+
+- _Go_: [[https://github.com/gophercloud/gophercloud][gophercloud (by Rackspace)]]
+- _Ruby_: [[https://github.com/ruby-openstack/ruby-openstack][OpenStack Official]]
+.image images/gophercloud.png _ 125
+.caption gophercloud logo
 
 * Components
 
-* Keystone (identity)
-
-- Provides:
-- Released:
-
 * Nova (compute)
-
-- Provides: Cloud-computing fabric controller (clusters/hypervisors/instances)
-- Released:
-
-`example nova command`
-
-* Glance (image)
-
-- Provides: Discovery, registration and delivery of images for disks and servers
-- Released:
-
-* Neutron (networking)
-
-- Provides: Manages networks and IP addresses
-- Released:
-
-* Cinder (block storage)
-
-- Provides: Persistent, block-level storage devices for Nova
-- Released:
+- _What:_ Cloud-computing fabric controller (clusters/hypervisors/instances)
+- _When:_ *Austin* (Oct 2010)
+- _How:_ Multiple backends and vendors: Xen, KVM, ESX, HyperV, etc.
 
 * Swift (object storage)
+- _What:_ Scalable redundant storage system
+- _When:_ *Austin* (Oct 2010)
+- _How:_ AWS S3 equivalent
 
-- Provides: Scalable redundant storage system
-- Released:
+* Glance (image)
+- _What:_ Discovery, registration and delivery of images for disks and servers
+- _When:_ *Bexar* (Feb 2011)
+- _How:_ Raw (ISO), compressed QCOW2 formats
+
+* Horizon (dashboard)
+- _What:_ A GUI to control (most) OpenStack functions/services
+- _When:_ *Essex* (April 2012)
+- _How:_ Django-based user-interface (web UI)
+
+* Keystone (identity)
+- _What:_ Maps users to OpenStack service access-role
+- _When:_ *Essex* (April 2012)
+- _How:_ Federated, per-project user/admin roles
+
+* Cinder (block storage)
+- _What:_ Persistent, block-level storage devices for Nova
+- _When:_ *Folsom* (Sep 2012)
+- _How:_ iSCSI, NFS, Ceph, GlusterFS
 
 * Heat (orchestration)
+- _What:_ Templates to orchestrate cloud applications
+- _When:_ *Havana* (Oct 2013)
 
-- Provides: Templates to orchestrate cloud applications
-- Released:
+* Neutron (networking)
+- _What:_ Manages networks and IP addresses
+- _When:_ *Havana* (Oct 2013)
+- _How:_ Load-balance-as-a-Service v2 (LBaaS)
 
-* Horizon (dashboard UI)
+* Misc Components
 
-- Provides: A pretty GUI to control (most) Openstack functions
-- Released:
+- *Designate* -> DNS-as-a-Service
+- *Ironic* -> Bare-metal-as-a-Service provisioing
+- *Trove* -> DB-as-a-Service (DBaas)
+- *Magnum* -> Containers-as-a-Service (Caas)
+- *Ceilometer* -> Telemetry
+- *CloudKitty* -> Rating-as-a-Service (Billing)
