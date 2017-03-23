@@ -98,6 +98,8 @@ APIs for other languages:
 - _When:_ *Austin* (Oct 2010)
 - _How:_ Multiple backends and vendors: Xen, KVM, ESX, HyperV, etc.
 
+RAM, CPU and Disk storage combinations form "flavors"
+
 * Swift (object storage)
 - _What:_ Scalable redundant storage system
 - _When:_ *Austin* (Oct 2010)
