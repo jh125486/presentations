@@ -43,6 +43,8 @@ http://github.com/jh125486
 - Provides: Cloud-computing fabric controller (clusters/hypervisors/instances)
 - Released:
 
+`example nova command`
+
 * Glance (image)
 
 - Provides: Discovery, registration and delivery of images for disks and servers
