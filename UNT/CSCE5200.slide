@@ -15,7 +15,7 @@ http://github.com/jh125486
 
 3. Wikipedia
 
-4. Text Document Representation
+4. Compiling Wikipedia Knowledge into Text Document Representation
 
 5. Experiments
 
@@ -27,19 +27,20 @@ http://github.com/jh125486
 
 *Bag*of*Words* (_BOW_) = weighted term frequency
 
-- Good: Fast (single document scan)
+- *Good*: Fast (single document scan)
 
-- Bad: Uses only direct text (no synonyms)
+- *Bad*: Uses only direct text (no synonyms)
 
-- Ugly: Only works within the document composition (relationships)
+- *Ugly*: Only works within the document composition (no relationships)
 .image images/UNT_green.png 3 850
 
-Next Step: Improve _BOW_ by exploiting term *ontology*...
+*Next*Step*: Improve _BOW_ by exploiting term *ontology*...
 
 *Ontology* (Information Science context) here meaning:
-"formal naming..., properties, and interrelationships of the entities" - [Wikipedia]
+_"formal_naming...,_properties,_and_interrelationships_of_the_entities"_- [Wikipedia]
 
-* Related Works: background
+* Related Works
+* Background
 
 _WordNet_ is a manually created structured term ontology
 
@@ -48,27 +49,29 @@ _WordNet_ is a manually created structured term ontology
 - Combination of dictionary and thesaurus
 - Primary use is in automatic text analysis and artificial intelligence applications
 
-* Related Works: B. Rodriguez et al. and U. Loez et al. 
+* B. Rodriguez et al. and U. Loez et al. 
 Successful integration of _WordNet_:
 
 - Supervised scenario; built term vectors manually
 - Did not user hypernyms or associate terms
 - Improved classification
 
-* Related Works: Dave et al. 
+* Dave et al. 
 Utilized _WordNet_ synsets as features:
 
 - No word sense disambiguation
 - Experimentally decreased clustering performance
 
-* Related Works: Gabrilovich et al. 
+* Gabrilovich et al. 
 Built a text classification system with encyclopedic knowledge:
 
 - Classifier that matches documents with the most relevant articles of _Wikipedia_
 - Did not use full set of _Wikipedia_ features
 - Improved classification
 
-* Wikipedia: Introduction 
+* Wikipedia
+
+* Introduction 
 The *Largest* Encyclopedia in the _World_
 
 - Launched in 2001
@@ -82,7 +85,7 @@ By November 30, 2006:
 - Each article is a single topic (with a succinct title)
 - Full content and revision history: 70 GB (compressed)
  
-* Wikipedia: Article features 
+* Article features 
 As the *Largest* Thesaurus in the _World_...
 
 - Synonymy (same meaning, different term) using _Redirect_links_ 
@@ -113,12 +116,60 @@ How to combine these measures into an overall similarity index?
 
 *Solution*: 
 .image images/s_index.png
-.caption _Where_λ_are_weight_parameters_experimentally_tuned_
+.caption _Where_λ_are_experimentally_tuned_weight_parameters_
 
+* Compiling Wikipedia Knowledge into Text Document Representation
 
+* Text Document Representation: A weighted bag of terms
 
-* Text Document Representation
+Iterate each document:
+1. Remove Stopwords
+2. Stem using Porter
+3. Construct Vector of terms
+4. Weight the frequency of each term using _TFIDF_:
+.image images/tfidf.png
+.caption Where _DF_ (_t_) is the document frequency of term _t_ that counts in how many documents where term _t_ appears
+
+* Text Document Enrichment
+.image images/text_enrichment_procedure.png 570 _
+
+* Procedure
+Indexing _Wikipedia_ concepts:
+
+- Remove useless titles
+- Remove chronology categories
+- Heuristic eval whether *Title* is a _concept_
+
+Search _Wikipedia_ concepts in documents:
+
+1. Split the document into vectors of term sequence
+2. Find candidate concepts in each term sequence via window filtering condition.
+3. Filter candidate concepts removing ones subsumed by other candidate concepts.
+
+Add _Wikipedia_ concepts into document:
+
+- Disambiguation with text similarity from cosine similarity of the TFIDF vectors
+- Disambiguation with context using conceptual distance function
+
 
 * Experiments
+
+- Used Reuters-21578, OHSUMED (subset of MEDLINE), 20 Newsgroups
+- Tuned λ weights (λ1 set to 0.4 and λ2 set to 0.5)
+
+* Results
+
+* Hyponymies
+.image images/hyponymies.png
+
+* Associative Concepts
+.image images/associative_concepts.png
+
+* Synonymies
+.image images/synonymies.png
+
+* Final: Hyponymies and Associative Concepts
+.image images/hyponymies_and_associative_concepts.png
+
 
 * Conclusion/Future Works
