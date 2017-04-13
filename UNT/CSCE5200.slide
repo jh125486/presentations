@@ -63,7 +63,7 @@ Utilized _WordNet_ synsets as features:
 - Experimentally decreased clustering performance
 
 * Gabrilovich et al. 
-Built a text classification system with encyclopedic knowledge:
+Built a text classification system witsh encyclopedic knowledge:
 
 - Classifier that matches documents with the most relevant articles of _Wikipedia_
 - Did not use full set of _Wikipedia_ features
@@ -115,7 +115,7 @@ Three kinds of measurements to rank article links:
 How to combine these measures into an overall similarity index?
 
 *Solution*: 
-.image images/s_index.png
+.image images/s_index.PNG
 .caption _Where_λ_are_experimentally_tuned_weight_parameters_
 
 * Compiling Wikipedia Knowledge into Text Document Representation
@@ -131,7 +131,7 @@ Iterate each document:
 .caption Where _DF_ (_t_) is the document frequency of term _t_ that counts in how many documents where term _t_ appears
 
 * Text Document Enrichment
-.image images/text_enrichment_procedure.png 570 _
+.image images/text_enrichment_procedure.PNG 570 _
 
 * Procedure
 Indexing _Wikipedia_ concepts:
