@@ -1,12 +1,37 @@
+Beyond Bag of Words
 Improving Text Classification by Using Encyclopedia Knowledge
-13 April 2017
+13 Apr 2017
 
 Jacob Hochstetler
 CSCE5200 Information Retrieval
 jacobhochstetler@my.unt.edu
 http://github.com/jh125486
 
+* Organization
+
+1. Introduction
+
+2. Related Works
+
+3. Wikipedia
+
+4. Text Document Representation
+
+5. Experiments
+
+6. Conclusion/Future Works
+
 * Introduction
+
+* Traditional document classification
+
+_Bag_of_Words_ (BOW) = weighted term frequency
+
+- Good: Fast (single document scan)
+
+- Bad: Misses relationships
+
+- Ugly: Only works within the document composition
 
 * Related Works
 
