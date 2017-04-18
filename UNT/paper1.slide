@@ -81,7 +81,6 @@ _Software-defined_IoT_units_:
 
 Enables utility-based provisioning of IoT Cloud resources by providing a uniform view on the entire resource pool, as well as by allowing IoT Cloud applications to customize and consume those resources dynamically and on-demand.
 
-
 * IoT Cloud Provisioning Middleware
 
 * Provisioning Architecture
@@ -94,14 +93,83 @@ Enables utility-based provisioning of IoT Cloud resources by providing a uniform
 - Artifact Packages
 - Configurations Container
 - Provisioning Agent
+- Device Connectivity
 
 .image images/middleware_sdg.png
 .caption Software-defined gateway architecture
 
+* Edge Device Middleware Support
+
+- Virtual Buffers Daemon
+- Provisioning Daemon
+- Monitoring Agent
+
+* Cloud-based Provisioning Controller
+
+- API Manager
+- Monitoring Coordinator
+- SDG Manager / Artifacts Manager
+- Deployment Handler
+- Dependency Management service
+
 * Runtime Mechanisms for Multi-level Provisioning in IoT Cloud
+
+* Runtime execution of provisioning workflows
+
+.image images/middleware_sapp_workflow.png _ 460
+.caption Provisioning workflow for SAPP
 
 * Implementation & Evaluation
 
+* Prototype Middleware Implementation and Performance
+
+*Implementation*:
+
+- Provisioning Controller written in Java and Scala
+- Agents/_ProvisioningDaemon_ in Shell and Python scripts
+- _VirtualBuffersDaemon_ implemented in Java SE Embedded
+
+.image images/UNT_green.png 3 850
+
+*Performance*:
+
+- CPU consumption averages 2%
+- Java JVM processes consume 45Mb RAM
+- Enables scalable execution of provisioning workflows (within _O(nlog(n))_)
+
 * Related Work
 
+_Cyber-foraging_ systems:
+
+- Much work has been done to enhance *resource-constrained* (Edge/mobile) devices.
+- Usually focused on *specific* tasks (computation/data offloading).
+- Emphasis on algorithms, energy-efficiency, and performance.
+
+.image images/UNT_green.png 3 850
+
+_Virtualizing/Abstraction_ of Edge devices:
+
+- Sensors/actuators
+- Management of device identification
+- Device services aggregation
+- Asynchronous event exchange (pub/sub model)
+
 * Conclusion and Future Work
+
+* Conclusion
+
+We introduced a provisioning middleware that enables developing generic, multi-level provisioning workflows and supports automated and scalable execution of such workflows in IoT Cloud systems.
+
+The middleware supports on-demand, self-service resource consumption by providing flexible provisioning models and support for uniform, logically centralized provisioning of Edge devices, application artifacts and their configuration models.
+
+We introduced provisioning support for software-defined gateways to enable application-specific customization of Edge devices through well-defined APIs, while preserving the benefits of proven virtualization mechanism.
+
+* Future Work
+
+- Improve middleware resource allocation (dynamic device properties).
+- Optimize placement of Applications on Edge devices.
+- Increase granularity of resource monitoring.
+- Enable elasticity for IoT Cloud systems.
+- Integrate middleware with a Governance framework.
+- Address security issues (access-control).
+- Compensation model for used IoT resources (through Blockchain technology).
