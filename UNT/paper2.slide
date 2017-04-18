@@ -6,19 +6,221 @@ PhD student, UNT
 jacobhochstetler@my.unt.edu
 http://github.com/jh125486
 
+* Organization
+
+1. Introduction
+
+2. Motivating Uses Cases
+
+3. ECC Concepts
+
+4. Design
+
+5. Implementation Details
+
+6. Evaluation
+
+7. Related Work
+
+8. Conclusions and Future Work
+
 * Introduction
+
+* Current Mobile Computing
+
+To obtain long battery lifetimes, mobile devices are designed:
+
+- For low energy consumption via energy-efficient processors
+- Limited memory capacities
+- On-device active power management
+Intentionally *sacrifice* the _potential_ levels of computational ability and functionality _attainable_ within their current form factors.
+
+*Cloud-based* _services_ run by companies like Google, Apple, Amazon, etc., offer one means for applications to *escape* the limits imposed by individual devices, yet at the same time, users are surrounded by *numerous* other _networked_devices_.
+
+Surprisingly, most of those devices do *not* interoperate _seamlessly_, with each other and/or with the mobile user’s portable device, thereby *compromising* theoretically achievable computational efficiency and more importantly, end user’s *potential*experiences*.
+
+* Reasons for fragmentation
+
+- Hardware-software incompatibilities.
+- No standardized protocols.
+- Knowledge about the context in which a device is operating.
+: which nearby devices are currently accessible and usable
+- Information about nearby device capabilities.
+- Instructions about the task at hand.
+- Data about the steps needed to combine and jointly use the capabilities of multiple devices.
+
+* ECC Abstractions
+
+Our research explores the utility and efficient use of '_nearby_devices_' for enhancing the capabilities of end users’ mobile devices and experiences.
+
+We borrow from data center systems the notions of resource consolidation, elasticity, and dynamic orchestration of many machines’ computational capabilities, with minimum manual intervention.
+
+The implicit knowledge about tasks to be carried out, resource accessibility and capabilities plays a vital role in could computing to achieve benefits of these notions.
+
+.image images/UNT_green.png 3 850
+
+*C*(ompetence) captures the functional capabilities of accessible devices and/or remote services.
+*I*(ntent) articulates end user desires.
+*C*(ontext) describing the current operating environment.
 
 * Motivating Uses Cases
 
+* Scenario
+
+.image images/ecc_scenario.png
+.caption A user wants to play a video in his home-environment.
+
+* ECC benefits
+
+- Seamless use of accessible devices.
+- End-user device consolidation.
+- Leveraging locality in tasks.
+
 * ECC Concepts
+: Intuitively, ECC articulates (i) what a user wants to do, (ii) which resources are available, and (iii) what those resources’ abilities are.
+
+* Device Competences
+
+*Competence* is defined as a tuple representing a device’s exposed _functionality_, _characteristics_, _availability_ and _accessibility_.
+.image images/UNT_green.png 3 850
+
+*Divided*into*two*classes*:
+
+_Static_
+
+- Functionality
+- Characteristics
+
+_Dynamic_
+
+- Availability
+- Accessibility
+
+* User Intent
+
+*Intent* is defined as an ordered sequence of events on _'partially_specified'_ competences linked by guidelines.
+
+*ECC*Intent*:
+
+- The set of tasks (stated as required competences)
+- Their interactions, required to attain some higher level user goal (guideline)
+.image images/UNT_green.png 3 850
+
+_'Three_Ts'_ (guidelines):
+
+- Topology: the connection configuration between competence instances
+: e.g., linear, many to one, etc.
+- Traversal: referring to how events travel among competences
+: e.g., synchronous, asynchronous, listening, etc.
+- Tie: constraining certain competences to be instantiated on a specific device
+
+* Context
+
+*Context* is defined as the set of currently accessible competences.
+
+Context captures current device availability and states, including their status due to multi-tenant operation, mobility constraints, current location, etc.
+
+- ECC is distributed which means that Context is a distributed runtime entity
+- Affected by current availability and accessibility
+
+*Competences*ECC*distinguishes*:
+
+- Offered (same device)
+- Local (nearby device on same network)
+- Remote (device or a remote cloud accessible via the Internet)
+- Cached (recently provisioned in previously requested intent)
 
 * Design
 
+* Software Architecture
+
+.image images/ecc_architecture.png 530 _
+.caption Overview of ECC architecture
+
+* Operation
+
+- ECC Application
+- ECC Competence Instance
+- ECC Decision Engine
+
+Reconfiguration and Failure mechanisms. In case of context change, or if any instance is not meeting the quality constraints as specified in intent, reconfiguration mechanisms are triggered.
+
 * Implementation Details
+
+- EVpath
+: event transport middleware layer
+- ECC Implementation (C)
+- Android-specific Details
+: JAVA applications, JNI based interface for native Android APIs
+: Had to root the device to get around unresponsive applications being killed by the OS
+- Required Competences for Usecases
+: OpenCV for video, X11-tst/Android native input API for collaborative UI
 
 * Evaluation
 
+* Two scenarios in three different contexts
+
+Distributed video playback and Vehicular AR
+Contexts:
+
+- competences are offered by only a single device (i.e., the tablet)
+- competences are offered by multiple devices (i.e., tablet and nearby laptop)
+- competences are offered one nearby and one remote device (i.e., the tablet and an Amazon EC2 High CPU Medium instance)
+
+.image images/UNT_green.png 3 850
+
+- Application performance improvement through context-sensitive ECC deployment
+: Improved 70%/86% in nearby devices
+: Improved 58%/70% when using remote cloud
+
+- Reduction in overall energy consumption
+: No substantial difference in power utilization, but ECC reduces total energy consumption for both classes of application due to lower execution time.
+: Reduced by 38%/29% in nearby
+: Reduced by 29% and 21% using remote cloud
+
+- Role of 'Intent' (Performance based decisions are not sufficient)
+- Reactivity (runtime changes in context)
+
+* ECC Overhead (1)
+.image images/ecc_overhead1.png
+.caption Total execution time - ECC’s queues and actual computation
+
+* ECC Overhead (2)
+.image images/ecc_overhead2.png
+.caption Total execution time - ECC’s queues and actual computation
+
+* Limitations
+
+- ECC Applications must be preprogrammed once with a set of competences
+- No automatic user intent capture (nor formal specification of intent/competences)
+- No learning capabilities in the decision engine to improve based on user behavior
+
 * Related Work
+
+* Mitigate fragmentation in the device ecosystem
+
+- Several research efforts explore possibilities for mitigation.
+- Partition computationally demanding parts of applications away from end-user devices.
+- MUSIC middleware and Interplay take a component based software engineering approach.
+- Creating of Cloud-like infrastructure from co-located devices (Pocket Cloudlets/Stratus)
 
 * Conclusions and Future Work
 
+* Conclusions
+
+*ECC* offers *C*(ompetence) *I*(ntent) *C*(ontext) as first class concepts, making it possible for end users to enhance the capabilities of their own devices with additional nearby devices and remote cloud resources.
+
+*ECC*-composed applications are shown to provide better performances and can also hide from users the unpredictable internet latencies inherent in remote cloud access.
+
+* Future Work
+
+Long term goals:
+
+- Automate the capture and specification of user intent (possibly by translation from higher level user statements).
+- Formal specifications of competences.
+- Formal methods when creating competence assemblies.
+
+Shorter term goals:
+
+- Improved methods for device discovery.
+- Experimentation with interfaces between ECC and underlying device cloud infrastructures.
