@@ -36,14 +36,13 @@ Better object recognition with machine learning (ML):
 * Introduction (continued)
 
 Even with a huge dataset, realistic images are far too invariable to be classified accurately.
+Ideally the ML model should compensate for the data we don't have with prior knowledge.
 
-The ML model should compensate for the data we don't have with prior knowledge.
-Convolutional Neural Networks (CNN) are one such class of model, whose capacity can be controlled by changing their depth and breadth.
-Much fewer connections than standard feed-forward neural networks and are easier to train.
+- Convolutional Neural Networks (CNN) are one such class of model, whose capacity can be controlled by changing their depth and breadth. (Much fewer connections than standard feed-forward neural networks and are easier to train.)
 
-GPU hardware is now powerful enough to train CNNs in a comfortable amount of time.
+- GPU hardware is now powerful enough to train CNNs in a comfortable amount of time.
 
-Recent datasets like ImageNet contain enough labeled examples to train without overfitting.
+- Recent datasets like ImageNet contain enough labeled examples to train without overfitting.
 
 * The Dataset
 
@@ -64,7 +63,7 @@ Recent datasets like ImageNet contain enough labeled examples to train without o
 - 150,000 testing images
 - Two error rates reported: _top-1_ and _top-5_
 
-: top-5 is the fraction of test images for which the correct label is not among the 5 labels considered most probable by the model.
+.caption _top-5_ is the % of test images for which the correct label is not in the 5 labels considered most probable by the model.
 
 * The Architecture
 
@@ -126,8 +125,7 @@ All transformations are created off GPU on the CPU, so they are _"computationall
 *Testing*:
 1. Use all the neurons, but multiply their output by 0.5 (approximate mean dropout).
 
-We use dropout in first two fully-connected layers.
-Dropout roughly doubles the number of iterations required to converge.
+Dropout is used in first two fully-connected layers and roughly doubles the number of iterations required to converge.
 
 * Details of learning
 
@@ -148,7 +146,8 @@ Training took five to six days on two NVIDIA GTX 580 3GB GPUs.
 .caption ILSVRC-2010 test set. In _italics_ are best results achieved by others.
 
 .image images/cnn_results2.png
-.caption Comparison of error rates on ILSVRC-2012 validation and test sets. In _italics_ are best results achieved by others. Models with asterisk* were "pre-trained" to classify the entire ImageNet 2011 Fall release.
+.caption Error rates on ILSVRC-2012 validation and test sets. In _italics_ are best results achieved by others.
+.caption Models with asterisk* were "pre-trained" to classify the entire ImageNet 2011 Fall release.
 
 * Qualitative Evaluations (1)
 
@@ -179,5 +178,7 @@ A large, deep convolutional neural network is capable of achieving record-breaki
 Depth is important, removing any middle layer reduces performance *~2%* for _top-1_.
 
 Still, we cannot match the human visual system until *larger/faster* networks are developed.
+
+.image images/UNT_green.png 3 850
 
 *Future*work* will include deep CNNs on *video*, where the *temporal*structure* may aid the neurons with information that static images do not have.
