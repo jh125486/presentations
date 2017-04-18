@@ -1,4 +1,4 @@
-_Improving Text Classification by Using Encyclopedia Knowledge
+ImageNet Classification with Deep Convolutional Neural Networks
 18 April 2017
 
 Jacob Hochstetler
@@ -6,5 +6,178 @@ PhD student, UNT
 jacobhochstetler@my.unt.edu
 http://github.com/jh125486
 
+* Organization
+
+1. Introduction
+
+2. The Dataset
+
+3. The Architecture
+
+4. Reduce Overfitting
+
+5. Details of learning
+
+6. Results
+
+7. Discussion
+
 * Introduction
 
+Better object recognition with machine learning (ML):
+
+- Learn on larger datasets
+: wider range of examples
+- Utilize more powerful models
+: For faster training of large capacity models
+- Better techniques to guard against overfitting
+: To reduce error rates on test sets/unseen images
+
+* Introduction (continued)
+
+Even with a huge dataset, realistic images are far too invariable to be classified accurately.
+
+The ML model should compensate for the data we don't have with prior knowledge.
+Convolutional Neural Networks (CNN) are one such class of model, whose capacity can be controlled by changing their depth and breadth.
+Much fewer connections than standard feed-forward neural networks and are easier to train.
+
+GPU hardware is now powerful enough to train CNNs in a comfortable amount of time.
+
+Recent datasets like ImageNet contain enough labeled examples to train without overfitting.
+
+* The Dataset
+
+* ImageNet & ImageNet Large-Scale Visual Recognition Challenge
+
+*ImageNet*:
+
+- >15 million labeled high-resolution images
+- 22,0000 categories
+- Labeled by humans using Amazon's Mechanical Turk
+
+*ILSVRC*:
+
+- Started in 2010
+- Uses 1,000 images in 1,000 categories of ImageNet
+- 1.2 million training images
+- 50,000 validation images
+- 150,000 testing images
+- Two error rates reported: _top-1_ and _top-5_
+
+: top-5 is the fraction of test images for which the correct label is not among the 5 labels considered most probable by the model.
+
+* The Architecture
+
+* Novel Features
+
+- Rectified Linear Units (ReLUs) for neuron models (faster training)
+- Training on multiple GPUs (same system)
+- Local Response Normalization
+- Overlapping Pooling
+
+* Overall Architecture
+
+Eight learned layers, five convolutional and three fully-connected.
+
+Network training is split across two GPUs.
+
+Half of the kernels (or neurons) on each GPU, with one additional trick: the GPUs communicate only in certain layers.
+
+The kernels of layer 3 take input from all kernel maps in layer 2.
+
+Kernels in layer 4 take input only from those kernel maps in layer 3 which reside on the same GPU.
+
+* Overall Architecture Diagram
+
+.image images/cnn_architecture3.png 600 _
+
+* Reduce Overfitting
+
+* Data Augmentation with label-preserving transformations (1)
+
+*Training/Validation*:
+1. Take one of the original 256×256 px input images.
+2. Extract random 224×224 px patches from it and horizontal reflections.
+3. Train on these extracted (labeled) patches.
+
+Increases training set by a factor of 2048, although highly inter-dependent.
+
+*Testing*:
+1. Extract five 224x224 patches (each corner and a center).
+2. Add each reflection (for ten total patches).
+3. Average the prediction made by the 1000-way _softmax_ layer on those ten patches.
+
+* Data Augmentation with label-preserving transformations (2)
+
+- Alter the intensities in the RGB channels using Principle Component Analysis.
+- ~Captures an important property of natural images...object identity is invariant to changes in intensity and color of illumination.
+
+Reduces _top-1_ error rate by over 1%.
+
+All transformations are created off GPU on the CPU, so they are _"computationally_free"_.
+
+* Data Augmentation with dropout
+
+*Training/Validation*:
+1. Set to 0 the output of each hidden neuron with a 50% probability.
+2. "Dropped out" neurons do not contribute to the forward pass, or back-propagation.
+3. Reduces complex co-adaptations of neurons, forced to learn more robust features.
+
+*Testing*:
+1. Use all the neurons, but multiply their output by 0.5 (approximate mean dropout).
+
+We use dropout in first two fully-connected layers.
+Dropout roughly doubles the number of iterations required to converge.
+
+* Details of learning
+
+- Stochastic gradient descent (batch: 128; momentum: 0.9; weight decay: 0.0005)
+: Small weight decay was important for the model to learn, reducing the model's error rate
+- Weights initialized with 0-mean Gaussian distribution with standard deviation 0.01
+- 2nd, 4th, 5th layers initialized with constant 1 to accelerate ReLUs with positive input.
+- Equal learning rate for all layers (adjusted manually throughout training)
+- Trained for 90 cycles through the training set of 1.2 million images
+
+Training took five to six days on two NVIDIA GTX 580 3GB GPUs.
+
+* Results
+
+* ILSVRC 2010 / 2012
+
+.image images/cnn_results1.png
+.caption ILSVRC-2010 test set. In _italics_ are best results achieved by others.
+
+.image images/cnn_results2.png
+.caption Comparison of error rates on ILSVRC-2012 validation and test sets. In _italics_ are best results achieved by others. Models with asterisk* were "pre-trained" to classify the entire ImageNet 2011 Fall release.
+
+* Qualitative Evaluations (1)
+
+.image images/cnn_kernels.png
+.caption 96 convolutional kernels of size 11x11x3. The top 48 were learned on GPU1, while the bottom 48 were GPU 2.
+
+The kernels on GPU 1 are largely color-agnostic, while the kernels on on GPU 2 are largely color-specific.
+This kind of specialization occurs during every run and is independent of any particular random weight initialization (modulo a renumbering of the GPUs).
+
+* Qualitative Evaluations (2)
+
+.image images/cnn_top_five.png 540 _
+.caption Eight ILSVRC-2010 test images and the five labels considered most probable by our model.
+: The correct label is written under each image, and the probability assigned to the correct label is also shown with a red bar (if it happens to be in the top 5).
+: Even the mite that is off-center has been correctly labeled.
+: Notice that there is some ambiguity about the intended focus (grille, cherry)
+
+* Qualitative Evaluations (3)
+
+.image images/cnn_closest_images.png
+.caption Five ILSVRC-2010 test images in the first column and the six closest feature vector matches.
+: The remaining columns show the six training images that produce feature vectors in the last hidden layer with the smallest Euclidean distance from the feature vector for the test image.
+
+* Discussion
+
+A large, deep convolutional neural network is capable of achieving record-breaking results on a challenging dataset.
+
+Depth is important, removing any middle layer reduces performance *~2%* for _top-1_.
+
+Still, we cannot match the human visual system until *larger/faster* networks are developed.
+
+*Future*work* will include deep CNNs on *video*, where the *temporal*structure* may aid the neurons with information that static images do not have.

@@ -1,4 +1,4 @@
-_Improving Text Classification by Using Encyclopedia Knowledge
+A Middleware Infrastructure for Utility-based Provisioning of IoT Cloud Systems
 18 April 2017
 
 Jacob Hochstetler
@@ -8,3 +8,14 @@ http://github.com/jh125486
 
 * Introduction
 
+* Motivation & Background
+
+* IoT Cloud Provisioning Middleware
+
+* Runtime Mechanisms for Multi-level Provisioning in IoT Cloud
+
+* Implementation & Evaluation
+
+* Related Work
+
+* Conclusion and Future Work
