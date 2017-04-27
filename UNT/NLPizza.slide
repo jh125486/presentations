@@ -1,0 +1,110 @@
+NLPizza
+Natural Language Pizza Ordering for the Mobile Age
+30 Apr 2017
+
+Jacob Hochstetler, Riley Howard, Matt Davidson
+CSCE5933 UI Design, UNT
+
+* Organization
+
+1. Introduction
+
+2. Natural Language Processing (NLP)
+
+3. Architecture
+
+4. Initial work
+
+5. Usability testing
+
+6. Final Product
+
+7. Demo
+
+* Introduction
+
+* Introduction
+
+Our goal is to make ordering Pizza easier for the end user.
+We achieved this goal by:
+
+- Minimizing physical and mental *interaction* with the application
+- *Streamlining* the actual order process (extraneous options and prompts removed)
+- *Minimalist* user interface for a direct user experience
+
+* Natural Language Processing (NLP)
+
+* Natural Language Processing (NLP)
+
+A branch of Artificial Intelligence concerned with the interactions between computers and human (natural) languages. - _Wikipedia_
+
+- Work began in the 1950's (with exceedingly optimistic future expectations)
+- Used hand-written rules until the 1980's
+- Current work uses Deep Learning neural networks (akin to biological brain)
+
+Speech Recognition: Given a sound clip of a person or people speaking, determine the textual representation of the speech.
+
+
+.image images/nlp.gif
+
+* Architecture
+
+* Architecture
+
+Application consists of three parts:
+
+- User prompt (speech synthesizer)
+- NLP of input to a pizza order
+- Integration with Dominoes Pizza REST gateway
+
+* Initial work
+
+* Initial work
+
+Focused on back and forth prompts with feedback.
+Scripted way to guide a user down the pizza ordering process.
+Branching ordering flow, e.g. multiple ways to order/edit a pizza.
+
+*☹* SDK failed us.
+
+- Could only fire off one prompt with speech synthesizer.
+- Swift cannot pass by reference, so many _local_ variables were promoted to _global_
+- Hooking into Speech Recognizer with callbacks was painful.
+
+* Usability testing
+
+* The Good
+
+- Responsive (app picked up all orders correctly)
+- Easy to use (no learning curve)
+- Ordering flow was direct (no branching)
+
+?? Charts ??
+
+* The Bad
+
+- Colors used
+- Iconic feedback (specifically for options available)
+- E
+
+* The Ugly
+
+- stuff1
+- stuff2
+- stuff3
+
+* Final Product
+
+* Final Product
+
+Uses only one prompt, with a _looser_ format given to the user.
+
+- Multiple pizzas in one order
+- None/single/multiple toppings for each pizza
+- Each topping can be "regular" or "extra"
+
+Feedback is given in the invoice after the order has been parsed/interpreted.
+
+* Demo
+
+.video videos/nlpizza_demo.mp4 video/mp4 550 _
