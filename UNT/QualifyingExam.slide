@@ -1,0 +1,621 @@
+Ph.D. Qualifying Exam
+3 May 2017
+
+Jacob Hochstetler
+Ph.D. student, University of North Texas
+
+*Committee*members*: Dr. Fu (_advisor_), Dr. Garlick, Dr. Mikler, Dr. Nielsen
+
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Introduction
+
+_A_Middleware_Infrastructure_for_Utility-based_Provisioning_of_IoT_Cloud_Systems_
+Stefan Nastic, Hong-Linh Truong, and Schahram Dustdar
+*2016*IEEE/ACM*Symposium*on*Edge*Computing*(SEC)*
+`pages`28-40`
+
+_ECC:_Edge_Cloud_Composites_
+Ketan Bhardwaj, Sreenidhy Sreepathy, Ada Gavrilovska and Karsten Schwan
+*2014*2nd*IEEE*International*Conference*on*Mobile*Cloud*Computing,*Services,*and*Engineering*
+`pages`38-47`
+
+_ImageNet_Classification_with_Deep_Convolutional_Neural_Networks_
+Alex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton
+*2012*Proceedings*of*the*25th*International*Conference*on*Neural*Information*Processing*Systems*(NIPS)*
+`pages`1097-1105`
+
+* 1. A Middleware Infrastructure for Utility-based Provisioning of IoT Cloud Systems
+
+* Organization
+
+1. Introduction
+
+2. Motivation & Background
+
+3. Internet of Things (IoT) Cloud Provisioning Middleware
+
+4. Runtime Mechanisms for Multi-level Provisioning in IoT Cloud
+
+5. Implementation & Evaluation
+
+6. Related Work
+
+7. Conclusion and Future Work
+
+* Introduction
+
+* IoT Cloud Systems
+
+The *Cloud* defined (per _IETF_):
+
+- Abstracted
+- Self-service (_on-demand_)
+- Utility-based billing
+.image images/UNT_green.png 3 850
+
+IoT/Cloud computing convergence:
+
+- Large, geographically distributed systems
+- Edge devices exploit remote data centers and nearby _Cloudlets_
+- Utility-based, on-demand resource consumption
+
+* IoT Cloud Provisioning
+
+Current IoT Cloud provisioning has focused on virtualization solutions for Edge devices.
+As these solutions support a specific task, they are not generic enough for abstraction.
+
+*Rethink*:
+1. Representing the IoT Cloud infrastructure resources.
+2. Managing their configuration and deployment models.
+3. composing low-level resource components into usable infrastructures, capable to support novel application requirements.
+
+* IoT Cloud Provisioning Middleware
+
+*Our*Solution*:
+
+- A generic, light-weight resource abstraction mechanism, based on software-defined gateways, which enables application-specific customization of Edge devices.
+- Support for automated provisioning of Edge resources and application components in a logically centralized manner, via dynamically managed APIs.
+- Flexible provisioning models that enable self-service, on-demand consumption of the Edge resources.
+
+* Motivation & Background
+
+* Scenario
+
+SAPP is a Building Management System (BMS) consisting of various Edge devices.
+.image images/middleware_sapp.png
+.caption Solid arrows are sensor data; dashed boxes are IoT Cloud resources; dashed arrows show provisioning.
+
+- Highly distributed, and executes atop both Edge devices and Cloud infrastructure.
+- BMS service provider does not own physical infrastructure, so Cloud is consumed as a utility and must be dynamically provisioned.
+
+* Background
+
+Previous work introduced a conceptual model for software-defined IoT Cloud systems.
+
+The core concept of the provisioning model is the _software-defined_IoT_unit_.
+
+_Software-defined_IoT_units_:
+
+- Describe IoT Cloud resources (e.g., virtual sensors), their runtime environments (e.g., IoT gateways) and capabilities (e.g., communication protocols or data point controllers).
+- Expose well-defined APIs
+- Can be composed at different levels, creating virtual runtime infrastructure
+
+Enables utility-based provisioning of IoT Cloud resources by providing a uniform view on the entire resource pool, as well as by allowing IoT Cloud applications to customize and consume those resources dynamically and on-demand.
+
+* IoT Cloud Provisioning Middleware
+
+* Provisioning Architecture
+
+.image images/middleware_architecture.png 500 _
+.caption Overview of the provisioning middleware
+
+* Software-defined Gateways
+
+- Artifact Packages
+- Configurations Container
+- Provisioning Agent
+- Device Connectivity
+
+.image images/middleware_sdg.png
+.caption Software-defined gateway architecture
+
+* Edge Device Middleware Support
+
+- Virtual Buffers Daemon
+- Provisioning Daemon
+- Monitoring Agent
+
+* Cloud-based Provisioning Controller
+
+- API Manager
+- Monitoring Coordinator
+- SDG Manager / Artifacts Manager
+- Deployment Handler
+- Dependency Management service
+
+* Runtime Mechanisms for Multi-level Provisioning in IoT Cloud
+
+* Runtime execution of provisioning workflows
+
+.image images/middleware_sapp_workflow.png _ 460
+.caption Provisioning workflow for SAPP
+
+* Implementation & Evaluation
+
+* Prototype Middleware Implementation and Performance
+
+*Implementation*:
+
+- Provisioning Controller written in Java and Scala
+- Agents/_ProvisioningDaemon_ in Shell and Python scripts
+- _VirtualBuffersDaemon_ implemented in Java SE Embedded
+
+.image images/UNT_green.png 3 850
+
+*Performance*:
+
+- CPU consumption averages 2%
+- Java JVM processes consume 45Mb RAM
+- Enables scalable execution of provisioning workflows (within _O(nlog(n))_)
+
+* Related Work
+
+_Cyber-foraging_ systems:
+
+- Much work has been done to enhance *resource-constrained* (Edge/mobile) devices.
+- Usually focused on *specific* tasks (computation/data offloading).
+- Emphasis on algorithms, energy-efficiency, and performance.
+
+.image images/UNT_green.png 3 850
+
+_Virtualizing/Abstraction_ of Edge devices:
+
+- Sensors/actuators
+- Management of device identification
+- Device services aggregation
+- Asynchronous event exchange (pub/sub model)
+
+* Conclusion and Future Work
+
+* Conclusion
+
+They introduced a provisioning middleware that enables developing generic, multi-level provisioning workflows and supports automated and scalable execution of such workflows in IoT Cloud systems.
+
+The middleware supports on-demand, self-service resource consumption by providing flexible provisioning models and support for uniform, logically centralized provisioning of Edge devices, application artifacts and their configuration models.
+
+They introduced provisioning support for software-defined gateways to enable application-specific customization of Edge devices through well-defined APIs, while preserving the benefits of proven virtualization mechanism.
+
+* Future Work
+
+- Improve middleware resource allocation (dynamic device properties).
+- Optimize placement of Applications on Edge devices.
+- Increase granularity of resource monitoring.
+- Enable elasticity for IoT Cloud systems.
+- Integrate middleware with a Governance framework.
+- Address security issues (access-control).
+- Compensation model for used IoT resources (through Blockchain technology).
+
+* 2. ECC: Edge Cloud Composites
+
+* Organization
+
+1. Introduction
+
+2. Motivating Uses Cases
+
+3. ECC Concepts
+
+4. Design
+
+5. Implementation Details
+
+6. Evaluation
+
+7. Related Work
+
+8. Conclusions and Future Work
+
+* Introduction
+
+* Current Mobile Computing
+
+To obtain long battery lifetimes, mobile devices are designed:
+
+- For low energy consumption via energy-efficient processors
+- Limited memory capacities
+- On-device active power management
+Intentionally *sacrifice* the _potential_ levels of computational ability and functionality _attainable_ within their current form factors.
+
+*Cloud-based* _services_ run by companies like Google, Apple, Amazon, etc., offer one means for applications to *escape* the limits imposed by individual devices, yet at the same time, users are surrounded by *numerous* other _networked_devices_.
+
+Surprisingly, most of those devices do *not* interoperate _seamlessly_, with each other and/or with the mobile user’s portable device, thereby *compromising* theoretically achievable computational efficiency and more importantly, end user’s *potential*experiences*.
+
+* Reasons for fragmentation
+
+- Hardware-software incompatibilities.
+- No standardized protocols.
+- Knowledge about the context in which a device is operating.
+: which nearby devices are currently accessible and usable
+- Information about nearby device capabilities.
+- Instructions about the task at hand.
+- Data about the steps needed to combine and jointly use the capabilities of multiple devices.
+
+* ECC Abstractions
+
+Their research explores the utility and efficient use of '_nearby_devices_' for enhancing the capabilities of end users’ mobile devices and experiences.
+
+They borrow from data center systems the notions of resource consolidation, elasticity, and dynamic orchestration of many machines’ computational capabilities, with minimum manual intervention.
+
+The implicit knowledge about tasks to be carried out, resource accessibility and capabilities plays a vital role in could computing to achieve benefits of these notions.
+
+.image images/UNT_green.png 3 850
+
+*C*(ompetence) captures the functional capabilities of accessible devices and/or remote services.
+*I*(ntent) articulates end user desires.
+*C*(ontext) describing the current operating environment.
+
+* Motivating Uses Cases
+
+* Scenario
+
+.image images/ecc_scenario.png
+.caption A user wants to play a video in his home-environment.
+
+* ECC benefits
+
+- Seamless use of accessible devices.
+- End-user device consolidation.
+- Leveraging locality in tasks.
+
+* ECC Concepts
+: Intuitively, ECC articulates (i) what a user wants to do, (ii) which resources are available, and (iii) what those resources’ abilities are.
+
+* Device Competences
+
+*Competence* is defined as a tuple representing a device’s exposed _functionality_, _characteristics_, _availability_ and _accessibility_.
+.image images/UNT_green.png 3 850
+
+*Divided*into*two*classes*:
+
+_Static_
+
+- Functionality
+- Characteristics
+
+_Dynamic_
+
+- Availability
+- Accessibility
+
+* User Intent
+
+*Intent* is defined as an ordered sequence of events on _'partially_specified'_ competences linked by guidelines.
+
+*ECC*Intent*:
+
+- The set of tasks (stated as required competences)
+- Their interactions, required to attain some higher level user goal (guideline)
+.image images/UNT_green.png 3 850
+
+_'Three_Ts'_ (guidelines):
+
+- Topology: the connection configuration between competence instances
+: e.g., linear, many to one, etc.
+- Traversal: referring to how events travel among competences
+: e.g., synchronous, asynchronous, listening, etc.
+- Tie: constraining certain competences to be instantiated on a specific device
+
+* Context
+
+*Context* is defined as the set of currently accessible competences.
+
+Context captures current device availability and states, including their status due to multi-tenant operation, mobility constraints, current location, etc.
+
+- ECC is distributed which means that Context is a distributed runtime entity
+- Affected by current availability and accessibility
+
+*Competences*ECC*distinguishes*:
+
+- Offered (same device)
+- Local (nearby device on same network)
+- Remote (device or a remote cloud accessible via the Internet)
+- Cached (recently provisioned in previously requested intent)
+
+* Design
+
+* Software Architecture
+
+.image images/ecc_architecture.png 530 _
+.caption Overview of ECC architecture
+
+* Operation
+
+- ECC Application
+- ECC Competence Instance
+- ECC Decision Engine
+
+Reconfiguration and Failure mechanisms. In case of context change, or if any instance is not meeting the quality constraints as specified in intent, reconfiguration mechanisms are triggered.
+
+* Implementation Details
+
+- EVpath
+: event transport middleware layer
+- ECC Implementation (C)
+- Android-specific Details
+: JAVA applications, JNI based interface for native Android APIs
+: Had to root the device to get around unresponsive applications being killed by the OS
+- Required Competences for Usecases
+: OpenCV for video, X11-tst/Android native input API for collaborative UI
+
+* Evaluation
+
+* Two scenarios in three different contexts
+
+Distributed video playback and Vehicular AR
+Contexts:
+
+- competences are offered by only a single device (i.e., the tablet)
+- competences are offered by multiple devices (i.e., tablet and nearby laptop)
+- competences are offered one nearby and one remote device (i.e., the tablet and an Amazon EC2 High CPU Medium instance)
+
+.image images/UNT_green.png 3 850
+
+- Application performance improvement through context-sensitive ECC deployment
+: Improved 70%/86% in nearby devices
+: Improved 58%/70% when using remote cloud
+
+- Reduction in overall energy consumption
+: No substantial difference in power utilization, but ECC reduces total energy consumption for both classes of application due to lower execution time.
+: Reduced by 38%/29% in nearby
+: Reduced by 29% and 21% using remote cloud
+
+- Role of 'Intent' (Performance based decisions are not sufficient)
+- Reactivity (runtime changes in context)
+
+* ECC Overhead (1)
+.image images/ecc_overhead1.png
+.caption Total execution time - ECC’s queues and actual computation
+
+* ECC Overhead (2)
+.image images/ecc_overhead2.png
+.caption Total execution time - ECC’s queues and actual computation
+
+* Limitations
+
+- ECC Applications must be preprogrammed once with a set of competences
+- No automatic user intent capture (nor formal specification of intent/competences)
+- No learning capabilities in the decision engine to improve based on user behavior
+
+* Related Work
+
+* Mitigate fragmentation in the device ecosystem
+
+- Several research efforts explore possibilities for mitigation.
+- Partition computationally demanding parts of applications away from end-user devices.
+- MUSIC middleware and Interplay take a component based software engineering approach.
+- Creating of Cloud-like infrastructure from co-located devices (Pocket Cloudlets/Stratus)
+
+* Conclusions and Future Work
+
+* Conclusions
+
+*ECC* offers *C*(ompetence) *I*(ntent) *C*(ontext) as first class concepts, making it possible for end users to enhance the capabilities of their own devices with additional nearby devices and remote cloud resources.
+
+*ECC*-composed applications are shown to provide better performances and can also hide from users the unpredictable internet latencies inherent in remote cloud access.
+
+* Future Work
+
+Long term goals:
+
+- Automate the capture and specification of user intent (possibly by translation from higher level user statements).
+- Formal specifications of competences.
+- Formal methods when creating competence assemblies.
+
+Shorter term goals:
+
+- Improved methods for device discovery.
+- Experimentation with interfaces between ECC and underlying device cloud infrastructures.
+
+* 3. ImageNet Classification with Deep Convolutional Neural Networks
+
+* Organization
+
+1. Introduction
+
+2. The Dataset
+
+3. The Architecture
+
+4. Reduce Overfitting
+
+5. Details of learning
+
+6. Results
+
+7. Discussion
+
+* Introduction
+
+Better object recognition with machine learning (ML):
+
+- Learn on larger datasets
+: wider range of examples
+- Utilize more powerful models
+: For faster training of large capacity models
+- Better techniques to guard against overfitting
+: To reduce error rates on test sets/unseen images
+
+* Introduction (continued)
+
+Even with a huge dataset, real images are far too invariable to be classified accurately.
+
+The model should compensate for data it doesn't have with prior knowledge.
+
+Convolutional Neural Networks (CNN) are one such class of model:
+
+- Capacity can be controlled by changing their depth and breadth. (Fewer parameters than standard feed-forward neural networks and are easier to train.)
+
+- GPU hardware is now powerful enough to train CNNs in a comfortable amount of time.
+
+- Recent datasets like ImageNet contain enough labeled examples to train without overfitting.
+
+* The Dataset
+
+* ImageNet & ImageNet Large-Scale Visual Recognition Challenge
+
+*ImageNet*:
+
+- >15 million labeled high-resolution images
+- 22,000 categories
+- Labeled by humans using Amazon's Mechanical Turk
+
+*ILSVRC*:
+
+- Started in 2010
+- Uses 1,000 images in 1,000 categories of ImageNet
+- 1.2 million training images
+- 50,000 validation images
+- 150,000 testing images
+- Two error rates reported: _top-1_ and _top-5_
+
+.caption _top-5_ is the % of test images for which the correct label is not in the 5 labels considered most probable by the model.
+
+* The Architecture
+
+* What is CNN?
+
+- Inspired by animal visual systems (individual cortical neuron response)
+- Based on multilayer perceptron models (feed-forward artificial neural network)
+- Composed of one or more convolutional layers, along with pooling layers
+- Convolutional layers are _normally_ not fully connected (only connected to local field)
+- Shared weights so any layer can detect the same feature anywhere
+
+.image images/cnn_diagram.png _ 950
+
+* Novel features introduced
+
+- Rectified Linear Units (ReLUs) for neuron models (faster training)
+- Training on multiple GPUs in 1 system
+- Local Response Normalization
+- Overlapping Pooling
+
+* Diagram
+
+.background images/cnn_architecture3.png 600 _
+
+: Eight learned layers, five convolutional and three fully-connected.
+: Network training is split across two GPUs.
+: Half of the kernels (or neurons) on each GPU, with one additional trick: the GPUs communicate only in certain layers.
+: The kernels of layer 3 take input from all kernel maps in layer 2.
+: Kernels in layer 4 take input only from those kernel maps in layer 3 which reside on the same GPU.
+
+* Reduce Overfitting
+
+* Data Augmentation with label-preserving transformations (1)
+
+*Training/Validation*:
+1. Take one of the original 256×256 px input images.
+2. Extract random 224×224 px patches from it and horizontal reflections.
+3. Train on these extracted (labeled) patches.
+
+Increases training set by a factor of 2048, although highly inter-dependent.
+
+*Testing*:
+1. Extract five 224x224 patches (each corner and a center).
+2. Add each reflection (for ten total patches).
+3. Average the prediction made by the 1000-way _softmax_ layer on those ten patches.
+
+* Data Augmentation with label-preserving transformations (2)
+
+- Alter the intensities in the RGB channels using Principle Component Analysis.
+- ~Captures an important property of natural images...object identity is invariant to changes in intensity and color of illumination.
+
+Reduces _top-1_ error rate by over 1%.
+
+All transformations are created off GPU on the CPU, so they are _"computationally_free"_.
+
+* Data Augmentation with dropout
+
+*Training/Validation*:
+1. Set to 0 the output of each hidden neuron with a 50% probability.
+2. "Dropped out" neurons do not contribute to the forward pass, or back-propagation.
+3. Reduces complex co-adaptations of neurons, forced to learn more robust features.
+
+*Testing*:
+1. Use all the neurons, but multiply their output by 0.5 (approximate mean dropout).
+
+Dropout is used in first two fully-connected layers and roughly doubles the number of iterations required to converge.
+
+* Details of learning
+
+- Stochastic gradient descent (batch: 128; momentum: 0.9; weight decay: 0.0005)
+: Small weight decay was important for the model to learn, reducing the model's error rate
+- Weights initialized with 0-mean Gaussian distribution with standard deviation 0.01
+- 2nd, 4th, 5th layers initialized with constant 1 to accelerate ReLUs with positive input.
+- Equal learning rate for all layers (adjusted manually throughout training)
+- Trained for 90 cycles through the training set of 1.2 million images
+
+Training took five to six days on two NVIDIA GTX 580 3GB GPUs.
+
+* Results
+
+* ILSVRC 2010 / 2012
+
+.image images/cnn_results1.png
+.caption ILSVRC-2010 test set. In _italics_ are best results achieved by others.
+
+.image images/cnn_results2.png
+.caption Error rates on ILSVRC-2012 validation and test sets. In _italics_ are best results achieved by others.
+.caption Models with asterisk* were "pre-trained" to classify the entire ImageNet 2011 Fall release.
+
+* Qualitative Evaluations (1)
+
+.image images/cnn_kernels.png
+.caption 96 convolutional kernels of size 11x11x3. The top 48 were learned on GPU1, while the bottom 48 were GPU 2.
+
+The kernels on GPU 1 are largely color-agnostic, while the kernels on on GPU 2 are largely color-specific.
+This kind of specialization occurs during every run and is independent of any particular random weight initialization (modulo a renumbering of the GPUs).
+
+* Qualitative Evaluations (2)
+
+.image images/cnn_top_five.png 540 _
+.caption Eight ILSVRC-2010 test images and the five labels considered most probable by their model.
+: The correct label is written under each image, and the probability assigned to the correct label is also shown with a red bar (if it happens to be in the top 5).
+: Even the mite that is off-center has been correctly labeled.
+: Notice that there is some ambiguity about the intended focus (grille, cherry)
+
+* Qualitative Evaluations (3)
+
+.image images/cnn_closest_images.png
+.caption Five ILSVRC-2010 test images in the first column and the six closest feature vector matches.
+: The remaining columns show the six training images that produce feature vectors in the last hidden layer with the smallest Euclidean distance from the feature vector for the test image.
+
+* Discussion
+
+A large, deep convolutional neural network is capable of achieving record-breaking results on a challenging dataset.
+
+Depth is important, removing any middle layer reduces performance *~2%* for _top-1_.
+
+Still, they cannot match the human visual system until *larger/faster* networks are developed.
+
+.image images/UNT_green.png 3 850
+
+*Future*work* will include deep CNNs on *video*, where the *temporal*structure* may aid the neurons with information that static images do not have.
+
+
+* In Summary
+
+_A_Middleware_Infrastructure_for_Utility-based_Provisioning_of_IoT_Cloud_Systems_
+
+
+
+_ECC:_Edge_Cloud_Composites_
+
+
+_ImageNet_Classification_with_Deep_Convolutional_Neural_Networks_
+
+
+_Moving_towards_topic:_
+Augmented reality deep learning with processing through Cloud or Edge devices.
