@@ -1,6 +1,6 @@
-NLPizza
+NLPizza 🍕
 Natural Language Pizza Ordering for the Mobile Age
-30 Apr 2017
+2 May 2017
 
 Jacob Hochstetler, Riley Howard, Matt Davidson
 CSCE5933 UI Design, UNT
@@ -40,38 +40,63 @@ A branch of Artificial Intelligence concerned with the interactions between comp
 
 - Work began in the 1950's (with exceedingly optimistic future expectations)
 - Used hand-written rules until the 1980's
-- Current work uses Deep Learning neural networks (akin to biological brain)
+- Current work uses Deep Learning (recurrent) neural networks (~biological brain)
 
-Speech Recognition: Given a sound clip of a person or people speaking, determine the textual representation of the speech.
+.image images/UNT_green.png 3 850
 
+*Speech*Recognition*: Given a sound clip of speech, extract the textual representation.
 
-.image images/nlp.gif
+- *Amazon*: _Alexa_, *Alexa*Skills*Kit* (SDK)
+- *Apple*: _Siri_, *Speech.framework* (iOS)
+- *Google*: _Google_Voice_, _Google_Now_, _Google_Assistant_, *SpeechRecognizer* (Android)
+- *Microsoft*: _Cortana_, *Microsoft*Speech*Platform* (Windows)
 
 * Architecture
 
-* Architecture
+* Overview
 
-Application consists of three parts:
-
-- User prompt (speech synthesizer)
-- NLP of input to a pizza order
-- Integration with Dominoes Pizza REST gateway
-
-* Initial work
+.image images/nlp_arch.png
+: Audio/visual prompt for input (highlighted, speech synthesized)
+: Input (speech)
+: Process (NLP => created pizza order)
+: Finalize order (Dominoes REST gateway "hack")
 
 * Initial work
 
-Focused on back and forth prompts with feedback.
-Scripted way to guide a user down the pizza ordering process.
-Branching ordering flow, e.g. multiple ways to order/edit a pizza.
+* Accessibility in mind
+
+- Focused on back and forth prompts with feedback.
+- Scripted way to guide a user down the pizza ordering process.
+- Branching ordering flow, e.g. multiple ways to order/edit a pizza.
+
+* Prototype (1)
+
+.image images/nlp_proto1.png 550 _
+
+* Prototype (2)
+
+.image images/nlp_proto2.png 550 _
+
+* Problems
 
 *☹* SDK failed us.
 
 - Could only fire off one prompt with speech synthesizer.
-- Swift cannot pass by reference, so many _local_ variables were promoted to _global_
 - Hooking into Speech Recognizer with callbacks was painful.
+- Automatically stopping recording was problematic (normal speech pauses during ordering interfered with RMS)
+
+Other _fun_ issues:
+
+- Cannot test speech recognition on simulator, only a hard device
+- Swift cannot pass by reference, so many _local_ variables were promoted to _global_
+- Threading back and forth between UI thread (main) and background threads
 
 * Usability testing
+
+* Pretty Charts
+
+.image images/nlp_test_results.png _ 1025
+.caption Results for sample questions during usability testing conducted April 20th-25th 2017.
 
 * The Good
 
@@ -79,31 +104,36 @@ Branching ordering flow, e.g. multiple ways to order/edit a pizza.
 - Easy to use (no learning curve)
 - Ordering flow was direct (no branching)
 
-?? Charts ??
-
 * The Bad
 
-- Colors used
+- Color palette used (background/text)
 - Iconic feedback (specifically for options available)
-- E
+- No help for available sizes or toppings (feature _was_ hotfixed in)
 
 * The Ugly
 
-- stuff1
-- stuff2
-- stuff3
+- Order invoice is not spoken back to user (state failure)
+- Cannot edit an order (only cancel to exit)
+- Third-party app, so actual ordering is non-optimal (_cough_ "hack" _cough_)
 
 * Final Product
 
 * Final Product
 
-Uses only one prompt, with a _looser_ format given to the user.
+0.  Uses only one prompt, with a _looser_ format, textual shown to the user.
+1.  Immediately starts prompting user on application load.
+2.  After prompt, starts recording speech without user interaction (_no_tap_).
+3.  User stops recording (_1st_tap_), speech is processed and order struct populated.
+4a. Invoice displayed for order.
+4b. User is presented with two options, cancel or proceed (_2nd_tap_).
+
+.image images/UNT_green.png 3 850
+
+NLPed order features:
 
 - Multiple pizzas in one order
-- None/single/multiple toppings for each pizza
-- Each topping can be "regular" or "extra"
-
-Feedback is given in the invoice after the order has been parsed/interpreted.
+- Zero or more toppings for each pizza
+- Each pizza topping can be "regular" or "extra" (+price modifier)
 
 * Demo
 
