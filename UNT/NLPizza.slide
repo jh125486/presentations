@@ -137,4 +137,9 @@ NLPed order features:
 
 * Demo
 
-.video videos/nlpizza_demo.mp4 video/mp4 550 _
+.video https://dl.dropbox.com/s/fcyyf9a45g55zgs/nlpizza_demo.mp4 video/mp4 540 _
+.caption [[https://github.com/jh125486/presentations/blob/master/UNT/videos/nlpizza_demo.mp4][Link]]
+
+* Demo
+
+.video https://github.com/jh125486/presentations/raw/master/UNT/videos/nlpizza_demo.mp4 video/mp4 580 _
