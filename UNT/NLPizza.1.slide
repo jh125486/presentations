@@ -1,0 +1,145 @@
+NLPizza 🍕
+Natural Language Pizza Ordering for the Mobile Age
+2 May 2017
+
+Jacob Hochstetler, Riley Howard, Matt Davidson
+CSCE5933 UI Design, UNT
+
+* Organization
+
+1. Introduction
+
+2. Natural Language Processing (NLP)
+
+3. Architecture
+
+4. Initial work
+
+5. Usability testing
+
+6. Final Product
+
+7. Demo
+
+* Introduction
+
+* Introduction
+
+Our goal is to make ordering Pizza easier for the end user.
+We achieved this goal by:
+
+- Minimizing physical and mental *interaction* with the application
+- *Streamlining* the actual order process (extraneous options and prompts removed)
+- *Minimalist* user interface for a direct user experience
+
+* Natural Language Processing (NLP)
+
+* Natural Language Processing (NLP)
+
+A branch of Artificial Intelligence concerned with the interactions between computers and human (natural) languages. - _Wikipedia_
+
+- Work began in the 1950's (with exceedingly optimistic future expectations)
+- Used hand-written rules until the 1980's
+- Current work uses Deep Learning (recurrent) neural networks (~biological brain)
+
+.image images/UNT_green.png 3 850
+
+*Speech*Recognition*: Given a sound clip of speech, extract the textual representation.
+
+- *Amazon*: _Alexa_, *Alexa*Skills*Kit* (SDK)
+- *Apple*: _Siri_, *Speech.framework* (iOS)
+- *Google*: _Google_Voice_, _Google_Now_, _Google_Assistant_, *SpeechRecognizer* (Android)
+- *Microsoft*: _Cortana_, *Microsoft*Speech*Platform* (Windows)
+
+* Architecture
+
+* Overview
+
+.image images/nlp_arch.png
+: Audio/visual prompt for input (highlighted, speech synthesized)
+: Input (speech)
+: Process (NLP => created pizza order)
+: Finalize order (Dominoes REST gateway "hack")
+
+* Initial work
+
+* Accessibility in mind
+
+- Focused on back and forth prompts with feedback.
+- Scripted way to guide a user down the pizza ordering process.
+- Branching ordering flow, e.g. multiple ways to order/edit a pizza.
+
+* Prototype (1)
+
+.image images/nlp_proto1.png 550 _
+
+* Prototype (2)
+
+.image images/nlp_proto2.png 550 _
+
+* Problems
+
+*☹* SDK failed us.
+
+- Could only fire off one prompt with speech synthesizer.
+- Hooking into Speech Recognizer with callbacks was painful.
+- Automatically stopping recording was problematic (normal speech pauses during ordering interfered with RMS)
+
+Other _fun_ issues:
+
+- Cannot test speech recognition on simulator, only a hard device
+- Swift cannot pass by reference, so many _local_ variables were promoted to _global_
+- Threading back and forth between UI thread (main) and background threads
+
+* Usability testing
+
+* Pretty Charts
+
+.image images/nlp_test_results.png _ 1025
+.caption Results for sample questions during usability testing conducted April 20th-25th 2017.
+
+* The Good
+
+- Responsive (app picked up all orders correctly)
+- Easy to use (no learning curve)
+- Ordering flow was direct (no branching)
+
+* The Bad
+
+- Color palette used (background/text)
+- Iconic feedback (specifically for options available)
+- No help for available sizes or toppings (feature _was_ hotfixed in)
+
+* The Ugly
+
+- Order invoice is not spoken back to user (state failure)
+- Cannot edit an order (only cancel to exit)
+- Third-party app, so actual ordering is non-optimal (_cough_ "hack" _cough_)
+
+* Final Product
+
+* Final Product
+
+0.  Uses only one prompt, with a _looser_ format, textual shown to the user.
+1.  Immediately starts prompting user on application load.
+2.  After prompt, starts recording speech without user interaction (_no_tap_).
+3.  User stops recording (_1st_tap_), speech is processed and order struct populated.
+4a. Invoice displayed for order.
+4b. User is presented with two options, cancel or proceed (_2nd_tap_).
+
+.image images/UNT_green.png 3 850
+
+NLPed order features:
+
+- Multiple pizzas in one order
+- Zero or more toppings for each pizza
+- Each pizza topping can be "regular" or "extra" (+price modifier)
+
+* Demo
+
+.video https://dl.dropbox.com/s/fcyyf9a45g55zgs/nlpizza_demo.mp4 video/mp4 540 _
+.caption [[https://github.com/jh125486/presentations/blob/master/UNT/videos/nlpizza_demo.mp4][Link]]
+
+* Demo
+
+.video https://github.com/jh125486/presentations/raw/master/UNT/videos/nlpizza_demo.mp4 video/mp4 580 _
