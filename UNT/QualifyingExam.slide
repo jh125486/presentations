@@ -40,11 +40,21 @@ Alex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton
 
 5. Implementation & Evaluation
 
-6. Related Work
-
-7. Conclusion and Future Work
+6. Conclusion
 
 * Introduction
+
+* Differences between Cloud, Fog, and Edge computing
+
+In _Cloud_ computing sensor *data* is sent *directly* to the Cloud and *processing* happens there.
+
+In _Fog_/_Edge_ computing, *processing* of data is done *onsite* without Cloud involvement.
+Although aggregate data may be *forwarded* on to the Cloud for further processing.
+
+*Differences* between _Fog_ and _Edge_:
+
+- _Fog_: sensor data is processed in a separate, locally connected (LAN) node.
+- _Edge_: data processing happens in each individual sensor/device.
 
 * IoT Cloud Systems
 
@@ -81,14 +91,29 @@ As these solutions support a specific task, they are not generic enough for abst
 
 * Motivation & Background
 
-* Scenario
+* Related Work
 
-SAPP is a Building Management System (BMS) consisting of various Edge devices.
+_Cyber-foraging_ systems:
+
+- Much work has been done to enhance *resource-constrained* (Edge/mobile) devices.
+- Usually focused on *specific* tasks (computation/data offloading).
+- Emphasis on algorithms, energy-efficiency, and performance.
+
+``
+_Virtualizing/Abstraction_ of Edge devices:
+
+- Sensors/actuators
+- Management of device identification
+- Device services aggregation
+- Asynchronous event exchange (pub/sub model)
+
+* SAPP: A Building Management System composed of Edge devices
+
 .image images/middleware_sapp.png
 .caption Solid arrows are sensor data; dashed boxes are IoT Cloud resources; dashed arrows show provisioning.
 
 - Highly distributed, and executes atop both Edge devices and Cloud infrastructure.
-- BMS service provider does not own physical infrastructure, so Cloud is consumed as a utility and must be dynamically provisioned.
+- The BMS provider does not own physical infrastructure, so Cloud is consumed as a utility/must be dynamically provisioned.
 
 * Background
 
@@ -118,8 +143,7 @@ Enables utility-based provisioning of IoT Cloud resources by providing a uniform
 - Provisioning Agent
 - Device Connectivity
 
-.image images/middleware_sdg.png
-.caption Software-defined gateway architecture
+.image images/middleware_sdg.png 320 _
 
 * Edge Device Middleware Support
 
@@ -139,63 +163,45 @@ Enables utility-based provisioning of IoT Cloud resources by providing a uniform
 
 * Runtime execution of provisioning workflows
 
-.image images/middleware_sapp_workflow.png _ 460
+.image images/middleware_sapp_workflow.png _ 440
 .caption Provisioning workflow for SAPP
 
 * Implementation & Evaluation
 
-* Prototype Middleware Implementation and Performance
-
-*Implementation*:
+* Implementation
 
 - Provisioning Controller written in Java and Scala
 - Agents/_ProvisioningDaemon_ in Shell and Python scripts
 - _VirtualBuffersDaemon_ implemented in Java SE Embedded
 
-.image images/UNT_green.png 3 850
+.image images/middleware_gateway.png 350 _
+.caption An example of the gateway for a Building Management System.
 
-*Performance*:
+* Performance
 
 - CPU consumption averages 2%
 - Java JVM processes consume 45Mb RAM
 - Enables scalable execution of provisioning workflows (within _O(nlog(n))_)
 
-* Related Work
+* CPU consumption
 
-_Cyber-foraging_ systems:
+.image images/middleware_perf1.png 500 _
+.caption CPU consumption of the VirtualBuffersDeamon.
 
-- Much work has been done to enhance *resource-constrained* (Edge/mobile) devices.
-- Usually focused on *specific* tasks (computation/data offloading).
-- Emphasis on algorithms, energy-efficiency, and performance.
+* Provisioning scalability
 
-.image images/UNT_green.png 3 850
-
-_Virtualizing/Abstraction_ of Edge devices:
-
-- Sensors/actuators
-- Management of device identification
-- Device services aggregation
-- Asynchronous event exchange (pub/sub model)
-
-* Conclusion and Future Work
+.image images/middleware_perf2.png 500 _
+.caption Average execution time of provisioning workflows for JAPP and SAPP aplications.
 
 * Conclusion
 
-They introduced a provisioning middleware that enables developing generic, multi-level provisioning workflows and supports automated and scalable execution of such workflows in IoT Cloud systems.
+* Conclusion
 
-The middleware supports on-demand, self-service resource consumption by providing flexible provisioning models and support for uniform, logically centralized provisioning of Edge devices, application artifacts and their configuration models.
+The authors introduced a provisioning middleware that enables developing generic, multi-level provisioning workflows and supports automated and scalable execution of such workflows in IoT Cloud systems.
 
-They introduced provisioning support for software-defined gateways to enable application-specific customization of Edge devices through well-defined APIs, while preserving the benefits of proven virtualization mechanism.
+Their middleware supports on-demand, self-service resource consumption by providing flexible provisioning models and support for uniform, logically centralized provisioning of Edge devices, application artifacts and their configuration models.
 
-* Future Work
-
-- Improve middleware resource allocation (dynamic device properties).
-- Optimize placement of Applications on Edge devices.
-- Increase granularity of resource monitoring.
-- Enable elasticity for IoT Cloud systems.
-- Integrate middleware with a Governance framework.
-- Address security issues (access-control).
-- Compensation model for used IoT resources (through Blockchain technology).
+They introduced provisioning support for software-defined gateways to enable application-specific customization of Edge devices through well-defined APIs, while preserving the benefits of proven virtualization mechanisms.
 
 * 2. ECC: Edge Cloud Composites
 
@@ -213,13 +219,11 @@ They introduced provisioning support for software-defined gateways to enable app
 
 6. Evaluation
 
-7. Related Work
-
-8. Conclusions and Future Work
+7. Conclusions
 
 * Introduction
 
-* Current Mobile Computing
+* Current mobile computing
 
 To obtain long battery lifetimes, mobile devices are designed:
 
@@ -230,7 +234,7 @@ Intentionally *sacrifice* the _potential_ levels of computational ability and fu
 
 *Cloud-based* _services_ run by companies like Google, Apple, Amazon, etc., offer one means for applications to *escape* the limits imposed by individual devices, yet at the same time, users are surrounded by *numerous* other _networked_devices_.
 
-Surprisingly, most of those devices do *not* interoperate _seamlessly_, with each other and/or with the mobile user’s portable device, thereby *compromising* theoretically achievable computational efficiency and more importantly, end user’s *potential*experiences*.
+Surprisingly, most of those devices do *not* interoperate _seamlessly_, with each other, thereby *compromising* theoretically achievable computational efficiency and more importantly, end user’s *potential*experiences*.
 
 * Reasons for fragmentation
 
@@ -242,11 +246,15 @@ Surprisingly, most of those devices do *not* interoperate _seamlessly_, with eac
 - Instructions about the task at hand.
 - Data about the steps needed to combine and jointly use the capabilities of multiple devices.
 
+* ECC Software Architecture
+
+.image images/ecc_architecture.png 540 _
+
 * ECC Abstractions
 
-Their research explores the utility and efficient use of '_nearby_devices_' for enhancing the capabilities of end users’ mobile devices and experiences.
+The authors research explores the utility and efficient use of '_nearby_devices_' for *enhancing* the capabilities of end users’ mobile devices and experiences.
 
-They borrow from data center systems the notions of resource consolidation, elasticity, and dynamic orchestration of many machines’ computational capabilities, with minimum manual intervention.
+They borrow from data center systems the notions of *resource*consolidation*, *elasticity*, and *dynamic*orchestration* of many machines’ computational capabilities, with minimum manual intervention.
 
 The implicit knowledge about tasks to be carried out, resource accessibility and capabilities plays a vital role in could computing to achieve benefits of these notions.
 
@@ -292,29 +300,33 @@ _Dynamic_
 * User Intent
 
 *Intent* is defined as an ordered sequence of events on _'partially_specified'_ competences linked by guidelines.
+.image images/UNT_green.png 3 850
 
 *ECC*Intent*:
 
 - The set of tasks (stated as required competences)
 - Their interactions, required to attain some higher level user goal (guideline)
-.image images/UNT_green.png 3 850
 
-_'Three_Ts'_ (guidelines):
+Guidelines specify:
 
 - Topology: the connection configuration between competence instances
 : e.g., linear, many to one, etc.
+
 - Traversal: referring to how events travel among competences
 : e.g., synchronous, asynchronous, listening, etc.
+
 - Tie: constraining certain competences to be instantiated on a specific device
+: the affinity or anti-affinity of a competence to a device
 
 * Context
 
 *Context* is defined as the set of currently accessible competences.
 
+.image images/UNT_green.png 3 850
+
 Context captures current device availability and states, including their status due to multi-tenant operation, mobility constraints, current location, etc.
 
-- ECC is distributed which means that Context is a distributed runtime entity
-- Affected by current availability and accessibility
+ECC is distributed which means that Context is a distributed runtime entity and is affected by current availability and accessibility.
 
 *Competences*ECC*distinguishes*:
 
@@ -325,23 +337,17 @@ Context captures current device availability and states, including their status 
 
 * Design
 
-* Software Architecture
-
-.image images/ecc_architecture.png 530 _
-.caption Overview of ECC architecture
-
 * Operation
 
 - ECC Application
 - ECC Competence Instance
 - ECC Decision Engine
 
-Reconfiguration and Failure mechanisms. In case of context change, or if any instance is not meeting the quality constraints as specified in intent, reconfiguration mechanisms are triggered.
+*Reconfiguration*and*Failure*mechanisms*:
+In case of context change, or if any instance is not meeting the quality constraints as specified in intent, reconfiguration mechanisms are triggered.
 
 * Implementation Details
 
-- EVpath
-: event transport middleware layer
 - ECC Implementation (C)
 - Android-specific Details
 : JAVA applications, JNI based interface for native Android APIs
@@ -351,53 +357,35 @@ Reconfiguration and Failure mechanisms. In case of context change, or if any ins
 
 * Evaluation
 
-* Two scenarios in three different contexts
+* Distributed video playback scenario in three different contexts
 
-Distributed video playback and Vehicular AR
-Contexts:
+Competences are offered by:
 
-- competences are offered by only a single device (i.e., the tablet)
-- competences are offered by multiple devices (i.e., tablet and nearby laptop)
-- competences are offered one nearby and one remote device (i.e., the tablet and an Amazon EC2 High CPU Medium instance)
+- Only a single device (i.e., the tablet)
+- Multiple devices (i.e., tablet and nearby laptop)
+- One nearby and one remote device (i.e., the tablet and an Amazon EC2 High CPU Medium instance)
 
-.image images/UNT_green.png 3 850
+* Role of 'Intent' (performance based decisions are not sufficient)
 
-- Application performance improvement through context-sensitive ECC deployment
-: Improved 70%/86% in nearby devices
-: Improved 58%/70% when using remote cloud
+.image images/ecc_perf1.png 500 _
+.caption Performance benefits with linear synchronous intent guideline.
 
-- Reduction in overall energy consumption
-: No substantial difference in power utilization, but ECC reduces total energy consumption for both classes of application due to lower execution time.
-: Reduced by 38%/29% in nearby
-: Reduced by 29% and 21% using remote cloud
+* Reactivity (runtime changes in context)
 
-- Role of 'Intent' (Performance based decisions are not sufficient)
-- Reactivity (runtime changes in context)
+.image images/ecc_perf2.png 500 _
+.caption Time spike due to ECC reconfiguration from change in context.
 
-* ECC Overhead (1)
-.image images/ecc_overhead1.png
-.caption Total execution time - ECC’s queues and actual computation
+* Low ECC overhead
 
-* ECC Overhead (2)
-.image images/ecc_overhead2.png
-.caption Total execution time - ECC’s queues and actual computation
+.image images/ecc_perf3.png 500 _
+.caption Total execution time - ECC's queues and actual computation.
 
-* Limitations
+* Same power, but lower energy consumption
 
-- ECC Applications must be preprogrammed once with a set of competences
-- No automatic user intent capture (nor formal specification of intent/competences)
-- No learning capabilities in the decision engine to improve based on user behavior
+.image images/ecc_energy.png 500 _
+.caption No real difference in power utilization, but ECC reduces total energy due to lower execution time.
 
-* Related Work
-
-* Mitigate fragmentation in the device ecosystem
-
-- Several research efforts explore possibilities for mitigation.
-- Partition computationally demanding parts of applications away from end-user devices.
-- MUSIC middleware and Interplay take a component based software engineering approach.
-- Creating of Cloud-like infrastructure from co-located devices (Pocket Cloudlets/Stratus)
-
-* Conclusions and Future Work
+* Conclusions
 
 * Conclusions
 
@@ -405,18 +393,11 @@ Contexts:
 
 *ECC*-composed applications are shown to provide better performances and can also hide from users the unpredictable internet latencies inherent in remote cloud access.
 
-* Future Work
+_Limitations_:
 
-Long term goals:
-
-- Automate the capture and specification of user intent (possibly by translation from higher level user statements).
-- Formal specifications of competences.
-- Formal methods when creating competence assemblies.
-
-Shorter term goals:
-
-- Improved methods for device discovery.
-- Experimentation with interfaces between ECC and underlying device cloud infrastructures.
+- ECC Applications must be preprogrammed once with a set of competences
+- No automatic user intent capture (nor formal specification of intent/competences)
+- No learning capabilities in the decision engine to improve based on user behavior
 
 * 3. ImageNet Classification with Deep Convolutional Neural Networks
 
@@ -474,13 +455,12 @@ Convolutional Neural Networks (CNN) are one such class of model:
 *ILSVRC*:
 
 - Started in 2010
-- Uses 1,000 images in 1,000 categories of ImageNet
+- Uses ~1,000 images in 1,000 categories of ImageNet
 - 1.2 million training images
-- 50,000 validation images
-- 150,000 testing images
+- 50,000 validation images with 150,000 testing images
 - Two error rates reported: _top-1_ and _top-5_
 
-.caption _top-5_ is the % of test images for which the correct label is not in the 5 labels considered most probable by the model.
+.caption _top-5_ is the % of test images for which the correct label is not in the 5 labels considered most probable.
 
 * The Architecture
 
@@ -492,7 +472,7 @@ Convolutional Neural Networks (CNN) are one such class of model:
 - Convolutional layers are _normally_ not fully connected (only connected to local field)
 - Shared weights so any layer can detect the same feature anywhere
 
-.image images/cnn_diagram.png _ 950
+.image images/cnn_diagram.png 255 _
 
 * Novel features introduced
 
@@ -503,7 +483,7 @@ Convolutional Neural Networks (CNN) are one such class of model:
 
 * Diagram
 
-.background images/cnn_architecture3.png 600 _
+.image images/cnn_architecture3.png 500 _
 
 : Eight learned layers, five convolutional and three fully-connected.
 : Network training is split across two GPUs.
@@ -580,7 +560,7 @@ This kind of specialization occurs during every run and is independent of any pa
 
 * Qualitative Evaluations (2)
 
-.image images/cnn_top_five.png 540 _
+.image images/cnn_top_five.png 500 _
 .caption Eight ILSVRC-2010 test images and the five labels considered most probable by their model.
 : The correct label is written under each image, and the probability assigned to the correct label is also shown with a red bar (if it happens to be in the top 5).
 : Even the mite that is off-center has been correctly labeled.
@@ -588,7 +568,7 @@ This kind of specialization occurs during every run and is independent of any pa
 
 * Qualitative Evaluations (3)
 
-.image images/cnn_closest_images.png
+.image images/cnn_closest_images.png 500 _
 .caption Five ILSVRC-2010 test images in the first column and the six closest feature vector matches.
 : The remaining columns show the six training images that produce feature vectors in the last hidden layer with the smallest Euclidean distance from the feature vector for the test image.
 
@@ -600,22 +580,28 @@ Depth is important, removing any middle layer reduces performance *~2%* for _top
 
 Still, they cannot match the human visual system until *larger/faster* networks are developed.
 
-.image images/UNT_green.png 3 850
 
-*Future*work* will include deep CNNs on *video*, where the *temporal*structure* may aid the neurons with information that static images do not have.
-
-
-* In Summary
+* In summary
 
 _A_Middleware_Infrastructure_for_Utility-based_Provisioning_of_IoT_Cloud_Systems_
 
-
+- An IoT middleware capable of automated, scalable deployments to the Cloud.
+- Most IoT Cloud papers focus on Cyber-foraging or virtualization/abstraction.
 
 _ECC:_Edge_Cloud_Composites_
 
+- Defines virtual computational platforms composed of competences, context and intent.
+- Interesting concept for abstracting Edge devices to solve service fragmentation.
 
 _ImageNet_Classification_with_Deep_Convolutional_Neural_Networks_
 
+- Novel features were added to a CNN, achieving great results on image classification.
+- Very accessible paper detailing what goes into developing a "good" CNN.
 
-_Moving_towards_topic:_
-Augmented reality deep learning with processing through Cloud or Edge devices.
+* Moving towards dissertation topic
+
+Augmented reality (AR) with _Deep_Learning_:
+
+- CNN classification engine
+- Processing pipeline through *Cloud* or *Edge* devices
+- Efficient switching for computational needs
