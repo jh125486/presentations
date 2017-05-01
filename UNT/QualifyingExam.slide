@@ -46,7 +46,7 @@ Alex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton
 
 * Differences between Cloud, Fog, and Edge computing
 
-In _Cloud_ computing sensor *data* is sent *directly* to the Cloud and *processing* happens there.
+In _Cloud_ computing, sensor *data* is sent *directly* to the Cloud and *processing* happens there.
 
 In _Fog_/_Edge_ computing, *processing* of data is done *onsite* without Cloud involvement.
 Although aggregate data may be *forwarded* on to the Cloud for further processing.
@@ -79,11 +79,11 @@ As these solutions support a specific task, they are not generic enough for abst
 *Rethink*:
 1. Representing the IoT Cloud infrastructure resources.
 2. Managing their configuration and deployment models.
-3. composing low-level resource components into usable infrastructures, capable to support novel application requirements.
+3. Composing low-level resource components into usable infrastructures, capable to support novel application requirements.
 
 * IoT Cloud Provisioning Middleware
 
-*Our*Solution*:
+*Their*Solution*:
 
 - A generic, light-weight resource abstraction mechanism, based on software-defined gateways, which enables application-specific customization of Edge devices.
 - Support for automated provisioning of Edge resources and application components in a logically centralized manner, via dynamically managed APIs.
@@ -95,7 +95,7 @@ As these solutions support a specific task, they are not generic enough for abst
 
 _Cyber-foraging_ systems:
 
-- Much work has been done to enhance *resource-constrained* (Edge/mobile) devices.
+- Extensive work has been done to enhance *resource-constrained* (Edge/mobile) devices.
 - Usually focused on *specific* tasks (computation/data offloading).
 - Emphasis on algorithms, energy-efficiency, and performance.
 
@@ -113,7 +113,7 @@ _Virtualizing/Abstraction_ of Edge devices:
 .caption Solid arrows are sensor data; dashed boxes are IoT Cloud resources; dashed arrows show provisioning.
 
 - Highly distributed, and executes atop both Edge devices and Cloud infrastructure.
-- The BMS provider does not own physical infrastructure, so Cloud is consumed as a utility/must be dynamically provisioned.
+- The BMS provider does not own physical infrastructure, so the Cloud resources are consumed as a utility & must be dynamically provisioned.
 
 * Background
 
@@ -199,7 +199,7 @@ Enables utility-based provisioning of IoT Cloud resources by providing a uniform
 
 The authors introduced a provisioning middleware that enables developing generic, multi-level provisioning workflows and supports automated and scalable execution of such workflows in IoT Cloud systems.
 
-Their middleware supports on-demand, self-service resource consumption by providing flexible provisioning models and support for uniform, logically centralized provisioning of Edge devices, application artifacts and their configuration models.
+Their middleware supports on-demand, self-service resource consumption by providing flexible provisioning models and support for uniform, logically centralized provisioning of Edge devices, application artifacts, and their configuration models.
 
 They introduced provisioning support for software-defined gateways to enable application-specific customization of Edge devices through well-defined APIs, while preserving the benefits of proven virtualization mechanisms.
 
@@ -225,11 +225,11 @@ They introduced provisioning support for software-defined gateways to enable app
 
 * Current mobile computing
 
-To obtain long battery lifetimes, mobile devices are designed:
+To obtain long battery lifetimes, mobile devices are designed with:
 
-- For low energy consumption via energy-efficient processors
-- Limited memory capacities
-- On-device active power management
+- Energy-efficient processors for low energy consumption
+- Limited memory capacities for cost/space requirements
+- On-device active power management for longer battery life
 Intentionally *sacrifice* the _potential_ levels of computational ability and functionality _attainable_ within their current form factors.
 
 *Cloud-based* _services_ run by companies like Google, Apple, Amazon, etc., offer one means for applications to *escape* the limits imposed by individual devices, yet at the same time, users are surrounded by *numerous* other _networked_devices_.
@@ -252,11 +252,11 @@ Surprisingly, most of those devices do *not* interoperate _seamlessly_, with eac
 
 * ECC Abstractions
 
-The authors research explores the utility and efficient use of '_nearby_devices_' for *enhancing* the capabilities of end users’ mobile devices and experiences.
+The authors' research explores the utility and efficient use of '_nearby_devices_' for *enhancing* the capabilities of end users’ mobile devices and experiences.
 
 They borrow from data center systems the notions of *resource*consolidation*, *elasticity*, and *dynamic*orchestration* of many machines’ computational capabilities, with minimum manual intervention.
 
-The implicit knowledge about tasks to be carried out, resource accessibility and capabilities plays a vital role in could computing to achieve benefits of these notions.
+The implicit knowledge about tasks to be carried out, resource accessibility, and capabilities plays a vital role in Cloud computing to achieve benefits of these notions.
 
 .image images/UNT_green.png 3 850
 
@@ -269,7 +269,7 @@ The implicit knowledge about tasks to be carried out, resource accessibility and
 * Scenario
 
 .image images/ecc_scenario.png
-.caption A user wants to play a video in his home-environment.
+.caption A user wants to play a video in their home-environment.
 
 * ECC benefits
 
@@ -556,7 +556,8 @@ Training took five to six days on two NVIDIA GTX 580 3GB GPUs.
 .caption 96 convolutional kernels of size 11x11x3. The top 48 were learned on GPU1, while the bottom 48 were GPU 2.
 
 The kernels on GPU 1 are largely color-agnostic, while the kernels on on GPU 2 are largely color-specific.
-This kind of specialization occurs during every run and is independent of any particular random weight initialization (modulo a renumbering of the GPUs).
+``
+This kind of specialization occurs during every run and is independent of any particular random weight initialization (modulo renumbering of the GPUs).
 
 * Qualitative Evaluations (2)
 
@@ -590,7 +591,7 @@ _A_Middleware_Infrastructure_for_Utility-based_Provisioning_of_IoT_Cloud_Systems
 
 _ECC:_Edge_Cloud_Composites_
 
-- Defines virtual computational platforms composed of competences, context and intent.
+- Defines virtual computational platforms composed of competences, context, and intent.
 - Interesting concept for abstracting Edge devices to solve service fragmentation.
 
 _ImageNet_Classification_with_Deep_Convolutional_Neural_Networks_
