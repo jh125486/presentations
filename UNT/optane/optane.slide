@@ -1,0 +1,131 @@
+Intel's Optane
+The future has no memory
+22 Sep 2017
+
+Jacob Hochstetler
+Ph.D. student, University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Overview
+
+1. Introduction and current state
+
+2. Background of Non-Volatile Memory (_NVM_)
+
+3. Optane overview
+
+4. Preliminary Benchmarks
+
+5. Optane/NVM Applications
+
+
+* Introduction and current state
+
+.image images/speed_triangle.png 500 _
+.caption Comparison triangle of density and speed for storage technologies
+
+
+* Background of NVM
+
+- Keeps state during power-cycles (non-volatile)
+- Two types: Mechanically or electrically addressed systems
+- Normally more dense than equivalent volatile memory (RAM, DRAM, etc.)
+
+*Early* *attempts*
+
+- FeRAM (ferroelectric)
+- MRAM (magnetoresistive)
+- PRAM (phase-change)
+
+*Next* *generation* *NVM*
+
+- Persistent, fast, durable, cheap(ish)
+- High density/speed enables Storage-class memory (SCM)
+- Blurs difference between main memory and storage
+
+* Nextgen NVM (continued)
+
+.image images/model.png 500 _
+.caption Two types of NVM usage model
+
+* Intel Optane
+
+- 2012: Development begins between Intel and Micron on a new NVM technology
+- March 2017: SSD is released in both a 375GB PCIe card and 16/32GB M.2 format
+- 2H 2017: 1.5TB PCIe card, 1.5TB U.2 planned
+: SATA 3.0 limit is 600MB/s and PCIe 3.0 4x is 3.94GB/s
+
+.image images/UNT_green.png 2 800
+
+Optane is based on *3D* *XPoint* (crosspoint) technology
+
+- Bit-addressable
+- Individual data cells do not need a transistor, so density > 4x that of DRAM
+- 1000x faster and 1000x more endurable than NAND flash memory
+- Material switching is based on "bulk material properties" (not based on electrons)
+- Intel has stated is does not use a phase-change or memristor technology
+
+* 3D XPoint details
+
+.image images/xpoint.png 580 _
+
+* Video
+
+.video videos/optane.mp4 video/mp4 550 _
+
+* Preliminary Benchmarks
+
+.image images/comparison_table.png _ 800
+.caption Memory technology summary
+
+.image images/read_write_raw.png _ 800
+.caption Read and write performance (MB/s) on raw block device
+
+* Benchmarks (continued) HACC-IO
+
+This benchmark is the I/O kernel of HACC (an HPC application based on N-body simulation). It has random I/O write operations with all-to-all communication patterns.
+
+.image images/hacc_io.png 450 _
+.caption Performance evaluation with HACC-IO Benchmark
+
+* Benchmarks (continued) IOR (parallel I/O)
+
+IOR leverages the scalability of MPI to easily and accurately calculate the aggregate bandwidth of client machines, supporting POSIX, MPI-IO and HDF5 I/O interfaces.
+
+.image images/ior.png 450 _
+.caption Performance evaluation with IOR benchmark (POSIX I/O vs. MPI individual I/O) using the sequential pattern.
+
+
+* Benchmarks (continued) PVFS (cluster architecture)
+
+Each node is used as one or more of: compute node, I/O node and metadata node.
+
+- *I/O* nodes: store file data
+- *Metadata*: store metadata include stat-info, attributes, and datafile-handles as well as directory-entries
+- *Compute*: run applications that utilize the file system by sending requests to the servers over the network
+
+They used PVFS2, the second version of PVFS, for their tests.
+
+* Benchmarks (continued) PVFS Compute nodes performance
+
+.image images/pvfs2_clients.png 450 _
+.caption PVFS2 performance sensitivity to the number of clients per compute node
+
+* Benchmarks (continued) PVFS I/O nodes performance
+
+.image images/pvfs2_nodes.png 450 _
+.caption PVFS2 performance sensitivity to the number of of I/O nodes
+
+* Optane/NVM Applications
+
+- Storage-class memory: ECC RAM @ ~$9.50/GB vs. Optane @ $2.40/GB
+
+.link http://cseweb.ucsd.edu/~swanson/papers/FAST2016NOVA.pdf NOVA: a POSIX log-based NVM filesystem
+
+.image images/UNT_green.png 2 800
+
+HPC:
+
+- *Blue* *Brain* project that aims to simulate the human brain with 100PB memory which to be revisited by the solver at every time step
+- Cosmology simulation studying the *Q* *continuum* works on 2PB per simulation (Titan supercomputer at Oak Ridge)
