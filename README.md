@@ -14,3 +14,5 @@ Jacob Hochstetler's presentations
 * [UNT: NLPizza](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/NLPizza.slide)
 
 * [UNT: Qualifying Exam](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/QualifyingExam.slide)
+
+* [UNT: Intel Optane](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/optane/optane.slide)

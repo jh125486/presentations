@@ -1,5 +1,5 @@
 Intel's Optane
-The future has no memory
+The future's not so volatile anymore
 22 Sep 2017
 
 Jacob Hochstetler
@@ -52,7 +52,7 @@ http://github.com/jh125486
 * Intel Optane
 
 - 2012: Development begins between Intel and Micron on a new NVM technology
-- March 2017: SSD is released in both a 375GB PCIe card and 16/32GB M.2 format
+- March 2017: SSDs are released in both a 375GB PCIe card and 16/32GB M.2 format
 - 2H 2017: 1.5TB PCIe card, 1.5TB U.2 planned
 : SATA 3.0 limit is 600MB/s and PCIe 3.0 4x is 3.94GB/s
 
@@ -70,7 +70,7 @@ Optane is based on *3D* *XPoint* (crosspoint) technology
 
 .image images/xpoint.png 580 _
 
-* Video
+* Marketing video
 
 .video videos/optane.mp4 video/mp4 550 _
 
