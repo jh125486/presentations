@@ -1,0 +1,89 @@
+An Optimal Algorithm for Mutual Exclusion in Computer Networks
+(Ricart-Agrawala algorithm)
+13 Feb 2018
+
+Sampson Akwafuo 
+Jacob Hochstetler
+CSCE6640
+University of North Texas
+
+* Compliance
+
+1. Case A
+
+2. Case B
+
+
+* Compliance - Case A
+
+Based on Bounds 1 & 2, at least one node is able to enter the CS 
+
+* Compliance - Case B
+
+
+* Algorithm Modifications
+
+- Implicit Reply
+- Broadcast Messages
+- Ring Structure
+- Bounding Sequence Numbers
+- Sequence Number Incrementation
+- Readers and Writers
+
+* Implicit Reply
+
+* Broadcast Messages
+
+- Communications medium sequencing
+- No communications medium sequencing
+
+* Ring Structure
+
+* Bounding Sequence Numbers
+
+* Sequence Number Incrementation
+
+Two situations where incrementing sequence numbers _unconventionally_ makes sense:
+
+- Reducing lower-numbered node favoritism by incrementing seq. # by a random INT
+- Forcing priority through using small increments on high priority nodes
+
+* Readers and Writers Problem
+*"Writers"* given priority by:
+
+- *"Readers"* never defer a REQUEST for another *"reader"* => immediately REPLY
+- *"Writers"* follow original algorithm
+
+* Considerations for Practical Networks
+- Node Numbers
+- Insertion of New Nodes
+- Removal of Nodes
+- Node Failures
+
+* Node Numbers
+
+* Insertion of New Nodes
+1. Must be assigned unique node numbers
+2. Obtain the full list of participating nodes
+3. All other nodes must be notified of the new node
+4. New _Highest__Sequence__Number_ must be updated
+
+Additionally, if the node previously failed:
+
+- Restart interval
+
+* Removal of Nodes
+
+- Broadcast to all other nodes intention to leave
+- Other nodes must send an acknowledge message
+- During request, leaving node cannot request mutex & must REPLY to REQUESTs
+- Other nodes remove the node from NAMES & decrements active nodes _N_
+
+* Node Failures
+
+- Timeout-recovery method must be added for detection of failed nodes
+- Only message requiring detection: REQUEST
+- Must have prior knowledge of both the time for a node to respond (upper bound) and a node's maximum time within a critical section (estimate)
+- A failed node may rejoin through the new node mechanism
+
+* Conclusion
