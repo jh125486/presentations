@@ -130,7 +130,7 @@ Since it cannot be any other process, the starving process must be the one to en
 * Message Traffic
 
 The algorithm requires one message to (*REQUEST*) and one message from (*REPLY*) each other node for each entry to a _CS_.
-If the network consists of _N_ nodes, 2*(_N_ - 1) messages are exchanged.
+If the network consists of _N_ nodes, 2*( _N_ - 1) messages are exchanged.
 
 - Concurrent Processing
 
@@ -204,7 +204,7 @@ The algorithm achieves Bound 3 whenever it can do so without violating Bounds 1 
 
 - Sequence numbers are incremented at each _CS_, and are unbounded so they suffer the same as the "bakery algorithm"
 - If only _CS_ events are incrementing the sequence, then the max. difference is (_N_ - 1)
-- Thereby the sequence can be incremented in the mod _M_ field, where _M_ = 2 _n_ - 1
+- Thereby the sequence can be incremented in the mod _M_ field, where _M_ = 2 _N_ - 1
 
 
 
