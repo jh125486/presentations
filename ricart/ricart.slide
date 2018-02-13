@@ -7,6 +7,8 @@ Jacob Hochstetler
 CSCE6640
 University of North Texas
 
+
+
 * Overview
 
 1. Introduction
@@ -17,11 +19,15 @@ University of North Texas
 
 4. Message Traffic
 
-5. Delay in Granting CS
+5. Delay in Granting Critical Sections
 
 6. Further Modifications
 
+7. Considerations for Practical Networks
+
 8. Conclusion
+
+
 
 * Introduction
 
@@ -34,6 +40,8 @@ Three techniques can be used to achieve *minimal* number of messages:
 - Sequential node-by-node processing
 - Broadcast message
 - Sending information through timing channels
+
+
 
 * Algorithm [Overview]
 
@@ -48,11 +56,13 @@ Three techniques can be used to achieve *minimal* number of messages:
 - is not currently interested in the critical section _OR_
 - has a lower priority by a later timestamp or tie-breaker higher node number
 
-2. Else the receiver defers *REPLY* until after exiting CS
+2. Else the receiver defers *REPLY* until after exiting Critical Section (_CS_)
 
 _Critical_Section_
-1) Requesting node enters CS only after receiving *REPLY* from all nodes
-2) Upon exiting CS the node sends all deferred *REPLYs*
+1) Requesting node enters _CS_ only after receiving *REPLY* from all nodes
+2) Upon exiting _CS_ the node sends all deferred *REPLYs*
+
+
 
 * Algorithm [Optimality]
 
@@ -60,60 +70,142 @@ _Critical_Section_
 - Delay/Time needed to achieve Mutual Exclusion (mutex) is minimal
 - Priority is based on first-come, first-served basis
 
+
+
 * Algorithm [Assumptions]
 
 - Transactions are made on an error-free channel of communication, with varying latency
 - Nodes act symmetrically, without access to timing derived information
 - Nodes operates correctly
 
+
+
 * Algorithm [Example]
 
 .image images/example.png
 
+
+
 * Assertions [Mutual Exclusion]
 
-Mutual exclusion is achieved when *no* *pair* of nodes is ever simultaneously in its _CS_
+Mutual exclusion is achieved when *no* *pair* of nodes is ever simultaneously in its _CS_.
 
 *Proof* (by contradiction):
 
-*Case*1*: Node _A_ sent a *REPLY* to Node _B's_ *REQUEST* before choosing its own sequence number. Therefore _A_ will choose a sequence number higher than _B's_ sequence number. When _B_ received _A's_ *REQUEST* with a higher number it must have found _RequestingCS_ == *TRUE* since it is set before sending a *REQUEST*. The algorithm directs _B_ to defer the *REQUEST* and not reply until it has left CS. Then Node _A_ could not yet be in its CS contrary to assumption.
+*Case*1*: Node _A_ sent a *REPLY* to Node _B's_ *REQUEST* before choosing its own sequence number. Therefore _A_ will choose a sequence number higher than _B's_ sequence number. When _B_ received _A's_ *REQUEST* with a higher number it must have found _RequestingCS_ == *TRUE* since it is set before sending a *REQUEST*. The algorithm directs _B_ to defer the *REQUEST* and not reply until it has left _CS_. Then Node _A_ could not yet be in its _CS_ contrary to assumption.
 
 *Case*2*: Node _B_ sent a *REPLY* to _A's_ *REQUEST* before choosing its own sequence number. Mirror of *Case*1*.
 
-*Case*3*: Both nodes sent a *REPLY* to the other's *REQUEST* after choosing their own sequence number. Both must have found _RequestingCS_ == *TRUE*. Both will compare the sequence number and node number in the *REQUEST* and exactly one will defer the *REQUEST* until it has left CS contradicting the assumption.
+*Case*3*: Both nodes sent a *REPLY* to the other's *REQUEST* after choosing their own sequence number. Both must have found _RequestingCS_ == *TRUE*. Both will compare the sequence number and node number in the *REQUEST* and exactly one will defer the *REQUEST* until it has left _CS_ contradicting the assumption.
+
+
 
 * Assertions [Deadlock]
 
+The system of nodes is said to be deadlocked when no node is in its _CS_ *and* no requesting node can ever proceed to its own _CS_.
+
+*Proof* (by contradiction):
+
+If deadlocked, all requesting nodes must be unable to proceed to their _CS_ because one or more *REPLYs* are outstanding.
+After a time, the only reason that the *REPLY* could not have been received is that the *REQUEST* is deferred by another node which itself is waiting for *REPLYs*.
+Therefore there must exist a circuit of nodes, each of which has sent a *REQUEST* to another, but has not received a *REPLY*.
+Since each node in the circuit has deferred, it must be also requesting _CS_ and found the sequence number/node number greater than its own.
+This cannot hold for all nodes.
+
+
+
 * Assertions [Starvation]
+
+*Proof* (by contradiction):
+
+Nodes receiving *REQUEST* will process them within finite times since it is non-blocking.
+After processing *REQUEST* by the starving node, a receiving node cannot issue any new requests of its own with the same or lower sequence number.
+After some time, the sequence number of the starving number must be the lowest of any requesting node.
+Any *REQUESTs* received by the starving node will be deferred, preventing any other node from entering _CS_.
+Deadlock cannot occur by the previous assertion and some nodes must be able to enter _CS_.
+Since it cannot be any other process, the starving process must be the one to enter _CS_.
+
+
 
 * Message Traffic
 
-* Delay in Granting CS [Compliance]
+The algorithm requires one message to (*REQUEST*) and one message from (*REPLY*) each other node for each entry to a _CS_.
+If the network consists of _N_ nodes, 2*(_N_ - 1) messages are exchanged.
 
-1. Case A
+- Concurrent Processing
 
-2. Case B
+- Serial Processing (Ring Structure)
 
 
-* Modifications
 
-- Implicit Reply
-- Broadcast Messages
-- Ring Structure
-- Bounding Sequence Numbers
-- Sequence Number Incrementation
-- Readers and Writers
+* Delay in Granting Critical Sections [Assumptions]
+
+*Assumption* *1:* No information is available bounding transmission time delays or giving actual transit times.
+
+*Assumption* *2:* No node possesses the _CS_ resource when it has not been requested. (No central control)
+
+*Assumption* *3:* Nodes do not anticipate requests.
+
+
+
+* Delay in Granting Critical Sections [Bounds]
+
+Three conditions put a lower bound on delay times:
+
+*Bound* *1:* Minimum delay time per request
+Before entering _CS_ a node must make sure no other node is entering.
+By assumption 1, this will be at least one round-trip transmission.
+By assumptions 2 & 3 this cannot start before the request arrives.
+No request can be serviced in less than one round-trip.
+
+*Bound* *2:* Minimum delay time with conflict
+If two nodes are requesting concurrently, they cannot know who requested first.
+Tie-breaking must be used, and half of the time a _CS_ grant cannot be made until after the later request receives round-trip replies.
+
+*Bound* *3:* System throughput
+Since the minimum time to enter _CS_ is one round-trip transmission, this is minimum amount of time needed to notify other nodes that _CS_ processing is completed.
+
+
+
+* Delay in Granting Critical Sections [Compliance]
+
+*Case* *A*: If when mutex is released, at least one node is eligible to enter _CS_ within Bounds 1 & 2, Bound 3 will be achieved.
+
+*Case* *B*: Case A does not hold and the algorithm achieves Bound 1 or 2 depending on interference.
+
 
 * Modifications [Implicit Reply]
 
+- If transmission time between nodes is upper bound, there is no need for a *REPLY*
+- Instead an implicit *DEFERRED* is sent when *REPLY* would normally _not_ be sent
+- Reduces messages between 1*( _N_ - 1) and 3*( _N_ - 1) (depending on defers)
+
+
+
 * Modifications [Broadcast Messages]
 
-- Communications medium sequencing
-- No communications medium sequencing
+- Messages can be reduced to _N_ if broadcast is available
+
+1. Communications medium sequencing
+
+2. No communications medium sequencing
+
+
 
 * Modifications [Ring Structure]
 
+- The number of messages needed can be reduced to _N_ if the requests are processed serially through a circuit (ring)
+- Instead of a *REPLY*, a *REQUEST* is echoed around the ring, being deferred at different stops
+- When it is received at the initiating node, mutex is achieved and it may enter _CS_
+
+
 * Modifications [Bounding Sequence Numbers]
+
+- Sequence numbers are incremented at each _CS_, and are unbounded so they suffer the same as the "bakery algorithm"
+- If only _CS_ events are incrementing the sequence, then the max. difference is (_N_ - 1)
+- Thereby the sequence can be incremented in the mod _M_ field, where _M_ = 2 _n_ - 1
+
+
 
 * Modifications [Sequence Number Incrementation]
 
@@ -122,6 +214,8 @@ Two situations where incrementing sequence numbers _unconventionally_ makes sens
 - Reducing lower-numbered node favoritism by incrementing seq. # by a random INT
 - Forcing priority through using small increments on high priority nodes
 
+
+
 * Modifications [Readers and Writers Problem]
 
 *"Writers"* given priority by:
@@ -129,15 +223,13 @@ Two situations where incrementing sequence numbers _unconventionally_ makes sens
 - *"Readers"* never defer a REQUEST for another *"reader"* => immediately REPLY
 - *"Writers"* follow original algorithm
 
-* Considerations for Practical Networks
-- Node Numbers
-- Insertion of New Nodes
-- Removal of Nodes
-- Node Failures
+
 
 * Considerations [Node Numbers]
 
-- Use a map to get the actual node number from a range larger than 1..._N_
+- Use a map NAMES to get the actual node number from a range larger than 1..._N_
+
+
 
 * Considerations [Insertion of New Nodes]
 
@@ -146,22 +238,34 @@ Two situations where incrementing sequence numbers _unconventionally_ makes sens
 3. All other nodes must be notified of the new node
 4. New _Highest__Sequence__Number_ must be updated
 
-Additionally, if the node previously failed:
+_Additionally_, if the node previously failed:
+1. Restart interval (to ensure old messages were delivered)
 
-- Restart interval
+Reconcile participant lists using "sponsor":
+1. Contact sponsor
+2. Sponsor enters _CS_
+3. Copy participant to new node
+4. Broadcast new node's identity
+5. Exit mutex
+
+
 
 * Considerations [Removal of Nodes]
 
 - Broadcast to all other nodes intention to leave
 - Other nodes must send an acknowledge message
-- During request, leaving node cannot request mutex & must REPLY to REQUESTs
+- During request, leaving node cannot request mutex & must *REPLY* to *REQUESTs*
 - Other nodes remove the node from NAMES & decrements active nodes _N_
+
+
 
 * Considerations [Node Failures]
 
 - Timeout-recovery method must be added for detection of failed nodes
-- Only message requiring detection: REQUEST
+- Only message requiring detection: *REQUEST*
 - Must have prior knowledge of both the time for a node to respond (upper bound) and a node's maximum time within a critical section (estimate)
 - A failed node may rejoin through the new node mechanism
+
+
 
 * Conclusion
