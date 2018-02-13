@@ -2,10 +2,76 @@ An Optimal Algorithm for Mutual Exclusion in Computer Networks
 (Ricart-Agrawala algorithm)
 13 Feb 2018
 
-Sampson Akwafuo 
+Sampson Akwafuo
 Jacob Hochstetler
 CSCE6640
 University of North Texas
+
+
+* Overview
+
+1. Introduction
+2. Algorithm
+3. Assertions
+4. Message Traffic
+5. Delay in Granting CS
+6. Further Modifications
+8. Conclusion
+
+* Introduction
+
+- A novel algorithm for requesting and creating mutual exclusion
+- Only 2*( _N_-1) messages are sent and received (33% less than Lamport's)
+- Uses global ordering of events through Lamport's clock
+
+Three techniques can be used to achieve *minimal* number of messages:
+
+- Sequential node-by-node processing
+- Broadcast message
+- Sending information through timing channels
+
+* Algorithm Optimality
+
+- Number of messages is minimal
+- Delay/Time needed to achieve Mutual Exclusion (mutex) is minimal
+- Priority is based on first-come, first-served basis
+
+* Algorithm Assumptions
+
+- Transactions are made on an error-free channel of communication, with varying latency
+- Nodes act symmetrically, without access to timing derived information
+- Nodes operates correctly
+
+* Algorithm (overview)
+
+1. A node intending to mutex sends a *REQUEST* to other nodes
+2. Upon receipt of *REQUEST*, the other other sends a *REPLY*, or defers until it leaves CS
+
+Each node has three processes to implement mutex (using semaphores to share state):
+1. One wakes when mutex is invoked on the node
+2. Another receives and processes REQUEST messages
+3. Last process receives and processes REPLY messages
+
+* Algorithm (detailed)
+
+* Node Priority Assignment
+
+1. Upon receipt of the REQUEST message, the node:
+either sends a REPLY immediately (if the originator of the REQUEST message has priority) or defers a response until it leaves its own critical section.
+
+2. The priority order decision is made by comparing the sequence number present in each REQUEST message, or by using each node's number to break ties if the sequence numbers are equal.
+
+This results in a total ordering among requesting nodes.
+
+* Example
+
+* Assertions [Mutual Exclusion]
+
+* Assertions [Deadlock]
+
+* Assertions [Starvation]
+
+
 
 * Compliance
 
@@ -16,12 +82,12 @@ University of North Texas
 
 * Compliance - Case A
 
-Based on Bounds 1 & 2, at least one node is able to enter the CS 
+Based on Bounds 1 & 2, at least one node is able to enter the CS
 
 * Compliance - Case B
 
 
-* Algorithm Modifications
+* Modifications
 
 - Implicit Reply
 - Broadcast Messages
@@ -30,25 +96,26 @@ Based on Bounds 1 & 2, at least one node is able to enter the CS
 - Sequence Number Incrementation
 - Readers and Writers
 
-* Implicit Reply
+* Modifications [Implicit Reply]
 
-* Broadcast Messages
+* Modifications [Broadcast Messages]
 
 - Communications medium sequencing
 - No communications medium sequencing
 
-* Ring Structure
+* Modifications [Ring Structure]
 
-* Bounding Sequence Numbers
+* Modifications [Bounding Sequence Numbers]
 
-* Sequence Number Incrementation
+* Modifications [Sequence Number Incrementation]
 
 Two situations where incrementing sequence numbers _unconventionally_ makes sense:
 
 - Reducing lower-numbered node favoritism by incrementing seq. # by a random INT
 - Forcing priority through using small increments on high priority nodes
 
-* Readers and Writers Problem
+* Modifications [Readers and Writers Problem]
+
 *"Writers"* given priority by:
 
 - *"Readers"* never defer a REQUEST for another *"reader"* => immediately REPLY
@@ -60,9 +127,12 @@ Two situations where incrementing sequence numbers _unconventionally_ makes sens
 - Removal of Nodes
 - Node Failures
 
-* Node Numbers
+* Considerations [Node Numbers]
 
-* Insertion of New Nodes
+- Use a map to get the actual node number from a range larger than 1..._N_
+
+* Considerations [Insertion of New Nodes]
+
 1. Must be assigned unique node numbers
 2. Obtain the full list of participating nodes
 3. All other nodes must be notified of the new node
@@ -72,14 +142,14 @@ Additionally, if the node previously failed:
 
 - Restart interval
 
-* Removal of Nodes
+* Considerations [Removal of Nodes]
 
 - Broadcast to all other nodes intention to leave
 - Other nodes must send an acknowledge message
 - During request, leaving node cannot request mutex & must REPLY to REQUESTs
 - Other nodes remove the node from NAMES & decrements active nodes _N_
 
-* Node Failures
+* Considerations [Node Failures]
 
 - Timeout-recovery method must be added for detection of failed nodes
 - Only message requiring detection: REQUEST
