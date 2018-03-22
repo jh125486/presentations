@@ -105,4 +105,4 @@ Qualitative results
 .caption Bounding boxes around detected objects are projected onto the images
 * Conclusion
 
-.image images/voxelnet_1.png 550 _
+.image images/voxelnet_input_output.png 550 _
