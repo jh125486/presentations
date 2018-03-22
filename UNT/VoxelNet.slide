@@ -1,0 +1,46 @@
+VoxelNet
+End-to-end learning for point cloud based 3D object detection
+22 Mar 2018
+
+Jacob Hochstetler
+Ph.D. student, University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+
+
+* Overview
+
+1. Introduction
+
+2. VoxelNet
+
+3. Training Details
+
+4. Experiments
+
+5. Conclusions
+
+* Introduction
+
+Point cloud based 3D object detection is important for real world applications
+
+- Autonomous navigation
+- Robot vacuums
+- Augmented/virtual reality
+
+* Introduction (contd.)
+
+Problems with LIDAR
+
+- Point clouds are sparse
+- Highly variable point density
+- Huge number of data points (~100k points)
+
+* VoxelNet
+
+* Training Details
+
+* Experiments
+
+* Conclusion
