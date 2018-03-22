@@ -1,5 +1,5 @@
 VoxelNet
-End-to-end learning for point cloud based 3D object detection
+End-to-end Learning for Point Cloud Based 3D Object Detection
 22 Mar 2018
 
 Jacob Hochstetler
@@ -29,18 +29,80 @@ Point cloud based 3D object detection is important for real world applications
 - Robot vacuums
 - Augmented/virtual reality
 
-* Introduction (contd.)
-
-Problems with LIDAR
+* Current problems with LiDAR
 
 - Point clouds are sparse
 - Highly variable point density
 - Huge number of data points (~100k points)
 
+* Paper's Contributions
+
+- VoxelNet, a novel trainable deep learning architecture for point cloud-based 3D detection
+- Efficient implementation of VoxelNet
+- KITTI benchmarking of VoxelNet showing state-of-the-art results for Car, Pedestrian, and Cycle detection
+
+* What is a Voxel?
+
+Essentially a _vo_ lumetric _el_ ement, much like a pixel is a _pi_ cture _el_ ement.
+Just like a pixel, voxels do not have their position explicitly encoded with their value.
+
+.image images/voxelnet_3.png 300 _
+.caption Segmenting a point cloud into discrete voxels
+
+* What is KITTI?
+
+Karlsruhe Institute of Technology (KIT) and the Toyota Technological Institute (TTI) of Chicago created a fully labeled multi-dataset consisting of:
+
+- High resolution GPS
+- Laserscanner (10 fps, 100k points per cycle)
+- 2x Grayscale cameras (1.4 megapixel)
+- 2x Color cameras (1.4 megapixel)
+The cameras are cropped to 1382 x 512 pixels, synced to the laserscanner at 10fps.
+
+.image images/voxelnet_kitti.png 180 _
+.caption A bounding-box labeled "bird's eye view" example from KITTI.
+
 * VoxelNet
+
+VoxelNet is composed of three parts:
+
+1. Partitioning point cloud into voxels (feature learning)
+
+2. Stacked Voxel Encoding Feature (VFE) layers (Convolutional middle layers)
+
+3. A Region proposal network (RPN) to categorize "regions" (object detection)
+
+* VoxelNet Architecture Diagram
+
+.image images/voxelnet_2.png 500 _
+.caption Raw point cloud as input, partitions space into voxels, transforms into a 4D tensor. Convolutional middle layers process the tensor to aggregate spatial context. The Region proposal network generates the 3D detection.
+
+
+* VFEs
+
+.image images/voxelnet_vfe.png 300 _
+1. Compute the local mean as a centroid of all points, augment the point with the relative offset to the centroid and obtain the input feature set.
+2. Input vector is transformed through the fully connected network (*FCN*) into a feature space.
+2a. *FCN* is composed of a linear, batch normalization and a rectified linear unit layer.
+3. Through point feature aggregation we encode the shape of the surface within the voxel.
 
 * Training Details
 
-* Experiments
+- Used different input ranges for Cars and Pedestrian/Cyclists
+- Data augmentation (to stave off overfitting)
+- Created a baseline from handcrafted features (HC-baseline in the results)
 
+* Experiments
+Empirical results
+
+.image images/voxelnet_4.png 420 _
+.caption Table above is average precision % on "bird's eye view" detection, while below is 3D detection on KITTI validation set.
+
+* Experiments
+Qualitative results
+
+.image images/voxelnet_5.png 440 _
+.caption Bounding boxes around detected objects are projected onto the images
 * Conclusion
+
+.image images/voxelnet_1.png 550 _
