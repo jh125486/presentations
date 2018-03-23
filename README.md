@@ -20,3 +20,4 @@ Jacob Hochstetler's presentations
 * [UNT: An Algorithm for Optimal Mutual Exclusion in Computer Networks (Ricart-Agrawala)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/ricart.slide)
 
 * [UNT: VoxelNet, End-to-End Learning for Point Cloud Based 3D Object Detections (Zhou-Tuzel)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/VoxelNet.slide)
+[Tensorflow implementation](https://github.com/jeasinema/VoxelNet-tensorflow)
