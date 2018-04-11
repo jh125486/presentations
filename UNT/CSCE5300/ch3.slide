@@ -1,0 +1,48 @@
+Big Data Science
+Chapter 3 - Statistical methods for evaluation
+11 Apr 2018
+
+Jacob Hochstetler
+Department of Computer Science and Engineering
+University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Organization
+
+1. Introduction
+
+2. Hypothesis Testing
+
+3. Student's _t-test_
+
+4. Wilcoxon Rank-Sum Test
+
+5. McNemar's Test
+
+6. Chi-squared Test
+
+7. Analysis of Variance (ANOVA)
+
+* Introduction
+
+* Hypothesis Testing
+
+* Student's _t-test_
+
+The _t-test_ is any statistical hypothesis test in which the test statistic follows a Student's _t-distribution_ under the null hypothesis.
+
+- Assumed to have equal variances in both populations
+
+1. unpaired
+2. paired
+
+
+* Wilcoxon Rank-Sum Test
+
+* McNemar's Test
+
+* Chi-squared Test
+
+* Analysus of Variance (ANOVA)
+
