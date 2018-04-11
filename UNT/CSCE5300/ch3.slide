@@ -20,29 +20,105 @@ http://github.com/jh125486
 
 5. McNemar's Test
 
-6. Chi-squared Test
-
-7. Analysis of Variance (ANOVA)
+6. Analysis of Variance (ANOVA)
 
 * Introduction
 
 * Hypothesis Testing
 
-* Student's _t-test_
+* Hypothesis Testing
 
-The _t-test_ is any statistical hypothesis test in which the test statistic follows a Student's _t-distribution_ under the null hypothesis.
+Must define your experiment as a null (H₀) and an alternative hypothesis (H₁ or Hₐ).
 
-- Assumed to have equal variances in both populations
+H₁ is what your are trying to prove.
 
-1. unpaired
-2. paired
+H₀ normally identifies the exact opposite position of H₁.
 
+-------------------------------------------------------------------------------------------------------------------------
+
+Statistical significance is given as the _p-value_, and is the probability that H₀ is true.
+
+Normally a _p-value_ of 0.05 (5%), is the threshold for rejecting H₀ and accepting H₁.
+
+* Hypothesis Testing - Type I and II errors
+
+- Type I error [α] -> incorrect rejection of a true null hypothesis (H₀).
+
+- Type II error [β] -> failure to reject a false null hypothesis (H₀).
+
+.image type_errors.png
+
+* Hypothesis Testing - Power and Sample size
+
+_Power_ of a test is the probability that the test correctly rejects H₀ when H₁ is actually true.
+
+Given as 1 - β.
+
+_Power_ increases with sample size, so it can be used to determine the necessary sample size.
+
+* Hypothesis Testing - Contingency tables
+
+.image contingency_table.png
+
+* Student's t-test
+
+The _t-test_ is any statistical hypothesis test in which the test statistic follows a Student's _t-distribution_ under H₀.
+
+.image T_distribution_2df.png 400 _
+.caption _t-distribution_ with two degrees of freedom in red, one degree in green, and the normal distribution in blue
+
+* Resampled Paired Student's t-test
+
+Over several trials, a sample _S_ is randomly divided into a training set _R_ of a certain size (for example 2/3rds of the data) and a test set _T_.
+
+Classifiers _A_ and _B_ are trained on _R_ and then tested against _T_.
+
+_t_ is computed as follows:
+.image resampled_t.png 150 _
+.caption pᶦ is the differences of the proportion of errors rates between _A_ and _B_
+
+Error rates of _A_ and _B_ are not independent since the test sets in the trials overlap, as well as the training sets.
+
+* k-fold cross-validated paired t-test
+
+Identical to resampled _t-test_ except that instead of randomly dividing _S_:
+
+1. _S_ is divided into _k_ disjoint sets _T_ of equal size.
+
+2. _k_ trials are conducted, and the test set for each trial is _Tᵢ_ whereas the training set is the union of all other _Tⱼ_, _j_≠_i_.
+
+3. The same _t_ statistic is computed as before.
+
+Not useful for big data applications, only when a same sample size is available, due to the amount of variation between each trial is minimal.
 
 * Wilcoxon Rank-Sum Test
 
+While the _t-test_ is parametric, i.e. it assumes sample distributions, the Wilcoxon test is nonparametric.
+
+Normally used as an alternative when the population cannot be assumed to be normally distributed.
+
+* Proportional Error Rate Test
+
+Simple test measuring the difference between error rates of classifier A and classifier B.
+
 * McNemar's Test
 
-* Chi-squared Test
+- Uses a contingency table for input values.
+- Based on 𝛘² test for goodness-of-fit that compares the distribution of counts expected under H₀ to observed counts.
+- Useful for detecting Type I errors.
 
-* Analysus of Variance (ANOVA)
+The continuity corrected version given as:
+.image mcnemar.svg 100 _
+.caption _b_ is number of examples misclassified by A but not by B & _c_ is the number of examples misclassified by B but not by A
 
+.link http://sci2s.ugr.es/keel/pdf/algorithm/articulo/dietterich1998.pdf Approximate Statistical Tests for Comparing Supervised Classification Learning Algorithms - Dietterich
+
+* Analysis of Variance (ANOVA)
+
+Useful for testing the difference between multiple (more than two) groups.
+
+Conceptually similar to multiple two-sample _t-tests_, but results in less Type I errors
+
+Each population is assumed to be normally distributed.
+
+H₀ defined as all population means are equal, where H₁ is that at least one pair of the populations means are not equal.
