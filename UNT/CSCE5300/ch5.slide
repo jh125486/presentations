@@ -1,0 +1,276 @@
+Big Data Science
+Chapter 5 - Covering/Association Rules
+18 Apr 2018
+
+Jacob Hochstetler
+Department of Computer Science and Engineering
+University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Organization
+
+1. Introduction
+
+2. Learning methods
+
+3. Terminology/Evaluation methods
+
+4. Weather Data Example
+
+5. Algorithm
+
+* Introduction
+
+One way to discover "interesting" relationships in large datasets.
+For example, the rule `{onions,potatoes}`⇒`{burger}` found in the sales data of a supermarket would indicate that if a customer buys onions and potatoes together, they are likely to also buy hamburger meat.
+
+Sometimes called _market_basket_analysis_ due to the above example, but is widely used in industries ranging from web traffic mining, intrusion detection systems (IDS), continuous production, and bioinformatics.
+
+*Major*contributions:*
+
+1993: [[https://doi.org/10.1145%2F170035.170072][Mining association rules between sets of items in large databases]] by	R. Agrawal (IBM), T. Imieliński	(Rutgers University) and A. Swami (IBM)
+
+1966: [[https://link.springer.com/article/10.1007/BF02345483][The GUHA method of automatic hypotheses determination]] by P. Hájek, I. Havel and M. Chytil
+
+* Learning methods
+
+*Unsupervised*learning*: no labels are given to the learning algorithm, leaving it on its own to find structure in its input. Can be used for discovering hidden patterns in data or for feature learning.
+
+*Supervised*learning*: presented with example inputs and their desired outputs and the goal is to learn a general rule that maps inputs to outputs.
+
+*Semi-Supervised*learning*: given a training set with some/most of the labels missing.
+
+*Active/interactive*learning*: can only obtain training labels for a limited set of instances, and also has to optimize its choice of objects to acquire labels for. Normally these can be presented to the user for labeling.
+
+*Reinforcement*learning*: training data (in form of rewards and punishments) is given only as feedback to the program's actions in a dynamic environment, such as driving a vehicle or playing a game against an opponent.
+
+[[https://en.wikipedia.org/wiki/Machine_learning#Machine_learning_tasks][Machine learning tasks]]
+
+* Terminology
+
+*Item*: one test/attribute-value pair
+
+*Instance/transaction*: a set of items occurring together in the dataset
+
+*Itemset*: all items occurring in a rule
+
+* Evaluation methods (Support)
+
+*Support*: percentage of all _transactions_ in which that the _itemset_ appears:
+.image support.svg
+Used as threshold (_minimum_support_) to increase/limit the generated rules.
+
+* Evaluation methods (Confidence)
+
+*Confidence*: for rule _X_⇒_Y_, the proportion of the _transactions_ containing _X_ also containing _Y_:
+.image confidence.svg
+Determines how "true" a rule is, but is _not_ necessarily a good measure of importance (e.g. milk occurs in almost every grocery transaction)
+
+* Evaluation methods (Lift)
+
+*Lift*: measures the performance of a rule (interdependence of _X_ ⇒ _Y_):
+.image lift.svg
+.caption A lift > 1 means that the two items are dependent on each other
+
+* Evaluation methods (Conviction)
+
+*Conviction*: the frequency that the rule makes an incorrect prediction:
+.image conviction.svg
+.caption conviction > 1 implies the association between X and Y is correct more often than purely by random chance
+
+* Weather Data Example
+
+    Outlook     Temp    Humidity    Windy   Play
+    --------------------------------------------
+    Sunny       Hot     High        False   No
+    Sunny       Hot     High        True    No
+    Overcast    Hot     High        False   Yes
+    Rainy       Mild    High        False   Yes
+    Rainy       Cool    Normal      False   Yes
+    Rainy       Cool    Normal      True    No
+    Overcast    Cool    Normal      True    Yes
+    Sunny       Mild    High        False   No
+    Sunny       Cool    Normal      False   Yes
+    Rainy       Mild    Normal      False   Yes
+    Sunny       Mild    Normal      True    Yes
+    Overcast    Mild    High        True    Yes
+    Overcast    Hot     Normal      False   Yes
+    Rainy       Mild    High        True    No
+
+* Weather Data - Item Sets
+    One-item sets           Two-item sets           Three-item sets         Four-item sets
+    ----------------------------------------------------------------------------------------
+    Outlook=Sunny(5)        Outlook=Sunny           Outlook=Sunny           Outlook=Sunny
+                            Temperature=Hot(2)      Temperature=Hot         Temperature=Hot
+                                                    Humidity=High(2)        Humidity=High
+                                                                            Play=No(2)
+    Temperature=Cool(4)     Outlook=Sunny           Outlook=Sunny           Outlook=Rainy
+                            Humidity=High(3)        Humidity=High           Temperature=Mild
+                                                    Windy=False(2)          Windy=False
+                                                                            Play=Yes(2)
+    ...                     ...                     ...                     ...
+
+In total, with at least two transactions where this occurred:
+
+- 12 one-item sets
+- 47 two-item sets
+- 39 three-item sets
+- 6 four-item sets
+- 0 five-item sets
+
+* Weather Data - Generating Rules From an Item Set
+
+Once all item sets with minimum support have been generated, we can turn them into rules
+
+*Example:*
+
+ Humidity = Normal, Windy = False, Play = Yes (4)
+
+_7_potential_rules_ (2ⁿ-1):
+
+    If Humidity = Normal and Windy = False then Play = Yes              4/4
+    If Humidity = Normal and Play = Yes then Windy = False              4/6
+    If Windy = False and Play = Yes then Humidity = Normal              4/6
+    If Humidity = Normal then Windy = False and Play = Yes              4/7
+    If Windy = False then Humidity = Normal and Play = Yes              4/8
+    If Play = Yes then Humidity = Normal and Windy = False              4/9
+    If True then Humidity = Normal and Windy = False and Play = Yes     4/12
+
+* Weather Data - Rules
+
+Rules with # of transactions > 1 and confidence = 100%:
+
+    #   Association rule                                    Transactions     Confidence
+    -----------------------------------------------------------------------------------
+    1   Humidity=Normal Windy=False     ⇒ Play=Yes          4               100%
+    2   Temperature=Cool                ⇒ Humidity=Normal   4               100%
+    3   Outlook=Overcast                ⇒ Play=Yes          4               100%
+    4   Temperature=Cold Play=Yes       ⇒ Humidity=Normal   3               100%
+    ...                                 ...                 ...             ...
+    58  Outlook=Sunny Temperature=Hot   ⇒ Humidity=High     2               100%
+
+In total:
+
+- 3 rules with support four
+- 5 with support three
+- 50 with support two
+
+* Weather  Data - Example Rules
+
+Item Set:
+
+    Temperature = Cool, Humidity = Normal, Windy = False, Play = Yes (2)
+
+Resulting rules with 100% confidence:
+
+    Temperature = Cool, Windy = False ⇒ Humidity = Normal, Play = Yes
+    Temperature = Cool, Windy = False, Humidity = Normal ⇒ Play = Yes
+    Temperature = Cool, Windy = False, Play = Yes ⇒ Humidity = Normal
+
+* Algorithm
+
+*Baseline*method* for finding association rules:
+1. Use separate-and-conquer method
+2. Treat every possible combination of attribute values as a separate class
+
+Two problems:
+
+- Computational complexity
+- Large number of resulting number of rules (which would have to be pruned on the basis of support and confidence)
+
+_But_: we can look for high support rules directly!
+
+* Algorithm - Generating Item Sets Efficiently
+
+- How can we efficiently find all frequent item sets?
+- Finding one-item sets is easy
+
+_Idea_: use one-item sets to create two-item sets, two-item sets to create three-item sets…
+
+If (*A* *B*) is a frequent item set, then (*A*) and (*B*) have to be frequent item sets as well!
+
+*Generalized*: if *X* is frequent _k_-item set, then all (_k_-1)-item subsets of *X* are also frequent
+
+⇒ Compute _k_-item set by merging (_k_-1)-item sets
+
+* Algorithm - Example
+
+*Given*: five three-item sets
+
+    (A B C), (A B D), (A C D), (A C E), (B C D)
+
+Lexicographically ordered!
+
+Candidate four-item sets:
+
+    (A B C D)   OK: (A B C), (A B D), (A C D), (B C D)
+    (A C D E)   Not OK because of (C D E)
+
+Final check by counting instances in dataset!
+(_k_–1)-item sets are stored in hash table
+
+* Algorithm - Generating Rules Efficiently
+
+- We are looking for all high-confidence rules
+Support of antecedent obtained from hash table
+_But_: brute-force method is (2ⁿ-1)
+
+- *Better*way*: building (c + 1)-consequent rules from c-consequent ones
+
+- *Observation*: (c + 1)-consequent rule can only hold if all corresponding c-consequent rules also hold
+
+Resulting algorithm is similar to procedure for large item sets
+
+* Algorithm - Generating Rules Efficiently - Example
+
+- 1-consequent rules:
+    If Outlook = Sunny and Windy = False and Play = No then Humidity = High     (2/2)
+
+    If Humidity = High and Windy = False and Play = No then Outlook = Sunny     (2/2)
+
+- Corresponding 2-consequent rule:
+    If Windy = False and Play = No then Outlook = Sunny and Humidity = High     (2/2)
+
+- Final check of antecedent against hash table
+
+* Algorithm - Discussion
+
+- Above method makes one pass through the data for each different size item set
+*Other*possibility*: generate (_k_ +2)-item sets just after (_k_ +1)-item sets have been generated
+*Result*: more (_k_ +2)-item sets than necessary will be considered but makes fewer passes through the data
+Makes sense if data is too large for main memory
+
+- *Practical*issue*: generating a specific number of rules (e.g. by incrementally reducing min. support)
+
+* Covering Algorithm
+
+Generating rule set directly:
+For each class in turn find rule set that covers all instances in it (excluding instances not in the class)
+
+Called a _covering_ approach:
+At each stage a rule is identified that "covers" some of the instances
+
+* Covering Algorithm - Example Generating a Rule
+
+.image covering_dividing.png
+    If true                             If x > 1.2                      If x > 1.2 and y > 2.6
+       then class = a                       then class = a                  then class = a
+
+Possible rule set for class "b":
+
+    If x ≤ 1.2 then class = b
+    If x > 1.2 and y ≤ 2.6 then class = b
+
+Could add more rules, until you get a "perfect" rule set
+
+* Simple Covering Algorithm
+
+- Generates a rule by adding tests that maximize rule’s accuracy
+- Similar to situation in decision trees: problem of selecting an attribute to split on
+
+*But:* decision tree inducer maximizes overall purity
+
+.image cover_reduction.png
+.caption Each new test reduces rule’s coverage
+
