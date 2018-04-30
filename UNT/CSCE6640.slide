@@ -1,0 +1,112 @@
+Modern Distributed Computing
+A Grab Bag of Stuff
+1 May 2018
+
+Jacob Hochstetler
+CSCE6640
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Organization
+
+1. Introduction & Background
+
+2. The Problem with the Network
+
+3. Map Reduce
+
+4. Raft
+
+* Introduction
+
+-- Some notes on data, compute expansion
+
+* Background
+
+-- cloud computing notes
+
+* The Fallacies of Distributed Computing
+
+1. The network is reliable.
+
+: Software applications are written with little error-handling on networking errors. During a network outage, such applications may stall or infinitely wait for an answer packet, permanently consuming memory or other resources. When the failed network becomes available, those applications may also fail to retry any stalled operations or require a (manual) restart.
+
+2. Latency is zero.
+
+: Ignorance of network latency, and of the packet loss it can cause, induces application- and transport-layer developers to allow unbounded traffic, greatly increasing dropped packets and wasting bandwidth.
+
+3. Bandwidth is infinite.
+
+: Ignorance of bandwidth limits on the part of traffic senders can result in bottlenecks over frequency-multiplexed media.
+
+4. The network is secure.
+
+: Complacency regarding network security results in being blindsided by malicious users and programs that continually adapt to security measures.[2]
+
+5. Topology doesn't change.
+
+: Changes in network topology can have effects on both bandwidth and latency issues, and therefore similar problems.
+
+6. There is one administrator.
+
+: Multiple administrators, as with subnets for rival companies, may institute conflicting policies of which senders of network traffic must be aware in order to complete their desired paths.
+
+7. Transport cost is zero.
+
+: The "hidden" costs of building and maintaining a network or subnet are non-negligible and must consequently be noted in budgets to avoid vast shortfalls.
+
+8. The network is homogeneous.
+
+: If a system assumes a homogeneous network, then it can lead to the same problems that result from the first three fallacies.
+
+.caption ~1994 Sun Microsystems fellows
+
+* CAP Theorem
+
+Formalizes the trilemma that happens after a network partition occurs (split-brain).
+
+Originally published by Eric Brewer in 1999 and formally proven at MIT ~2002.
+.caption [[https://dl.acm.org/citation.cfm?id=564601]["Brewer's conjecture and the feasibility of consistent, available, partition-tolerant web services", ACM SIGACT Vol. 33-2]]
+
+.image UNT_green.png 1 850
+
+- *Consistency*: A read is guaranteed to return the most recent write for a given client.
+
+- *Availability*: A non-failing node will return a reasonable response within a reasonable amount of time (no error or timeout).
+
+- *Partition*Tolerance*: The system will continue to function when network partitions occur.
+
+* CAP Theorem Trilemma
+
+.image images/CAP-Theorem.png
+
+* PACELC Theorem
+
+Formalized as an extension to CAP by Daniel Abadi at Yale in 2012.
+
+Whereas (E)ven when under normal operating conditions (no network partitions), there has to be a choice between latency (L) and consistency (C).
+
+
+.image images/pacelc.png
+.caption [[https://dl.acm.org/citation.cfm?id=2360959]["Consistency Tradeoffs in Modern Distributed Database System Design", Computer Vol. 45-2]]
+.caption also of note: [[https://dl.acm.org/citation.cfm?id=1920855]["The case for determinism in database systems", VLDB Endowment Vol. 3-1/2]]
+
+* Consistency Models
+
+Guarantee by the datastore that certain invariants will hold for reads and/or writes.
+
+Standard consistency models (weakest to strongest):
+
+- Eventual Consistency
+: All will eventual converge. No guarantees on order of writes applied to different replicas. No guarantees on what intermediate states a reader may observe.
+- Session Consistency Guarantees
+: Persistence across a context. A popular session guarantee is Read-your-writes, which means that within a session you can read any data that you have written.
+- Causal Consistency
+: Guarantees that operations will be applied to the datastore in causal order. Post -> Comment -> Comment.
+- Serializability
+: Serializability means that operations appear as if there was a global total order or equivalently that there was a single copy of the data. This has the implication that a read of an object returns the latest write to that object, even if the write was on a different replica.
+
+* Map Reduce
+
+* Raft
+
