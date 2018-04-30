@@ -13,7 +13,7 @@ http://github.com/jh125486
 
 2. The Problem with the Network
 
-3. Map Reduce
+3. MapReduce
 
 4. Raft
 
@@ -83,13 +83,14 @@ Originally published by Eric Brewer in 1999 and formally proven at MIT ~2002.
 * PACELC Theorem
 
 Formalized as an extension to CAP by Daniel Abadi at Yale in 2012.
+.caption [[https://dl.acm.org/citation.cfm?id=2360959]["Consistency Tradeoffs in Modern Distributed Database System Design", Computer Vol. 45-2]]
+.caption Also of note: [[https://dl.acm.org/citation.cfm?id=1920855]["The case for determinism in database systems", VLDB Endowment Vol. 3-1/2]]
+
+.image UNT_green.png 1 850
 
 Whereas (E)ven when under normal operating conditions (no network partitions), there has to be a choice between latency (L) and consistency (C).
 
-
 .image images/pacelc.png
-.caption [[https://dl.acm.org/citation.cfm?id=2360959]["Consistency Tradeoffs in Modern Distributed Database System Design", Computer Vol. 45-2]]
-.caption also of note: [[https://dl.acm.org/citation.cfm?id=1920855]["The case for determinism in database systems", VLDB Endowment Vol. 3-1/2]]
 
 * Consistency Models
 
@@ -106,7 +107,11 @@ Standard consistency models (weakest to strongest):
 - Serializability
 : Serializability means that operations appear as if there was a global total order or equivalently that there was a single copy of the data. This has the implication that a read of an object returns the latest write to that object, even if the write was on a different replica.
 
-* Map Reduce
+* MapReduce
+
+
+
+.caption [[https://dl.acm.org/citation.cfm?id=1251264]["MapReduce: Simplified Data Processing on Large Clusters", OSDI'04 Vol. 6]
 
 * Raft
 
