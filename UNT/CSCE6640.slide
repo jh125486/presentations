@@ -110,7 +110,6 @@ Standard consistency models (weakest to strongest):
 * MapReduce
 
 
-
 .caption [[https://dl.acm.org/citation.cfm?id=1251264]["MapReduce: Simplified Data Processing on Large Clusters", OSDI'04 Vol. 6]
 
 * Raft
