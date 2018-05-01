@@ -215,13 +215,137 @@ Programming model for dealing with large big data sets, consisting of two parts 
 
 .caption [[https://dl.acm.org/citation.cfm?id=1251264]["MapReduce: Simplified Data Processing on Large Clusters", OSDI'04 Vol. 6]]
 
-* MapReduce Archetypal Example
+* MapReduce Archetypal Example Overview
 
 The _"Hello_World"_ of Big Data... Counting input word frequency.
 
 .image images/MapReduce_Work_Structure2.png _ 1000
 
 The _"Hello_World"_ of Big Data... Counting input word frequency.
+
+* Hadoop Streaming Python Code Example (Mapper)
+
+[[http://hadoop.apache.org/docs/current/hadoop-streaming/HadoopStreaming.html][_Hadoop_Streaming_API_]] enables any pipeline that can read/write to `STDIN/STDOUT`.
+
+  #!/usr/bin/env python
+  """ mapper.py """
+
+  import sys
+
+  # input comes from STDIN (standard input)
+  for line in sys.stdin:
+      # remove leading and trailing whitespace
+      line = line.strip()
+
+      # split the line into words
+      words = line.split()
+
+      # increase counters
+      for word in words:
+          # write the results to STDOUT (standard output);
+          # what we output here will be the input for the Reduce step, i.e. the input for reducer.py
+
+          # tab-delimited; the trivial word count is 1
+          print '%s\t%s' % (word, 1)
+
+* Hadoop Streaming Python Code Example (Reducer)
+
+  #!/usr/bin/env python
+  """ reducer.py """
+  from operator import itemgetter
+  import sys
+
+  current_word = None
+  current_count = 0
+  word = None
+
+  for line in sys.stdin:
+      word, count = line.strip().split('\t', 1) # parse the input we got from mapper.py
+      count = int(count) # convert count (currently a string) to int
+
+  # Only works because Hadoop sorts map output by key (here: word) before it is sent to the reducer
+      if current_word == word:
+          current_count += count
+      else:
+          if current_word:
+              print '%s\t%s' % (current_word, current_count)
+          current_count = count
+          current_word = word
+
+  if current_word == word:  # do not forget to output the last word if needed!
+      print '%s\t%s' % (current_word, current_count)
+
+* Hadoop Streaming Python Code Example (Testing Locally)
+
+Testing a MapReduce job locally on small data is a huge benefit of the Streaming API.
+
+Finding a mistake 10 minutes into a local pipeline is a magnitude better than 8 hours deep into a Hadoop job.
+
+  $ echo "foo foo quux labs foo bar quux" | ./mapper.py
+  foo     1
+  foo     1
+  quux    1
+  labs    1
+  foo     1
+  bar     1
+  quux    1
+
+  $ echo "foo foo quux labs foo bar quux" | ./mapper.py | sort -k1,1 | ./reducer.py
+  bar     1
+  foo     3
+  labs    1
+  quux    2
+
+* Hadoop Streaming Python Code Example (on Hadoop)
+Copy data to HDFS
+
+  $ bin/hadoop dfs -copyFromLocal /tmp/lots_of_books /user/hadoop/lots_of_books
+
+Run the MapReduce job
+
+  $ bin/hadoop jar contrib/streaming/hadoop-*streaming*.jar \
+    -file ./mapper.py    -mapper ./mapper.py \
+    -file ./reducer.py   -reducer ./reducer.py \
+    -input /user/hadoop/lots_of_books/* \
+    -output /user/hadoop/lots_of_books-output
+
+* Hadoop Streaming Python Code Example (Results)
+
+ additionalConfSpec_:null
+ null=@@@userJobConfProps_.get(stream.shipped.hadoopstreaming
+ packageJobJar: [/app/hadoop/tmp/hadoop-unjar54543/]
+ [] /tmp/streamjob54544.jar tmpDir=null
+ [...] INFO mapred.FileInputFormat: Total input paths to process : 7
+ [...] INFO streaming.StreamJob: getLocalDirs(): [/app/hadoop/tmp/mapred/local]
+ [...] INFO streaming.StreamJob: Running job: job_200803031615_0021
+ [...] INFO streaming.StreamJob:  map 0%  reduce 0%
+ [...] INFO streaming.StreamJob:  map 43%  reduce 0%
+                      ...
+ [...] INFO streaming.StreamJob:  map 100%  reduce 70%
+ [...] INFO streaming.StreamJob:  map 100%  reduce 77%
+ [...] INFO streaming.StreamJob:  map 100%  reduce 100%
+ [...] INFO streaming.StreamJob: Job complete: job_200803031615_0021
+ [...] INFO streaming.StreamJob: Output: /user/hadoop/lots_of_books-output
+
+Result output
+
+  $ bin/hadoop dfs -cat /user/hadoop/lots_of_books-output/part-00000
+  "(Lo)cra"       1
+  "1490   1
+  "1498," 1
+  "40,"   1
+
+* Hadoop Streaming Python Code Example (Web UI)
+
+Web UI available at:
+
+- [[http://http://hostname:50030]] => JobTracker
+- [[http://http://hostname:50060]] => TaskTracker
+- [[http://http://hostname:50070]] => NameNode
+
+* Hadoop Streaming Python Code Example (Web UI example)
+
+.image images/Hadoop-web-interface-screenshot.png _ 500
 
 * Data Locality the Data-centric computing ecosystem
 
