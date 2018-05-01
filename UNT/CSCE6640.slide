@@ -13,7 +13,7 @@ http://github.com/jh125486
 
 2. The Network is the Computer, also the Problem
 
-3. Raft
+3. Consensus Protocols
 
 4. MapReduce
 
@@ -107,7 +107,7 @@ Other computing models:
 
 3. Recovery (Disaster Tolerance/Continuity of Operations)
 
-Multiple copies == multiple problems...
+More copies, More problems...
 
 * Consistency Models
 
@@ -155,7 +155,7 @@ Whereas (E)ven when under normal operating conditions (no network partitions), t
 
 .image images/pacelc.png
 
-* Raft
+* Consensus Protocols
 
 * Consensus Protocols
 
