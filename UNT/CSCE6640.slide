@@ -207,13 +207,17 @@ Programming model for dealing with large big data sets, consisting of two parts 
 : 5. a Reduce function
 : 6. an output writer
 
-1. Map: _f_(x) => *(key,* *x)*
+1. Map: _f_(x) => *<key,* *x>*
 
-2. Reduce: filter/aggregate{x₁,x₂...xₙ} => *x′*
+2. Reduce: filter/aggregate{<x₁,x₂...xₙ} => *x′*
 
 .image images/mapreduce-workflow.png _ 650
 
 .caption [[https://dl.acm.org/citation.cfm?id=1251264]["MapReduce: Simplified Data Processing on Large Clusters", OSDI'04 Vol. 6]]
+
+* Hadoop High Level Architecture
+
+.image images/Hadoop+Architecture_OpenSource.png _ 900
 
 * MapReduce Archetypal Example Overview
 
