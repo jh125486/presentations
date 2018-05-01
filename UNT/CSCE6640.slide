@@ -11,19 +11,57 @@ http://github.com/jh125486
 
 1. Introduction & Background
 
-2. The Problem with the Network
+2. The Network is the Computer, also the Problem
 
-3. MapReduce
+3. Raft
 
-4. Raft
+4. MapReduce
 
 * Introduction
 
--- Some notes on data, compute expansion
+The world's getting pretty big.
 
-* Background
+* Communication Capacity
 
--- cloud computing notes
+The world's effective information capacity through telecommunication networks was:
+
+- 1986: 281 petabytes
+- 1993: 471 petabytes 
+- 2000: 2,200 petabytes
+- 2007: 65,000 petabytes
+
+* Compute/Memory Capacity
+
+.image images/computer-brain.jpeg _ 750
+
+* Background - Rise of the Cloud™
+
+- On-demand self-service (across heterogenous access models)
+- Resource pooled (multi-tenant & metered/quotaed)
+- Rapid elasticity
+.caption [[https://dx.doi.org/10.6028/NIST.SP.800-145]["The NIST Definition of Cloud Computing", National Institute of Standards and Technology]]
+
+* Background - Rise of the Cloud™
+
+1. *IaaS* - _Infrastructure_ as a Service
+
+2. *PaaS* - _Platform_ as a Service
+
+3. *SaaS* - _Software_ as a Service
+
+* Background - Rise of the Cloud™... as a Service
+
+.image images/pizza_as_a_service.png _ 1040
+
+* Background - Rise of the Cloud™
+
+Other computing models:
+
+- Edge
+- Fog
+- Mist/IoT
+
+* The Network is the Computer, also the Problem
 
 * The Fallacies of Distributed Computing
 
@@ -61,6 +99,31 @@ http://github.com/jh125486
 
 .caption ~1994 Sun Microsystems fellows
 
+* Database Replication
+
+1. Scalability
+
+2. Latency
+
+3. Recovery (Disaster Tolerance/Continuity of Operations)
+
+Multiple copies == multiple problems...
+
+* Consistency Models
+
+Guarantee by the datastore that certain invariants will hold for reads and/or writes.
+
+Standard consistency models (weakest to strongest):
+
+- Eventual Consistency
+: All will eventual converge. No guarantees on order of writes applied to different replicas. No guarantees on what intermediate states a reader may observe.
+- Session Consistency Guarantees
+: Persistence across a context. A popular session guarantee is Read-your-writes, which means that within a session you can read any data that you have written.
+- Causal Consistency
+: Guarantees that operations will be applied to the datastore in causal order. Post -> Comment -> Comment.
+- Serializability
+: Serializability means that operations appear as if there was a global total order or equivalently that there was a single copy of the data. This has the implication that a read of an object returns the latest write to that object, even if the write was on a different replica.
+
 * CAP Theorem
 
 Formalizes the trilemma that happens after a network partition occurs (split-brain).
@@ -92,25 +155,88 @@ Whereas (E)ven when under normal operating conditions (no network partitions), t
 
 .image images/pacelc.png
 
-* Consistency Models
+* Raft 
 
-Guarantee by the datastore that certain invariants will hold for reads and/or writes.
+* Consensus Protocols
 
-Standard consistency models (weakest to strongest):
+The process of agreeing on one result among a group of participating nodes.
 
-- Eventual Consistency
-: All will eventual converge. No guarantees on order of writes applied to different replicas. No guarantees on what intermediate states a reader may observe.
-- Session Consistency Guarantees
-: Persistence across a context. A popular session guarantee is Read-your-writes, which means that within a session you can read any data that you have written.
-- Causal Consistency
-: Guarantees that operations will be applied to the datastore in causal order. Post -> Comment -> Comment.
-- Serializability
-: Serializability means that operations appear as if there was a global total order or equivalently that there was a single copy of the data. This has the implication that a read of an object returns the latest write to that object, even if the write was on a different replica.
+Difficulty increases when this process moves to networks, which are inherently unreliable.
+
+Forms the basis for state machine replication, a technique for converting an algorithm into a fault-tolerant, distributed implementation.
+
+* Paxos
+
+First published in 1989 by Leslie Lamport, and the standard for over a decade.
+
+  "Famously difficult to reason about"
+  "Non-intuitive"
+  "Underspecification"
+
+_Paxos_ is ridiculously complicated. 
+
+.image images/paxos.jpg _ 900
+.caption Artist's Interpretation of Paxos consensus protocol.
+
+* Raft 
+
+An alternative to Lamport's _Paxos_ protocol for distributed consensus.
+
+Two major benefits over _Paxos_:
+1. Human (non-Leslie Lamport) understandable
+2. Thereby human implementable ([[https://raft.github.io/][~100 implementations in 24 languages in 4 years]])
+
+.image images/raft.png _ 1000
+.caption [[https://dl.acm.org/citation.cfm?id=2643666]["In Search of an Understandable Consensus Algorithm", USENIX '14]]
+.caption Also of note: [[https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-857.pdf]["ARC: Analysis of Raft Consensus", University of Cambridge, Technical Report 857]]
+
+* Raft Distributed Consensus Example
+
+.iframe https://thesecretlivesofdata.com/raft/ 600 1000
 
 * MapReduce
 
+* MapReduce
 
-.caption [[https://dl.acm.org/citation.cfm?id=1251264]["MapReduce: Simplified Data Processing on Large Clusters", OSDI'04 Vol. 6]
+Programming model for dealing with large big data sets, consisting of two parts (_mostly_):
 
-* Raft
+: 1. an input reader
+: 2. a Map function
+: 3. a partition function
+: 4. a compare function
+: 5. a Reduce function
+: 6. an output writer
 
+1. Map: _f_(x) => *(key,* *x)*
+
+2. Reduce: filter/aggregate{x₁,x₂...xₙ} => *x′*
+
+.image images/mapreduce-workflow.png _ 650
+
+.caption [[https://dl.acm.org/citation.cfm?id=1251264]["MapReduce: Simplified Data Processing on Large Clusters", OSDI'04 Vol. 6]]
+
+* MapReduce Archetypal Example
+
+The _"Hello_World"_ of Big Data... Counting input word frequency.
+
+.image images/MapReduce_Work_Structure2.png _ 1000
+
+The _"Hello_World"_ of Big Data... Counting input word frequency.
+
+* Data Locality & Data-centric computing
+
+- Compute is cheap, massively parallel and elastic.
+- The Network is finite, both in bandwidth/throughput and latency/jitter.
+- Therefore the True Cost™ of computing is moving the data.
+
+.image images/hadoop-ecosystem.png _ 950
+
+* Hadoop's HDFS/AWS EMRFS
+
+Rack-aware data availability mapper preference:
+
+1. Data local 
+2. Intra-rack
+3. Inter-rack
+
+.image images/hdfs.jpg _ 800
