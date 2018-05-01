@@ -223,7 +223,7 @@ The _"Hello_World"_ of Big Data... Counting input word frequency.
 
 The _"Hello_World"_ of Big Data... Counting input word frequency.
 
-* Data Locality & Data-centric computing
+* Data Locality the Data-centric computing ecosystem
 
 - Compute is cheap, massively parallel and elastic.
 - The Network is finite, both in bandwidth/throughput and latency/jitter.
