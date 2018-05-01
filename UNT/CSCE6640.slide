@@ -26,7 +26,7 @@ The world's getting pretty big.
 The world's effective information capacity through telecommunication networks was:
 
 - 1986: 281 petabytes
-- 1993: 471 petabytes 
+- 1993: 471 petabytes
 - 2000: 2,200 petabytes
 - 2007: 65,000 petabytes
 
@@ -155,7 +155,7 @@ Whereas (E)ven when under normal operating conditions (no network partitions), t
 
 .image images/pacelc.png
 
-* Raft 
+* Raft
 
 * Consensus Protocols
 
@@ -173,12 +173,12 @@ First published in 1989 by Leslie Lamport, and the standard for over a decade.
   "Non-intuitive"
   "Underspecification"
 
-_Paxos_ is ridiculously complicated. 
+_Paxos_ is ridiculously complicated.
 
 .image images/paxos.jpg _ 900
 .caption Artist's Interpretation of Paxos consensus protocol.
 
-* Raft 
+* Raft
 
 An alternative to Lamport's _Paxos_ protocol for distributed consensus.
 
@@ -192,7 +192,7 @@ Two major benefits over _Paxos_:
 
 * Raft Distributed Consensus Example
 
-.iframe https://thesecretlivesofdata.com/raft/ 600 1000
+.iframe https://jh125486.github.io/raft/ 600 1000
 
 * MapReduce
 
@@ -235,7 +235,7 @@ The _"Hello_World"_ of Big Data... Counting input word frequency.
 
 Rack-aware data availability mapper preference:
 
-1. Data local 
+1. Data local
 2. Intra-rack
 3. Inter-rack
 
