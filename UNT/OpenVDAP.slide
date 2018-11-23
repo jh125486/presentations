@@ -1,0 +1,122 @@
+OpenVDAP
+An Open Vehicular Data Analytics Platform for CAVs
+3 May 2018
+
+Jacob Hochstetler
+Ph.D. student, University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+
+
+* Overview
+
+1. Introduction
+
+2. In-Vehicle Services
+
+3. Problems and Challenges
+
+4. OpenVDAP: Overview and Design
+
+5. Related Work
+
+6. Conclusions
+
+* Introduction
+
+*CAVs*:  (C)onnected and (A)utonomous (V)ehicles
+
+*ADAS*: (A)dvanced (D)river-(A)ssistant (S)ystem
+
+*Infotainment*: In-vehicle information and entertainment system
+
+*VCU*: (V)ehicle (C)ommunication (U)nit
+
+*Edge* *computing*: Dynamic local processing near the data source
+
+*RSU*: (R)oad(s)ide (U)nit
+
+* Processing model
+
+1. Vehicle
+
+2. XEdge (Base station or RSU)
+
+3. Cloud
+
+.image images/edge_capture.png _ 340
+.caption Data processing model in an edge-based solution
+
+* In-Vehicle Services
+
+- Real-time Diagnostics
+- ADAS
+- In-Vehicle Infotainment
+- Third-party Applications
+
+* Problems
+
+- Cloud-based
+- In-vehicle-based
+- Edge-based
+
+* Challenges
+
+Security, isolation and privacy
+
+- Trusted execution environment
+- Isolation (multi-tenancy)
+- Privacy preserved data sharing (anonymizing)
+
+* OpenVDAP: Overview and Design
+
+* OpenVDAP: Overview
+
+.image images/openvdap_overview.png _ 850
+
+* OpenVDAP: Heterogeneous VCU Overview
+
+.image images/openvdap_vcu.png _ 700
+
+* OpenVDAP: Heterogeneous VCU Detail
+
+*mHEP*: multi-level Heterogeneous Computing Platform
+
+- *1stHEP*: directly connect hardware
+- *2ndHEP*: indirectly connected hardware
+
+.image UNT_green.png 1 500
+
+*DSF*: Dynamic Scheduling Framework
+
+- Computing resources collection
+- Task scheduling
+
+* OpenVDAP: EdgeOSᵥ
+
+.image images/openvdap_edgeos.png _ 900
+.caption _Elastic_ _Management_ in EdgeOSᵥ
+
+* OpenVDAP: Driving Data Integrator
+
+.image images/openvdap_ddi.png _ 900
+
+* OpenVDAP: libvdap Overview
+
+.image images/openvdap_libvdap.png _ 900
+
+* OpenVDAP: libvdap Detail
+
+- Personalized Driving Behavior Module (pBEAM)
+- Common Model library (cBEAM)
+- VCU system resources library
+- Data sharing library
+
+* Related Work
+
+- Work dates back to 1996
+- Major manufacturers have developed independent, proprietary designs
+- Autonomous vehicle work has surged in last few years
+
+* Conclusions
