@@ -11,9 +11,9 @@ Jacob Hochstetler's presentations
 
 ***
 
-* [UNT: NLPizza](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/NLPizza.slide)
-
 * [UNT: Qualifying Exam](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/QualifyingExam.slide)
+
+* [UNT: NLPizza](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/NLPizza.slide)
 
 * [UNT: Intel Optane](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/optane/optane.slide)
 
@@ -23,3 +23,9 @@ Jacob Hochstetler's presentations
 [Tensorflow implementation](https://github.com/jeasinema/VoxelNet-tensorflow)
 
 * [UNT: Modern Distributed Computing - A Grab Bag of Stuff](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/CSCE6640.slide)
+
+* [UNT: k8s - Dependable Application Orchestration
+](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/k8s.slide)
+
+* [UNT: k3s - Orchestration at the Edge
+](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/k3s.slide)

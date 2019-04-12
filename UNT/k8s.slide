@@ -1,0 +1,217 @@
+Dependable Application Orchestration
+Scheduling a datacenter
+10 Apr 2019
+
+Jacob Hochstetler
+Dependable Computing Lab
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Organization
+
+1. Introduction
+
+2. Re-cap
+
+3. History/Origins
+
+4. Key Concepts (Application Deployment)
+
+5. Objects
+
+6. k8s Infrastructure
+
+6. Conclusion
+
+.image images/k8s_logo.png 150 _
+
+* Introduction
+
+* Re-cap - Virtual Machines
+
+1. Resource inefficient, each VM has the overhead of a fully-fledged OS.
+2. Platform dependent. What worked on your _laptop_ might not work in the _datacenter_.
+3. Heavyweight and slow scaling when compared to Containers.
+4. Takes time to provision bare-metal.
+
+.image images/vm.png 400 _
+
+* Re-cap - Containers
+
+1. Resource efficient, uses the Host OS with the help of `Docker/containerd`.
+2. Platform independent. The container that you run on your _laptop_ will work _anywhere*_
+3. Lightweight using image layers.
+4. Basic orchestration available with `Docker` `Swarm`
+
+.image images/container.png 400 _
+
+* History/Origins
+
+- Developed in-house by Google (from their _Borg_ orchestration tool)
+
+.link https://ai.google/research/pubs/pub43438 _Large-scale_cluster_management_at_Google_with_Borg_
+.caption Proceedings of the European Conference on Computer Systems (EuroSys), ACM, Bordeaux, France (2015)
+
+- Initial release June 2014 as an open-source version of Borg
+
+- The next month, Microsoft, RedHat, IBM, and Docker join the Kubernetes Community
+
+- Originally written in C++, and then rewritten completely in Go
+
+- Currently is #2 in authors on GitHub (second only to Linux)
+
+- Abbreviated as _k8s_ because typing _Kubernetes_ over and over is painful...
+
+* Key Concepts - Application Deployment
+
+_Deploying_to_a_single_machine_
+
+1. Compile the program
+
+2. Copy the program to the target system
+
+3. Start the program
+
+- Loads the program into memory
+
+- kernel takes over -> passes control to the program
+
+* Key Concepts - Application Deployment
+
+*Q:* How do we scale containers?
+
+*A:* _We_spin_up_another_one_.
+
+*Q:* How do we share the load between them? 
+What if the Server is already maxed out and we need another server for our container? 
+How do we calculate the best hardware utilization?
+
+*A:* _Uhh,_well_ <lots of Googling>...
+
+*Q:* Rolling out updates without breaking anything? And if we do, how can we go back to the working version.
+
+* Key Concepts - Application Deployment
+
+_Deploying_to_many_machines_
+
+1. Compile the program
+
+2. Build an application container image
+
+3. Write some YAML
+
+* Key Concepts - Application Deployment
+
+Kubernetes' application centric abstractions allow us to treat many machines like a single machine.
+
+.image images/cluster-dc.png
+
+It's a Container Orchestrator, that *abstracts* away the _underlying_infrastructure_...
+Much like the Linux kernel *abstracts* away _scheduling_ and _resource_management_ for a given program.
+
+* Objects
+
+- Nodes
+
+- Pods
+
+- Services
+
+- Persistent Volumes
+
+- ReplicaSets
+
+* Objects - Nodes
+
+A worker machine. Smallest unit of computing in k8s.
+
+- could be a VM or a physical (bare metal) machine
+
+- hosts one or multiple Pods
+
+- contains the runtime environment for _Pods_, namely:
+
+1. `Docker` (the container runtime)
+
+2. `kube-proxy` (proxies connections to pods)
+
+3. `kubelet` (the communication agent)
+
+* Objects - Pods
+
+Composed of one or a group of containers that share the same execution environment.
+
+- inter-process communication
+
+- share local storage
+
+- tightly coupled, local networked
+
+- a unit of _replication_ (they are are mortal)
+
+* Objects - Services
+
+An abstraction which defines a logical set of _Pods_, and a *policy* by which to access them.
+
+- decouples *frontend* from *backend* and is stable (immortal compared to _Pods_)
+- provides service discovery between applications
+- automatically configured for load-balancing
+
+.image images/k8s_services.svg 390 _
+
+* Objects - Persistent Volumes
+
+_Pod_ storage is *ephemeral*... when the _Pod_ dies, it also dies. 
+
+So Persistent Volumes provide a file system that can be mounted to the cluster, without being associated with any particular node. 
+
+Then the volume can be "plugged" and "unplugged" from _Pods_ as they live and die.
+
+* Objects - ReplicaSets
+
+A _ReplicaSet’s_ purpose is to maintain a stable set of replica _Pods_ running at any given time. 
+
+This guarantees the availability of a specified number of identical _Pods_.
+
+.image images/UNT_green.png 1 850
+
+A given desired state is managed by the application deployer. 
+
+When a change is made to the desired state, a reconciliation loop detects this and attempts to mutate the existing state in order to match the desired state.
+
+* k8s Infrastructure
+
+*1.* Scheduler 
+translates _"run_a_container"_ to _"run_a_container_on_node_X"_
+
+*2.* API Server
+intake for configuration
+
+*3.* `etcd`
+distributed KV, built on raft, the "brain" of k8s
+
+*4.* Kubelets
+to run and monitor the containers inside a _Node_, and communicates with master node
+
+*5.* Controller Manager
+translates Scheduler commands to manage _Pods_, _Deployments_, _ReplicaSets_, _DaemonSets_, _Jobs/CronJobs_, etc.
+
+* And there's more...
+
+Things that haven't been discussed:
+
+- Ingress
+
+- DNS 
+
+- Secrets management
+
+- Resource quotas/hints
+
+- Pod Security Policies
+
+- Rolling (versioned/blue-green) app deployments
+
+* Conclusion
+
+.image images/k8s_overview.png _ 1000

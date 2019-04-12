@@ -1,0 +1,94 @@
+Orchestration at the Edge
+Kubernetes...but on a budget
+10 Apr 2019
+
+Jacob Hochstetler
+Dependable Computing Lab
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Organization
+
+1. Introduction
+
+2. Overview
+
+3. But Why???
+
+3. Differential
+
+4. Requirements
+
+5. Architecture 
+
+6. Conclusion
+
+* Introduction
+
+* Overview
+
+.link https://github.com/rancher/k3s Rancher Labs: k3s - 5 less than k8s!
+
+Ideal for:
+
+- Edge
+- IoT
+- CI
+- ARM
+- Situations where a PhD in k8s clusterology is infeasible
+
+.image images/k8s-certified.png 200 _
+
+* But Why???
+
+- k8s infrastructure is *heavy* and *complex*
+Controls planes aren't cheap... CPU/RAM consumption can sometimes be 25%.
+
+.image images/UNT_green.png 1 850
+
+- k3s is Optimized for ARM
+
+Both ARM64 and ARMv7 are supported with binaries and multiarch images available. 
+k3s works great from something as small as a Raspberry Pi. 
+The binary itself is less than 40 MB.
+
+.image images/UNT_green.png 1 850
+
+- Perfect for Edge
+k3s is a *Certified*, fully compliant k8s distribution designed for production workloads in unattended, resource-constrained, remote locations or inside IoT appliances.
+
+* Differential
+
+_Removes_:
+
+- Legacy, alpha, non-default features
+
+- Plugins (cloud providers, storage, etc.)
+
+- `etcd` KV store (replaced by `SQLite3`, although `etcd3` is available)
+
+_Adds_:
+
+- Simple installer
+
+- Minimal dependencies: [containerd, Flannel, CoreDNS, CNI]
+
+- Automatic Manifest and Helm Chart management
+
+- TLS management
+
+* Requirements
+
+Minimum System:
+
+- Linux 3.10+
+- 512 MB of RAM per server
+- 75 MB of RAM per _Node_
+- 200 MB of disk space
+- x86_64, ARMv7, ARM64
+
+* Architecture 
+
+.image images/k3s_overview.svg _ 1000
+
+* Conclusion
