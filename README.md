@@ -29,3 +29,5 @@ Jacob Hochstetler's presentations
 
 * [UNT: k3s - Orchestration at the Edge
 ](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/k3s.slide)
+
+* [UNT: 150 Successful Machine Learning Models: 6 Lessons Learned at Booking.com](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/Booking.slide)
