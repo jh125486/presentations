@@ -33,4 +33,4 @@ Jacob Hochstetler's presentations
 
 * [UNT: Docker Wharf - Sharing Docker Images in a Distributed FileSystem (Hildebrand)](https://github.com/jh125486/presentations/raw/master/UNT/Docker_Wharf.pptx)
 
-* [UNT: 150 Successful Machine Learning Models: 6 Lessons Learned at Booking.com](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/Booking.slide)
+* [UNT: 150 Successful Machine Learning Models: 6 Lessons Learned at Booking.com](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/Booking.com.slide)
