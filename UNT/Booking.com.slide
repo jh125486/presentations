@@ -12,32 +12,202 @@ http://github.com/jh125486
 
 1. Introduction
 
-2. Business value
+2. Background
 
-3. Accuracy and impact 
+3. Machine learning models
 
-4. Problem clarity
+4. _Business_value_
 
-5. Inferenece latency
+5. _Accuracy_and_impact_
 
-6. Agility
+6. _Problem_clarity_
 
-7. A/B testing
+7. _Inference_latency_
 
-8. Conclusions
+8. _Agility_
+
+9. _A/B_testing_
+
+10. Conclusions
 
 * Introduction
 
+Paper: _150_successful_Machine_Learning_models:_6_lessons_learned_at_Booking.com_
+*KDD*2019*(ACM*Knowledge*Discovery*and*Data*Mining)*
+
+
+Booking.com: travel fare aggregator website and travel metasearch engine
+
+- _The_world’s_largest_online_travel_agent_  
+- Founded: 1996, Amsterdam
+- Employees: 17,000
+
+Data mining metrics: 
+
+- 28,969,183 total reported listings
+- 154,853 destinations in 227 countries
+- 1,550,000 room nights booked each day
+
+
+
+* Background
+
+- The higher stakes for recommendations 
+: as opposed to other ML-based products
+
+- Guest `"features"` are mostly empty 
+: info about what they’re looking for when booking
+
+- Supply of offers is constrained, and dynamic prices impact guest preferences
+
+- Guest preferences may change each time they use the platform
+
+- Rich metadata available regarding offers, which can be overwhelming for guests 
+
+
+
+* Machine learning models
+
+Over 150 models running in production, grouped into six categories:
+
+- Traveller preferences models
+: operate in the semantic layer, and make broad predictions about user preferences (e.g., degree of flexibility).
+
+- Traveller context
+: also semantic, which predictions about the context in which a trip is taking place (e.g. with family, with friends, for business, …).
+
+- Item space navigation
+: which track what a user browses to inform recommendations both the the user’s history and the catalog as a whole.
+
+- User interface optimization
+: optimize elements of the UI such as background images, font sizes, buttons etc. <br/>Interestingly here, “we found that it is hardly the case that one specific value is optimal across the board, so our models consider context and user information to decide the best user interface.”
+
+- Content curation
+: curate human-generated content such as reviews to decide which ones to show
+
+- Content augmentation
+: compute additional information about elements of a trip, such as which options are currently great value, or how prices in an area are trending.
+
+* ML model examples
+
+.image images/booking.com_models.png 570 _
+
+
+
 * Business value
 
-* Accuracy and impact 
+.image images/booking.com_business_values.png 500 _
+.caption Model Families Business Impact relative to median impact
+
+: All of these families of models have provided business value at Booking.com. <br/>additionally, compared to other successful projects that have been deployed but did not use machine learning, the machine learning based projects tend to deliver higher returns.
+
+* Business value [continued]
+
+.image images/booking.com_model_development.png 460 _
+.caption A sequence of experiments on a Recommendations Product. Each experiment tests a new version focusing on the indicated discipline or ML Problem Setup. The length of the bar is the observed impact relative to the first version (all statistically significant)
+
+
+
+* Accuracy and impact
+
+Value is estimated by randomized, controlled trials
+
+_"A_very_interesting_finding_is_that_increasing_the_performance_of_a_model_does_not_necessarily_translate_into_a_gain_in_value."_
+
+: This could be for a number of reasons including 
+: saturation of business value (there’s no more to extract, whatever you do)
+: segment saturation due to smaller populations being exposed to a treatment (as the old and new models are largely in agreement)
+: over-optimization on a proxy metric (e.g. clicks) that fails to convert into the desired business metric (e.g. conversion)
+
+* Accuracy and impact [continued]
+
+.image images/booking.com_overoptimize.png 520 _
+.caption Uncanny valley: A not positive to accurate predictions (destination recommender using Markov chains).
+
+
+
 
 * Problem clarity
 
-* Inferenece latency
+Careful consideration and definition of the actual problem you are trying to solve...
+
+_"The_Problem_Construction_Process_takes_as_input_a_business_case_or_concept_and_outputs_a_well-defined_modeling_problem_(usually_a_supervised_machine_learning_problem),_such_that_a_good_solution_effectively_models_the_given_business_case_or_concept."_
+
+Some of the most powerful improvements come not from improving a model in the context of a given setup, but changing the setup itself. 
+
+: For example, changing a user preference model based on click data to a natural language processing problem based on guest review data.
+
+_"In_general_we_found_that_often_the_best_problem_is_not_the_one_that_comes_to_mind_immediately_and_that_changing_the_set_up_is_a_very_effective_way_to_unlock_value."_
+
+
+
+* Inference latency
+
+In a controlled experiment introducing synthetic latency, Booking.com found that an increase of about 30% in latency cost about 0.5% in conversion rates...“_a_relevant_cost_for_our_business_“
+
+This is particularly relevant for ML models since they require significant computational resources when making predictions (inference stage). 
+
+Even mathematically simple models have the potential of introducing relevant latency due to two things:
+
+1. Model complexity
+
+2. Inference infrastructure
+
+: Booking.com go to some lengths to minimize the latency introduced by models, including:
+: horizontally scaled distributed copies of models
+: batching requests
+: pre-computation
+: caching
+: an in-house developed custom linear prediction engine
+: favoring models with fewer parameters
+
+
 
 * Agility
 
+Two problems with feedback:
+
+1. Incomplete feedback (due to the difficulty of observing true output labels)
+2. Delayed feedback (user's don't leave reviews before they have lodged)
+
+.image images/booking.com_agility.png 290 _
+.caption Response Distribution Charts 
+_“Smooth_bimodal_distributions_with_one_clear_stable_point_are_signs_of_a_model_that_successfully_distinguishes_two_classes”_
+
+:_One tactic Booking. com have successfully deployed in these situations with respect to binary classifiers is to look at the distribution of responses generated by the model. 
+: 
+: Other shapes (see figure below) can be indicative of a model that is struggling.
+
+
+
 * A/B testing
 
+_"The_large_majority_of_the_successful_use_cases_of_machine_learning_studied_in_this_work_have_been_enabled_by_sophisticated_experiment_designs,_either_to_guide_the_development_process_or_in_order_to_detect_their_impact."_
+
+Large-scale, randomized controlled experiments deliver immediate value through iteration and evolution of ML models
+
+The paper describes three ways to structure the experiments.
+
+* A/B testing [continued]
+
+.image images/booking.com_test_1.png _ 1000
+.caption Experiment design for selective triggering.
+: When not all subjects are eligible to be exposed to a change (e.g., they don’t have a feature the model requires), create treatment and non-treatments groups from within the eligible subset.
+
+* A/B testing [continued]
+
+.image images/booking.com_test_2.png _ 1000
+.caption Experiment design for model-output dependent triggering and control for performance impact
+: If the model only produces outputs that influence the user experience in a subset of cases, then further restrict the treatment and non-treatment groups to only those cases where the model produces a user-observable output (which won’t of course be seen in the non-treatment group). 
+: To assess the impact of performance add a third control group where the model is not invoked at all.
+
+* A/B testing [continued]
+
+.image images/booking.com_test_3.png _ 1000
+.caption Experiment design for comparing models.
+: When comparing models we are interested in situations where the two models disagree, and we use as a baseline a control group that invokes the current model (assuming we’re testing a current model against a candidate improvement).
+
+
 * Conclusion
+
+_"Hypothesis_driven_iteration_and_interdisciplinary_integration_are_the_core_of_our_approach_to_deliver_value_with_machine_learning,_and_we_wish_this_work_to_serve_as_guidance_to_other_machine_learning_practitioners_and_spark_further_investigations_on_the_topic."_
