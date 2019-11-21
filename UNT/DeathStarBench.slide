@@ -1,0 +1,58 @@
+DeathStarBench
+An Open-Source Benchmark Suite for Microservices and Their Hardware-Software Implications for Cloud & Edge Systems
+22 Nov 2019
+
+Jacob Hochstetler
+Ph.D. student, University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Organization
+
+1. Introduction
+
+2. Background & Related Works
+
+3. DeathStarBench
+
+4. Evaluation
+
+5. Results
+
+6. Conclusion/Future Works
+
+* Introduction
+
+Monolith vs Microservices
+
+.image images/microservices.png _ 600
+.caption Differences in the deployment of monoliths and microservices
+
+* Microservices benefits
+
+Composable software design 
+
+- Simplifying and accelerating development
+- System complexity can be managed at a modular level
+- Facilitate deploying, scaling, and updating individual microservices
+
+Heterogenous software environment
+
+- Multiple programming languages/frameworks
+- Each tier built with the most suitable language
+- Services communication across well-defined planes (typically RPC or RESTful APIs)
+
+Simplify correctness and performance debugging
+
+- Bugs can be isolated in specific tiers
+- Individual microservices can be delivered with SLA-based QoS
+
+* Background & Related Works
+
+* DeathStarBench
+
+* Evaluation
+
+* Results
+
+* Conclusion/Future Works
