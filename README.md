@@ -36,3 +36,5 @@ Jacob Hochstetler's presentations
 * [UNT: 150 Successful Machine Learning Models: 6 Lessons Learned at Booking.com (Bernardi)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/Booking.com.slide)
 
 * [UNT: An Open-Source Benchmark Suite for Microservices and Their Hardware-Software Implications for Cloud & Edge Systems (Yu Gan et al)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/DeathStarBench.slide)
+
+* [Proposal: A Modern Computing Architecture for Connected Autonomous Vehicles](http://go-talks.appspot.com/github.com/jh125486/presentations/dissertation/proposal/main.slide)

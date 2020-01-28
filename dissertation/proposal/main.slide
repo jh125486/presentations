@@ -1,0 +1,169 @@
+A Modern Computing Architecture for Connected Autonomous Vehicles
+1 January 2020
+
+Jacob Hochstetler
+Dissertation Proposal
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+* Organization
+
+1. Introduction
+
+2. Problem
+
+3. Background
+
+4. Problems and Challenges
+
+5. Proposed Approaches
+
+6. Timeline
+
+7. Prior Work
+
+* Introduction
+
+
+* Problem
+
+Coordination between nodes (CAV/edge/cloud) is impossible or too proprietary which limits the growth of CAV and the future potential of data fusion.
+
+* Background
+
+- Decentralized computing
+- In-Vehicle Services and Systems
+- Vehicle Data Producers/Sensors
+- Modern Privacy Concerns
+
+
+* Background: Decentralized computing
+.image computing_hierarchy.png 520 _
+.caption Connected computing hierarchy
+
+: Cloud computing
+: Ubiquitous computing
+: Connected vehicles
+
+
+* Background: In-Vehicle Services and Systems
+
+1. Real-time Diagnostics
+2. Advanced Driver-Assistant Systems (ADAS)
+3. In-Vehicle Infotainment
+4. Third-Party Applications
+
+
+* Background: Vehicle Data Producers/Sensors
+.image sensors.png 500 _
+.caption Overlay showing vehicle sensors discussed and their approximate ranges/placement.
+
+
+* Background: Modern Privacy Concerns
+
+- Rise of data mining/"Big Data"
+- Data ownership/retention w.r.t. 1st-3rd party
+- Myriad of legal implications
+
+
+* Problems and Challenges
+
+Challenge 1: Extensibility and compatibility
+
+- Subproblem 1-1: Data format/protocol
+
+- Subproblem 1-2: 1st through 3rd-party integration
+
+Challenge 2: Data sharing between vehicles
+
+- Subproblem 2-1: Privacy (Data ownership and retention)
+
+- Subproblem 2-2: Trustworthiness of non-self platforms
+
+
+* Subproblem 1-1: Data format/protocol
+
+- Forwards and backwards compatibility
+- Data models
+- APIs/RPC services
+
+.image standards.png 380 _
+.caption [[https://xkcd.com/927/][xkcd: Standards]]
+
+* Subproblem 1-2: 1st through 3rd-party integration
+
+- Integration of platforms, operating systems, libraries/middleware and applications
+- Monolithic architectures
+
+.image hexagon_achitecture.png 400 _
+.caption Base of Hexagonal Architecture/Clean Architecture
+
+* Subproblem 2-1: Privacy (Data ownership and retention)
+.image privacy_problem.png _ 950
+.caption Flowchart representing bad privacy practices as a developer.
+
+
+* Subproblem 2-2: Trustworthiness of non-self platforms
+
+"_Garbage_in..._garbage_out..._"
+
+1. Unintentional
+
+- Unreliable sensors
+- Faulted/negligent/misconfigured software
+
+2. Intentional
+
+- Malicious actors
+
+
+* Proposed Approaches
+
+
+* Solution 1-1: Data format/protocol
+.image communication_negotiation.png 520 _
+.caption Communication with content negotiation between a CAV _’A’_ and a roadside edge node _’Z’_. 
+: Both App1 and App2 on the CAV are using outdated container layers (v1.0.0), but the Importer and Exporter containers on the edge node are semantically within the same major version as the Aggregator and Exporter on ’Z’ (v1), so backward/forward-compatibility is guaranteed.
+
+
+* Solution 1-2: 1st through 3rd-party integration
+.image virtualization-vs-containers.png 420 _ 
+.caption Operating system, virtualization, and library differences between a Type 1 hypervisor, Type 2 hypervisor, and lightweight containers.
+
+
+* Solution 2-1: Privacy (Data ownership and retention)
+.image privacy_proxy.png 500 _
+.caption Architecture and data flow of a privacy proxy implemented in a Connected Autonomous Vehicle. Privacy proxy is shown in red, with privacy registry shown in light red. 
+: The data flow shows an example application App2 using the privacy registry to tag datum, and then the privacy proxy uses the registry to either block or allow the datum to private (solid green), internal (solid blue), or external consumers (solid red).
+
+
+* Solution 2-2: Trustworthiness of non-self platforms
+
+Methods of establishing trust:
+
+- Trust based on authority (Gov issued certs)
+- Trust based on learning (heuristic values based on common knowledge)
+- Hybrid approach using both methods as weights
+
+
+* Timeline
+
+.image timeline.png _ 1000
+
+Dissertation completion expected June 2020.
+
+
+* Prior Work
+
+- _Optimal_Police_Patrol_Planning_Strategy_for_Smart_City_Safety_
+
+- _Embedded_Deep_Learning_for_Vehicular_Edge_Computing_
+
+- _Mutation_Testing_a_Language_ [pending publication]
+
+- _Reliability_Characterization_of_Solid_State_Drives_in_a_Scalable_Production_Datacenter_
+
+- _Incorporate_Proactive_Data_Protection_in_ZFS_Towards_Reliable_Storage_Systems_
+
+- _Developing_Cost-Effective_Data_Rescue_Schemes_to_Tackle_Disk_Failures_in_Data_Centers_
+
