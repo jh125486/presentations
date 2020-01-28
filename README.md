@@ -1,6 +1,8 @@
 Jacob Hochstetler's presentations
 ================================
 
+## Produced work
+
 * [Intro to Go](http://go-talks.appspot.com/github.com/jh125486/presentations/golang/intro.slide)
 
 * [OpenStack](http://go-talks.appspot.com/github.com/jh125486/presentations/openstack/openstack.slide)
@@ -11,11 +13,18 @@ Jacob Hochstetler's presentations
 
 * [Improving Text Classification by Using Encyclopedia Knowledge](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/CSCE5200.slide)
 
+* [UNT: NLPizza](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/NLPizza.slide)
+
+
+### Dissertation
+
+* [Qualifying Exam](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/QualifyingExam.slide)
+
+* [Proposal: A Modern Computing Architecture for Connected Autonomous Vehicles](http://go-talks.appspot.com/github.com/jh125486/presentations/dissertation/proposal/main.slide)
+
 ***
 
-* [UNT: Qualifying Exam](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/QualifyingExam.slide)
-
-* [UNT: NLPizza](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/NLPizza.slide)
+## Presented work
 
 * [UNT: Intel Optane](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/optane/optane.slide)
 
@@ -36,5 +45,3 @@ Jacob Hochstetler's presentations
 * [UNT: 150 Successful Machine Learning Models: 6 Lessons Learned at Booking.com (Bernardi)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/Booking.com.slide)
 
 * [UNT: An Open-Source Benchmark Suite for Microservices and Their Hardware-Software Implications for Cloud & Edge Systems (Yu Gan et al)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/DeathStarBench.slide)
-
-* [Proposal: A Modern Computing Architecture for Connected Autonomous Vehicles](http://go-talks.appspot.com/github.com/jh125486/presentations/dissertation/proposal/main.slide)
