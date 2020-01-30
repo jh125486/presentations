@@ -29,6 +29,8 @@ http://github.com/jh125486
 
 Coordination between nodes (CAV/edge/cloud) is impossible or too proprietary which limits the growth of CAV and the future potential of data fusion.
 
+: Data fusion is extremely important as more vehicles become connected.
+
 * Background
 
 - Decentralized computing
@@ -41,7 +43,7 @@ Coordination between nodes (CAV/edge/cloud) is impossible or too proprietary whi
 .image computing_hierarchy.png 520 _
 .caption Connected computing hierarchy
 
-: Cloud computing
+: Cloud computing -> 
 : Ubiquitous computing
 : Connected vehicles
 
@@ -53,6 +55,11 @@ Coordination between nodes (CAV/edge/cloud) is impossible or too proprietary whi
 3. In-Vehicle Infotainment
 4. Third-Party Applications
 
+: 1. Real-time OBD
+: 2. Rural highway vs. city streets: latency/perception needs
+: 3. Integrated entertainment systems
+: 4. Applications not created by the manufacturer (Ford) or their vendor (Bosch)
+
 
 * Background: Vehicle Data Producers/Sensors
 .image sensors.png 500 _
@@ -63,7 +70,12 @@ Coordination between nodes (CAV/edge/cloud) is impossible or too proprietary whi
 
 - Rise of data mining/"Big Data"
 - Data ownership/retention w.r.t. 1st-3rd party
-- Myriad of legal implications
+- Myriad of _interesting_ legal implications
+
+: PII (home address correlated with tax records)
+: PHI (GPS data shows hospital appointment every Monday -> cross correlated with chemotherapy sessions -> HIPAA?)
+: Attorney-Client privilege: Are all sensors "numb" while talking to attorney through CAV BlueTooth?
+
 
 
 * Problems and Challenges
@@ -95,7 +107,7 @@ Challenge 2: Data sharing between vehicles
 - Integration of platforms, operating systems, libraries/middleware and applications
 - Monolithic architectures
 
-.image hexagon_achitecture.png 400 _
+.image hexagon_architecture.png 400 _
 .caption Base of Hexagonal Architecture/Clean Architecture
 
 * Subproblem 2-1: Privacy (Data ownership and retention)
@@ -119,6 +131,17 @@ Challenge 2: Data sharing between vehicles
 
 * Proposed Approaches
 
+I propose to create a general framework demonstrating efficient message passing, taking into consideration the concerns in 1-1, 1-2, 2-1, 2-2.
+
+This will entail creating a simulated CAV and edge node environment with bots containing a simple tagging privacy proxy along with a simple trust management engine.
+
+The intent is to create a clean environment that can be used for experiments and be expanded for future work. 
+
+: 1. Real-time (latency) issues
+: 2. Security issues
+: 3. Privacy issues
+: 4. Bandwidth issues
+
 
 * Solution 1-1: Data format/protocol
 .image communication_negotiation.png 520 _
@@ -129,6 +152,9 @@ Challenge 2: Data sharing between vehicles
 * Solution 1-2: 1st through 3rd-party integration
 .image virtualization-vs-containers.png 420 _ 
 .caption Operating system, virtualization, and library differences between a Type 1 hypervisor, Type 2 hypervisor, and lightweight containers.
+: I.E more abstraction, or virtualization.  This has not been seen in vehicles currently because the hardware was too limiting.  
+: With the need for better CPUs/GPUs for ML inference, comes with the ability to run virtualization layers.
+: Many of the problems of application integration have already been solved in the industry, but those tools and techniques have not been brought on to CAVs in an accessible manner.
 
 
 * Solution 2-1: Privacy (Data ownership and retention)
@@ -143,7 +169,7 @@ Methods of establishing trust:
 
 - Trust based on authority (Gov issued certs)
 - Trust based on learning (heuristic values based on common knowledge)
-- Hybrid approach using both methods as weights
+- Hybrid approach using both methods as weights + time decay
 
 
 * Timeline
