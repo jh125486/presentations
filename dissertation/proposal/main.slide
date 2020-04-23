@@ -1,4 +1,4 @@
-A Modern Computing Architecture for Connected Autonomous Vehicles
+An Extensible Computing Architecture for Connected Autonomous Vehicles
 30 January 2020
 
 Jacob Hochstetler
@@ -29,7 +29,9 @@ http://github.com/jh125486
 
 Coordination between nodes (CAV/edge/cloud) is impossible or too proprietary which limits the growth of CAV and the future potential of data fusion.
 
-: Data fusion is extremely important as more vehicles become connected.
+: Data fusion is extremely important as more vehicles become connected to each other and to edge nodes.
+
+
 
 * Background
 
@@ -64,6 +66,7 @@ Coordination between nodes (CAV/edge/cloud) is impossible or too proprietary whi
 * Background: Vehicle Data Producers/Sensors
 .image sensors.png 500 _
 .caption Overlay showing vehicle sensors discussed and their approximate ranges/placement.
+
 
 
 * Background: Modern Privacy Concerns
@@ -131,12 +134,13 @@ Challenge 2: Data sharing between vehicles
 
 * Proposed Approaches
 
-I propose to create a general framework demonstrating efficient message passing, taking into consideration the concerns in 1-1, 1-2, 2-1, 2-2.
+- I propose to create a general framework demonstrating efficient message passing, taking into consideration the concerns in 1-1, 1-2, 2-1, 2-2.
 
-This will entail creating a simulated CAV and edge node environment with bots containing a simple tagging privacy proxy along with a simple trust management engine.
+- This entails creating a simulated CAV and edge node environment with bots containing a simple tagging privacy proxy along with a simple trust management engine.
 
-The intent is to create a clean environment that can be used for experiments and be expanded for future work. 
+- The intent is to create a clean environment that can be used for experiments and be expanded for future work. 
 
+: Don't want to boil the ocean.  
 : 1. Real-time (latency) issues
 : 2. Security issues
 : 3. Privacy issues

@@ -1,0 +1,142 @@
+Understanding, Detecting and Localizing Partial Failures in Large System Software
+Best Paper USENIX NSDI '20
+24 Apr 2020
+
+Jacob Hochstetler
+Ph.D. student, University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+
+
+* Overview
+
+1. Introduction
+
+2. PF collection
+
+3. PF findings
+
+4. PF runtime detection
+
+5. OmegaGen 
+
+6. Experiment
+
+7. Conclusions
+
+* Introduction
+
+"When a partial failure occurs, it often takes a long time to detect the incident. In contrast, a process suffering a total failure can be quickly identified, restarted, or repaired by existing mechanisms, thus limiting the failure impact."
+
+* Partial failures collection
+
+.image images/partial_failure_software.jpg _ 1000
+.caption Studied software systems, the partial failure cases, and the unique versions, version and date ranges these cases cover.
+
+* Partial failures findings
+
+1. Partial failures appear throughout the release history of each system, 54% within the last three years.
+
+2. There are diverse causes for partial failures, with uncaught errors, indefinite blocking, and buggy error handling the top three, accounting for 48% of all partial failures between them.
+
+3. 48% of partial failures result in some part of the system being unable to make progress (_stuck_). 
+A further 17% exhibit slow downs big enough to be a serious problem (_slow_).
+
+4. In 13% of cases a module became a zombie with undefined failure semantics.
+
+* Partial failures findings (contd.)
+
+5. 15% of partial failure cases are silent (e.g. data loss, corruption, inconsistency, wrong results).
+
+6. 71% of failures are triggered by a specific environment condition, input, or faults in other processes.
+
+7. The majority (61%) of partial faults are sticky, i.e. the process will not recover unless some intervention (e.g. a restart) is made.
+
+8. It took a median of 6 days and 5 hours to diagnose these issues.
+
+* Implications of findings
+
+- PF is common and severe problem in large software systems.
+
+- Most PFs were production-dependent (#6) requiring runtime mechanisms to detect.
+
+- Existing detectors (heartbeats, probes, observers) are ineffective because they have little exposure to process internals.
+
+- Majority of failures (#3) violate liveness or trigger explicits errors, suggesting detectors can be automatically created without deep domain/semantic application knowledge.
+
+* Partial failures detection
+
+"Practitioners currently rely on running ad-hoc health checks. But such health checks are too shallow to expose a wide class of failures. 
+
+The state-of-the-art research work in this area is Panorama, which converts various requestors of a target process into observers to report gray failures of this process. 
+
+This approach is limited by what requestors can observe externally."
+
+.image images/UNT_green.png 1 800
+
+- API-based healthchecks (_watchdogs_ or _smoketests_).
+
+- Current state-of-art is [[https://www.usenix.org/conference/osdi18/presentation/huang][Panorama]].
+
+- Blackbox healthchecks are limited in scope w.r.t. gray failures.
+
+* OmegaGen: an intrinsic watchdog 
+
+- Finds long-running methods in the code base, extracts their potentially vulnerable operations, and packages the result in custom generated watchdogs (_mimic-style_checkers_).
+- Captures the runtime execution context of the main program, and replicates this as input to the watchdogs.
+- Executes these captured inputs in a sandbox environment.
+
+* OmegaGen: architecture overview
+
+.image images/partial_failure_watchdog.jpg _ 1000
+.caption An intrinsic watchdog example.
+
+* OmegaGen: example
+
+.image images/partial_failure_example.jpg _ 1000
+.caption Example of watchdog checker OmegaGen generated for a module in ZooKeeper.
+: 1. OmegaGen identifies long-running methods (e.g. while(true) or while(flag))
+
+: 2. OmegaGen looks for potentially vulnerable operations in the control flow of those long-running methods. This is largely done based on heuristics (synchronization, resource allocaion, event polling, async waiting, invocations using external arguments, file or network I/O, complex while loop conditional, and so on). Developers can also explicitly annotate an operation as @vulnerable
+
+: 3. A watchdog replica of the main program is then created my a top-down program reduction from the entry point of long-running methods, retaining only the vulnerable operations in each reduced method. The resulting program preserves the original structure, and contains all vulnerable operations.
+
+: 4. OmegaGen then inserts hooks that capture context from the main program execution and pass it to the watchdog so that the watchdog executes with the same key state as the original.
+
+: 5. OmegaGen adds checks in the watchdog to catch failure signals from the execution of vulnerable operations. Liveness checks are made by setting a timer before runner a checker (default 4 seconds). Safety checks rely on the vulnerable operations to emit explicit error signals (e.g. exceptions), and will also capture runtime errors.
+
+* Experiment: OmegaGen setup
+
+- Evaluated using *ZooKeeper*, *Cassandra*, *HDFS*, *HBase*, *MapReduce*, and *Yarn*. 
+- Generated 10s to 100s of watchdogs for each system, configured to run checks every second. 
+- Generating the watchdogs took from 5 to 17 minutes depending on the size of the system.
+
+.image images/UNT_green.png 1 800
+
+- 22 real-world partial failures across these six systems were collected and reproduced. 
+- Evaluated against four different baseline detectors.
+
+* Experiment: OmegaGen results
+
+- Detected 20 out of the 22 issues.
+- The best baseline detector found 11.
+- The other three detectors combined only found 14. 
+- The median detection time was 4.2 seconds.
+
+1. OmegaGen was also able to pinpoint the source of the error much more accurately than the baseline detectors (which in e.g. the client and resource detector cases can only point to the faulty process).
+
+2. A random fault injection test on *ZooKeeper* triggered 16 synthetic failures, 13 of which were detected with a median detection time of 6.1 seconds.
+
+3. OmegaGen also found a genuine bug in version 3.5.5 of *ZooKeeper* which was confirmed by the developers and fixed.
+
+4. Side affects prevention and false alarms: _stable_, _loaded_, and _tolerable_
+
+* Conclusions
+
+- Found 91% of the studied partial failures.
+- Added a 5.0-6.6% overhead in terms of system throughput.
+- Incurred a 9.3%–12.2% overhead on average latency.
+- Tail latency (99th percentile) had a 8.3%–14.0% overhead.
+
+Paper and original presentation available @ [[https://www.usenix.org/conference/nsdi20/presentation/lou][USENIX]]
