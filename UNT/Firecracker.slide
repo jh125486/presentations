@@ -1,0 +1,187 @@
+AWS Firecracker
+Lightweight Virtualization for Serverless Applications
+24 Apr 2020
+
+Jacob Hochstetler
+Ph.D. student, University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+
+* Overview
+
+1. Introduction
+
+2. Background
+
+4. Isolation options
+
+3. Firecracker Design
+
+7. Conclusions
+
+* Introduction
+
+Firecracker is the VMM (virtual machine monitor) that powers AWS Lambda and AWS Fargate.
+
+.image images/firecracker_aws.png _ 500
+
+A novel attempt at balancing the fundamental tradeoff between security and code compatibility.
+
+* Background: Virtualization continuum
+
+*Physical*hardware*(metal):* Monolithic apps */* Physical server as unit */* TLM of years
+   ‣ Complete (except network) isolation
+
+🠗
+
+*Virtual*machines:* Hardware virtualization */* VMs as unit */* TLM of months 🠖 years
+   ‣ Hypervisor-based process/data isolation
+🠗
+
+*Containers:* OS virtualization */* Application as unit */* TLM of minutes 🠖 months
+   ‣ Relies upon mechanisms built into Linux kernel (_groups_/_namespaces_)
+
+🠗
+
+*Serverless:* Runtime virtualization */* Resource as unit */* TLM of seconds 🠖 minutes
+
+* Background: Virtualization chart
+
+.image images/firecracker_serverless_evolution.png _ 1000
+.caption From left to right, decreasing concern/control and increasing focus on business logic
+
+* Background: industry
+
+Industry has been moving towards serverless for both ease of deployment and management.
+
+- Reduced work in operating servers and managing capacity
+- Automatic scaling
+- Pay-for-use pricing
+- Integrations with sources of events and streaming data 
+
+.image images/black.png 1 800
+
+Serverless is also attracting the attention of the research community, with work on:
+
+- Scaling out video encoding
+- Linear algebra
+- Parallel compilation
+
+
+* Background: Virtualization multitenancy
+
+Running multitenant virtualization workloads creates two distinct *problems*:
+
+1. Security isolation
+   ‣ e.g. cross-tenant data access/inference/spillage
+
+2. Operational concerns
+    ‣ e.g. noisy neighbors
+
+* Option: Containers
+
+Containers, most commonly embodied by Docker, have become popular for similar reasons to serverless: reduced operational overhead, and improved manageability.
+
+Containers on a host share a single OS kernel, therefore all workloads share the kernel, relying on isolation mechanisms built into the kernel for protection.
+
+.image images/firecracker_models.png _ 650 
+.caption  The security model of Linux containers (a) depends directly on the kernel’s sandboxing capabilities, while KVM style virtualization (b) relies on security of the VMM, possibly augmented sandboxing
+
+* Option: Virtualization
+
+Uses hardware features (e.g. Intel VT-X) to sandbox and isolate each environment with it's own virtual hardware, page tables and kernel.
+
+Density and overhead are the drawbacks/challenges as the VMM and kernel associated with each guest consumes some amount of CPU and memory. 
+
+Startup time is also a concern, as VMs take seconds to start up.
+(A unikernel is the normal solution for slow startup, but could not be considered due to the requirement of running unmodified code targeting Linux.)
+
+Additionally, general-purpose hypervisors and VMMs are also quite large, leading to a large trusted compute base (TCB). The popular combination of KVM + QEMU runs to over 1M lines of code and requires up to 270 unique syscalls.
+
+* Option: Language VMs
+
+These aim to run multiple workloads within a single process, an approach which introduces significant tradeoffs between functionality and resistance to side channel attacks such as _Spectre_.
+
+Language-specific VMs (Java's JVM/V8/etc.) do not work for serverless because they need to be able to support arbitrary binaries.
+
+* Background (contd.)
+
+"This introduces difficult tradeoffs: implementors of serverless and container services can choose between hypervisor-based virtualization (and the potentially unacceptable overhead related to it), and Linux containers (and the related compatibility vs. security tradeoffs)"
+
+.image images/black.png 1 800
+
+"What we really want is the isolation characteristics of virtualization, with the lightweight overheads of containers. 
+From an isolation perspective, the most compelling benefit is that it moves the security-critical interface from the OS boundary to a boundary supported in hardware and comparatively simpler software"
+
+* Design
+
+*Isolation:* It must be safe for multiple functions to run on the same hardware, protected against privilege escalation, information disclosure, covert channels, and other risks.
+
+*Overhead*and*Density:* It must be possible to run thousands of functions on a single machine, with minimal waste.
+
+*Performance:* Functions must perform similarly to running natively. Performance must also be consistent, and isolated from the behavior of neighbors on the same hardware.
+
+*Compatibility:* Lambda allows functions to contain arbitrary Linux binaries and libraries. These must be supported without code changes or recompilation.
+
+*Fast*Switching:* It must be possible to start new functions and clean up old functions quickly.
+
+*Soft*Allocation:* It must be possible to over commit CPU, memory and other resources, with each function consuming only the resources it needs, not the resources it is
+entitled to.
+
+* Design (contd.)
+
+- At the core of Firecracker is a new VMM that uses the Linux Kernel's KVM infrastructure to provide minimal virtual machines (_MicroVMs_), that support modern Linux hosts, and Linux and OSv guests.
+- Firecracker provides a REST based configuration API; device emulation for disk, networking and serial console; and configurable rate limiting for network and disk throughput and request rate.
+- One Firecracker process per _MicroVM_, providing a simple security isolation model.
+- Significantly smaller codebase in a safe language (50kloc of Rust).
+- Uses Linux components wherever possible (block IO, process scheduling, TUN/TAP virtual network, etc.)
+- Targeting container/serverless workloads, Firecracker only supports a limited number of emulated devices (e.g. no support for USB, video, and audio devices).
+- Firecracker devices offer built-in rate limiters sufficient for AWS' needs, although still considerably less flexible than Linux `cgroups`.
+
+* Evaluation: Boot times
+
+Firecracker _MicroVMs_ boot in around 100ms, 150ms if you also include the API call processing time.
+
+.image images/firecracker_boot_times.png _ 850
+.caption Cumulative distribution of wall-clock times for starting MicroVMs in serial, for pre-configured Firecracker (FC-pre), end-to-end Firecracker, Cloud Hypervisor, and QEMU.
+
+* Evaluation: Boot times x 50
+
+.image images/firecracker_boot_times_50.png _ 900
+.caption Cumulative distribution of wall-clock times for starting 50 MicroVMs in parallel, for pre-configured Firecracker (FC-pre), end-to-end Firecracker, Cloud Hypervisor,and QEMU.
+
+* Evaluation: Memory overhead
+
+The memory overhead is very low, at around 3MB per _MicroVM_ (compared to 13MB for Cloud Hypervisor, and 131MB for QEMU).
+
+.image images/firecracker_memory_overhead.png _ 850
+.caption Memory overhead for different VMMs depending on the configured VM size.
+
+* Evaluation: IO throughput
+
+The current weakness of Firecracker is block IO performance. Firecracker (and Cloud Hypervisor) is limited to around 13,000 IOPS (52 MB/s at 4kB), whereas the same hardware is capable of over 340,000 read IOPS (1GB/s at 4kB).
+
+.image images/firecracker_io_throughput.png _ 800
+.caption IO throughput on EC2 `m5d.metal` and running inside various VMs.
+
+* Evaluation: IO latency
+
+.image images/firecracker_io_latency.png _ 1000
+.caption 99th percentile IO latency on EC2 m5d.metal and running inside various VMMs.
+
+* Evaluation: Network throughput & over-subscription
+
+.image images/firecracker_net_throughput.png _ 650
+.caption `iperf3` throughput in Gb/s for receiving (RX) in the VM and transmitting (TX) from the VM for a single and ten concurrent TCP streams. 
+
+
+The authors expect significant improvements to be made in disk IO and networking, but the gap to the near bare-metal performance offered by PCI pass-through will not be fully closed as the hardware is not yet up to the task of supporting thousands of ephemeral VMs.
+
+Memory and CPU over-subscriptions ration have been tested up to 20x without problems, and production ratios of up to 10x have been used.
+
+* Conclusions
+
+"In addition to the short-term success, Firecracker will be the basis for future investments and improvements in the virtualization space, including exploring new areas for virtualization technology. We are excited to see Firecracker being picked up by the container community, and believe that there is a great opportunity to move from Linux containers to virtualization as the standard for container isolation across the industry."
+
+Paper and original presentation available @ [[https://www.usenix.org/conference/nsdi20/presentation/agache][USENIX]]
