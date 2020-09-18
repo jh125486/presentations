@@ -1,0 +1,248 @@
+# DeFog
+Fog Computing Benchmarks
+18 Sep 2020
+
+Jacob Hochstetler
+Ph.D. student, University of North Texas
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+## Overview
+
+1. Introduction
+
+2. Background
+
+3. Problems and Challenges
+
+4. The DeFog Suite
+
+5. Experiment
+
+6. Related Work
+
+7. Conclusions
+
+## Introduction
+
+This paper details the creation of a Fog-focused benchmarking suite and the subsequent experimental testing of it.
+
+--- 
+
+Published: *SEC '19: 4th ACM/IEEE Symposium on Edge Computing*, November 2019 
+
+PDF available: <a href="http://bvarghese.staff.cs.qub.ac.uk/papers/DeFog-SEC2019.pdf">DeFog SEC2019</a>
+
+Code available: <a href="https://github.com/qub-blesson/DeFog">GitHub</a> 
+
+## Four contributions
+
+1. Created of the _DeFog_ suite which operates in three deployment modes: cloud-only, edge-only, cloud-edge (Fog).
+
+2. Evaluated using six application benchmarks that are relevant to Fog computing.
+
+3. Identified and collected of a catalog of metrics that capture the properties of the target platform and the application running on it. 
+
+4. Experimentally evaluated of DeFog across cloud resources and multiple single board computers that are used as edge resources.
+
+## Background
+
+Fog is...
+
+.link https://www.stackpath.com/edge-academy/fog-computing/ an architecture to use devices closer to consumption for computation...
+
+.link https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119551713.ch6 and focuses on latency/reliability for quality of service/experience...
+
+.link https://www.omnisci.com/technical-glossary/fog-computing decentralizes resources for Edge devices. 
+
+---
+
+Benchmarks are...
+
+.link https://jbd.dev/benchmarks-are-hard/ hard...
+
+.link http://blog.millermedeiros.com/benchmarking-is-hard/ and benchmarking is hard...
+
+.link https://jvns.ca/blog/2016/07/23/rigorous-benchmarking-in-reasonable-time/ and benchmarking correctly is even harder.....
+
+## Fog Overview
+
+.image images/fog_diagram.png 500 _
+.caption Computing architecture overview from centralized cloud data centers, to fog nodes and finally edge devices.
+
+## Problems and Challenges
+
+1. Understanding the relative performance of Fog applications by comparing:
+    - Different vendors hardware platforms (diversity of hardware architectures)
+    - The impact on performance when system software level changes 
+    - Different/novel networking protocols
+
+---
+
+2.  Five general observations regarding Fog benchmarking:
+    - Benchmarks are complex: consider dependencies between cloud/edge services.
+    - Benchmarks are not readily available.
+    - Benchmarking should generate rapid results.
+    - Generalize metrics captured during Fog benchmarking to a variety of workloads.
+    - Benchmarking needs to be consistent.
+
+
+## Research Questions
+
+**Question 1**: How can the relative performance of using a Fog platform
+over the cloud-only platform be understood and quantified?
+
+---
+
+**Question 2**: If there are multiple services of an application that can be
+moved to the edge, then how can performance of using the Fog be
+understood?
+
+---
+
+**Question 3**: If there are multiple competing resources available at the
+edge suited for a specific service, then which resource should be
+selected for maximising the overall performance gain?
+
+## The DeFog Suite
+
+Workload composed of six applications:
+
+1. Deep learning-based object recognition
+2. Text-to-speech converter,
+3. Text-to-audio forced alignment
+4. An online mobile game
+5. An Internet-of-Things (IoT) application
+6. Real-time face detection from video streams
+
+The applications are latency critical, stream-based and/or bandwidth intensive.
+
+## The Six Benchmark Steps
+
+
+1. Build and run a container.
+
+2. Transfer assets to the cloud.
+
+3. Transfer assets to the edge.
+
+4. Execute the benchmark application.
+
+5. Gather the values for a catalog of identified metrics.
+
+6. Provide the metrics to the user.
+
+## DeFog Modes
+
+.image images/defog_modes.png 520 _
+.caption DeFog deployment modes, namely cloud-only, edge-only and cloud-edge (Fog)
+
+## Cloud-only mode
+
+.image images/defog_mode1.png 400 _
+.caption The DeFog cloud-only deployment mode.
+
+## Edge-only mode
+
+.image images/defog_mode2.png 360 _ 
+.caption The DeFog edge-only deployment mode.
+
+## Cloud-Edge mode
+
+.image images/defog_mode3.png 540 _ 
+.caption The DeFog cloud-edge (Fog) deployment mode.
+
+## Application benchmarks used in DeFog
+
+.image images/defog_benchmarks.png _ 1040
+
+<table>
+<tr><th>Type</th><th>Device</th></tr>
+<tr><td>Latency Critical (LC)</td><td>Single - S</td></tr>
+<tr><td>Bandwidth Intensive (BI)</td><td>Multiple - M</td></tr>
+<tr><td>Location Aware (LA)</td><td>Multiple, simulated - M(S)</td></tr>
+<tr><td>Computational Intensive (CI)</td><td>Multiple possible, not presented M(N)</td></tr>
+</table>
+
+## Types of Metrics collected
+
+Three types of metrics:
+
+- Platform
+- Application specific
+- External tools
+
+## Platform Metrics collected
+
+.image images/defog_platform_metrics.png  _ 520
+.caption Platform metrics collected by DeFo
+
+## Application Specific Metrics collected
+
+.image images/defog_application_metrics.png _ 1040
+.caption Fog application metrics collected by DeFog
+
+## External Tool Metrics collected
+
+.image images/defog_jmeter_metrics.png _ 520
+.caption  Metrics collected using JMeter in DeFog
+
+
+.image images/defog_taurus_metrics.png _ 520
+.caption Metrics collected using Taurus in DeFog
+
+## Experiment Setup
+
+*Cloud:* AWS EC2 instance that is set up in the Dublin `eu-west-1` region
+
+*Edge:* 
+
+.image images/defog_devices.png _ 520
+.caption Single board computers used as edge resources.
+
+*Deployment:* Docker `17.12.1-ce` used for container building and deployment
+
+## Experiment Results
+
+Three parts:
+
+1. Application latencies for different deployment modes
+
+2. Impact of stressing edge resources on application latencies
+
+3. Impact of concurrent users on application latencies
+
+## Experiment Results: Application latencies
+
+.image images/defog_results_1a.png 260 _
+
+.image images/defog_results_1b.png 260 _
+
+## Experiment Results: Stressing edge resources on application latencies
+
+.image images/defog_results_2.png 500  _
+
+## Experiment Results: concurrent users on application latencies
+
+.image images/defog_results_3.png 340  _
+
+## Related Work
+
+Two types of relevant work: *simulators* and *real-benchmarkers*
+
+---
+
+Popular Fog and Edge computing based simulators:
+- EdgeCloudSim
+- iFogSim
+- MyiFogSim
+- FogExplorer
+
+---
+
+Real benchmarks include:
+- Yahoo Cloud Serving Benchmark
+- CloudRank-D
+- DCBench
+
+## Conclusions

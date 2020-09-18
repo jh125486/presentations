@@ -49,3 +49,6 @@ Jacob Hochstetler's presentations
 * [UNT: Understanding, Detecting and Localizing Partial Failures in Large System Software (Chang Lou et al)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/LocalizingPartialFailures.slide)
 
 * [UNT: Firecracker - Lightweight Virtualization for Serverless Applications (Alexandru Agache et al)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/Firecracker.slide)
+
+* [UNT: DeFog - Fog Computing Benchmarks
+ (Jonathan McChesney et al)](http://go-talks.appspot.com/github.com/jh125486/presentations/UNT/DeFog.slide)
