@@ -1,0 +1,72 @@
+# New Directions in Cloud Programming
+CIDR 2021 / Hydro Team / RISELab / UC Berkeley
+
+Jacob Hochstetler
+25 Feb 2021
+Dependable Computing Lab
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+## Organization
+
+1. Introduction
+
+2. PACT
+
+3. The Program Semantics Facet
+
+4. The Availability Facet
+
+5. The Consistency Facet
+
+6. The Target Facet
+
+7. Conclusion
+
+## Introduction
+
+// cloud programming is hard
+
+Each new generation of computing platform
+
+## The Big Question:
+
+_"How will people program the cloud?_
+
+.image images/UNT_green.png 3 850
+
+It's hard:
+
+- Parallelism & partial failure
+- Heterogenous hardware & networks
+- Dynamic autoscaling
+- Data: persistence, latency and scale
+
+.image images/UNT_green.png 3 850
+
+**This is a grand challenge across core computer science.**
+
+## PACT
+
+- Program Semantics
+- Availability
+- Consistency
+- Targets of Optimization
+
+## The Program Semantics Facet
+
+## The Availability Facet
+
+## The Consistency Facet
+
+## The Target Facet
+
+## Conclusion
+
+Cheung et al., CIDR 2021, [[http://cidrdb.org/cidr2021/papers/cidr2021_paper16.pdf][available here]]
+
+UC Berkeley:
+
+- [[https://hydro-project.github.io/][Hydro team]]
+
+- [[https://rise.cs.berkeley.edu/][RISELab]]

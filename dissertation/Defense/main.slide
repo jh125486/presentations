@@ -1,0 +1,249 @@
+# An Extensible Computing Architecture Design for Connected Autonomous Vehicle System
+
+Jacob Hochstetler
+23 Mar 2021
+Dependable Computing Lab
+jacobhochstetler@my.unt.edu
+http://github.com/jh125486
+
+## Organization
+
+1. Introduction
+
+2. Background
+
+3. Problems and challenges
+
+4. My approach
+
+&emsp;&emsp;&bull; Data format
+
+&emsp;&emsp;&bull; Data protocol
+
+&emsp;&emsp;&bull; Application orchestration
+
+5. Prior work
+
+6. Conclusion
+
+## Introduction
+
+.image images/network_overview.png 530 _
+.caption Connected computing hierarchy 
+
+## Background: Decentralized computing
+
+- Cloud computing
+
+- Ubiquitous computing
+
+- Connected vehicles
+
+## Background: In-Vehicle services and systems
+
+- Real-time diagnostics
+
+- Advanced Driver-Assistant Systems (ADAS)
+
+- Third-party applications
+
+## Background: Vehicle Data Producers/Sensors
+
+.image images/sensors.png 550 _
+
+## Problems and challenges
+
+1. Extensibility and compatibility
+
+2. Data sharing
+
+## Problems and challenges: continued
+
+- Data format
+- Data protocol
+- 1st through 3rd party integration
+
+.image images/UNT_green.png 3 850
+
+<div style="text-align:center;margin-top: 64px">
+<i>"All problems in computer science can be solved by another level of indirection" <br/>
+ . <br/>
+ . <br/>
+ . <br/>
+"but that usually will  create another  problem" 
+</i>
+</div>
+
+## Challenge: Data format
+
+- Backwards and forwards compatibility (preferably avoiding 'versioning')
+- Technical merits
+- Polyglot requirements
+
+## Challenge: Data protocol
+
+- Low-resource/low-bandwidth/low-latency environment
+- Machine-to-Machine
+- Also Polyglot requirements
+
+## Challenge: 1st through 3rd party integration
+
+Massive difference between platforms
+
+`CAV ⇄ Edge ⇄ Cloud`:
+
+- Scale of Resources
+- Variety of Services
+- Varying Intervals of Delivery
+
+.image images/UNT_green.png 3 850
+
+Integrators nightmare, e.g. the same camera could be:
+- In a different sensor package
+- Sold from a different vendors/VAR with "added" services
+- Installed in a proprietary way by a different OEM
+
+## My approach
+
+Three parts:
+
+- Data format: `protobuf` 
+- Data protocol: `gRPC`
+- Application orchestration: k3s/k3OS
+
+## My approach: Data Format
+
+- Technical problem 
+- "Cultural" problem
+
+.image images/UNT_green.png 3 850
+
+Comparisons:
+- ASN.1
+- XML
+- CORBA
+- JSON
+- Thrift
+- Avro
+
+## Protocol buffers: Background
+
+- Designed ~2001
+- Uses Interface Definition Language (IDL) for defining models
+- Binary serialization
+- Compiler creates interfaces for target languages
+
+## Protocol buffers: Example serialized
+
+.image images/example_proto_decomposition.png _ 1000 
+<div style="color:grey;font-size:16pt">
+    Example message composed of three fields: 
+    <ul>
+    <li>hexadecimal wire values shown in <span style="color:black">black</span>, </li>
+    <li>with decoded values and field descriptions in <span style="color:green">green</span></li>
+    </ul>
+</div>
+
+## Protocol buffers: Example model
+
+.code -numbers code/person.proto
+
+## My approach: Data protocol
+
+- New application paradigm ➔ Monolith vs Microservices
+- Microservices must communicate to share state
+- Layered communications crossing network stacks, data centers and regions
+
+.image images/UNT_green.png 3 850
+
+Comparisons:
+- JSON over HTTP
+- Thrift RPC
+- CoAP
+
+## gRPC: Background
+
+- Released ~2015
+- Designed for massively distributed systems spanning datacenters
+- While not tied directly to Protobufs, uses same IDL
+- "Rides" on HTTP/2, and tested with HTTP/3
+
+## gRPC: Architecture stack
+
+.image images/grpc-core-stack.svg 520 _
+.caption "Wrapped" languages: `gRPC` C-Core stack
+
+## gRPC: Example service
+
+.code -numbers code/contacts.proto
+
+## Protobuf/gRPC: Development lifecycle
+
+.image images/protobuf_lifecycle.png _ 950
+.caption Protocol buffer and gRPC developer workflow
+
+## My approach: Application orchestration
+
+- Portable application deployment
+- Network topology is "unstable"; clusters should form dynamically
+- Multi-cloud capable (from edge clusters to public cloud providers)
+
+.image images/UNT_green.png 3 850
+
+<center>Virtualization and containerization is not enough</center>
+
+.image images/virtualization-vs-containers.png 240 _
+.caption Type 1, Type 2 virtualization compared to containerization
+
+## k3s
+
+<div><b>containerization</b> = abstracting the app's runtime environment</div>
+<div><b>kubernetes</b> = abstracting app's runtime scheduling</div>
+
+.image images/k3s_overview.svg 450 _
+.caption k3s overview
+
+## k3os
+
+<div>Just like the kernel schedules processes in an operating system;</div>
+<div>k8s schedules applications in a data center</div>
+
+.image images/k3os_overview.svg 450 _
+.caption k3os overview
+
+## Prior work overview
+
+.image images/prior_work_overview.png _ 1024 
+
+## Prior work: Datacenter related
+
+- Reliability Characterization of Solid State Drives in a Scalable Production Data Center
+- Incorporate Proactive Data Protection in ZFS Towards Reliable Storage Systems
+- Developing Cost-Effective Data Rescue Schemes to Tackle Disk Failures in Data Centers
+- An Empirical Study of Quad-Level Cell (QLC) NAND Flash SSDs for Big Data Applications
+
+## Prior work: Edge related
+
+- TuranGo:  Mutation Testing a Language
+- Optimal Police Patrol Planning Strategy for Smart City Safety
+
+.image images/patrols_placed.png 430 _
+.caption 50 crime clusters with 25 patrols placed using entropy algorithm.Black cross-hairs show placed patrols.
+
+## Prior work: CAV related
+
+- Embedded Deep Learning for Vehicular Edge Computing
+- Low-Latency High-Level Data Sharing for Connected and Autonomous Vehicular Networks
+
+.image images/ncs_fps_mobilnets.png 400 _
+.caption MobileNets RPi3B (FPS): CPU only vs.  1 x NCS
+
+## Conclusion: Node Management
+
+.image images/example_mgmt.png _ 1024 
+.caption Example Node management platform using Protobufs as data format for serialization and storage, along with gRPC for remote service calls.
+
+## Conclusion: Node excerpt
+
+.image images/example_edge.png _ 1024 
+.caption Example Edge node using application orchestration to deploy two Pods for microservices.

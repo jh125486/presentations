@@ -1,0 +1,23 @@
+service Contacts {
+  rpc CreateContact(CreateContactRequest) returns (Empty) { // Adds a Person to the Contacts
+    options (google.api.http) = {
+      post: "/v1/contacts", // Create maps to HTTP POST.
+      body: "person",
+    }
+  }
+  rpc GetContact(Person) returns (Person) { // Get returns person for ID
+    options (google.api.http) = { // Get maps to HTTP GET. No body.
+      get: "/v1/contacts/{id}" // 'id' field mapped from Person definition
+    }
+  }
+  rpc ListContacts(Name) returns (People) { // Searches Contacts for People matching 'name'
+    options (google.api.http) = { // Get maps to HTTP GET. No body.
+      get: "/v1/contacts"  // URL query params are automatically mapped, e.g. ?name=$name
+    }
+  }
+}
+message CreateContactRequest {
+    Person person = 1; // The field name should match the Noun in the method name.
+}
+message Name { string name = 1; }
+message Empty {} // empty message to represent an empty response
