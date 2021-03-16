@@ -22,6 +22,7 @@ Jacob Hochstetler's presentations
 
 * [Proposal: A Modern Computing Architecture for Connected Autonomous Vehicles](http://go-talks.appspot.com/github.com/jh125486/presentations/dissertation/proposal/main.slide)
 
+* [Defense: An Extensible Computing Architecture Design for Connected Autonomous Vehicle System](http://go-talks.appspot.com/github.com/jh125486/presentations/dissertation/Defense/main.slide)
 ***
 
 ## Presented work
