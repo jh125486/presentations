@@ -1,8 +1,11 @@
 # An Extensible Computing Architecture Design for Connected Autonomous Vehicle System
 
 Jacob Hochstetler
-23 Mar 2021
-Dependable Computing Lab
+PhD Dissertation Defense
+Dr. Song Fu 
+Dr. Rodney Nielsen
+Dr. Armin Mikler 
+Dr. Ryan Garlick
 jacobhochstetler@my.unt.edu
 http://github.com/jh125486
 
@@ -14,17 +17,25 @@ http://github.com/jh125486
 
 3. Problems and challenges
 
-4. My approach
+4. Extensible Edge Computing Architecture
 
-&emsp;&emsp;&bull; Data format
-
-&emsp;&emsp;&bull; Data protocol
+<div style="margin: -0.5em 0">
+&emsp;&emsp;&bull; Data format/protocol
 
 &emsp;&emsp;&bull; Application orchestration
+</div>
 
-5. Prior work
+5. Other PhD research
 
-6. Conclusion
+<div style="margin: -0.5em 0">
+&emsp;&emsp;&bull; Cloud/Edge-related
+
+&emsp;&emsp;&bull; CAV-related
+</div>
+
+6. Conclusion & future work
+
+7. Publications
 
 ## Introduction
 
@@ -39,6 +50,8 @@ http://github.com/jh125486
 
 - Connected vehicles
 
+<hr style="margin: 2em 0 1.5em 0"/>
+
 ## Background: In-Vehicle services and systems
 
 - Real-time diagnostics
@@ -51,11 +64,19 @@ http://github.com/jh125486
 
 .image images/sensors.png 550 _
 
+## Our proposed CAV/Edge/Cloud architecture
+
+.image images/prior_work_overview.png _ 1024 
+
 ## Problems and challenges
 
 1. Extensibility and compatibility
 
+- ADD points
+
 2. Data sharing
+
+- ADD points
 
 ## Problems and challenges: continued
 
@@ -63,7 +84,7 @@ http://github.com/jh125486
 - Data protocol
 - 1st through 3rd party integration
 
-.image images/UNT_green.png 3 850
+<hr style="margin: 2em 0 1.5em 0"/>
 
 <div style="text-align:center;margin-top: 64px">
 <i>"All problems in computer science can be solved by another level of indirection" <br/>
@@ -80,11 +101,17 @@ http://github.com/jh125486
 - Technical merits
 - Polyglot requirements
 
+<hr style="margin: 2em 0 1.5em 0"/>
+
+
 ## Challenge: Data protocol
 
 - Low-resource/low-bandwidth/low-latency environment
 - Machine-to-Machine
 - Also Polyglot requirements
+
+<hr style="margin: 2em 0 1.5em 0"/>
+
 
 ## Challenge: 1st through 3rd party integration
 
@@ -96,27 +123,31 @@ Massive difference between platforms
 - Variety of Services
 - Varying Intervals of Delivery
 
-.image images/UNT_green.png 3 850
+<hr style="margin: 2em 0 1.5em 0"/>
 
 Integrators nightmare, e.g. the same camera could be:
 - In a different sensor package
 - Sold from a different vendors/VAR with "added" services
 - Installed in a proprietary way by a different OEM
 
-## My approach
+## Extensible Edge Computing Architecture
 
-Three parts:
+Contains three parts:
 
 - Data format: `protobuf` 
+
 - Data protocol: `gRPC`
+
 - Application orchestration: k3s/k3OS
 
-## My approach: Data Format
+
+
+## Data Format
 
 - Technical problem 
 - "Cultural" problem
 
-.image images/UNT_green.png 3 850
+<hr style="margin: 2em 0 1.5em 0"/>
 
 Comparisons:
 - ASN.1
@@ -133,28 +164,31 @@ Comparisons:
 - Binary serialization
 - Compiler creates interfaces for target languages
 
+<hr style="margin: 2em 0 1.5em 0"/>
+
 ## Protocol buffers: Example serialized
 
 .image images/example_proto_decomposition.png _ 1000 
-<div style="color:grey;font-size:16pt">
+<div style="color:#666;margin-left: 30%;font-size:0.75em">
     Example message composed of three fields: 
     <ul>
-    <li>hexadecimal wire values shown in <span style="color:black">black</span>, </li>
-    <li>with decoded values and field descriptions in <span style="color:green">green</span></li>
+    <li>hexadecimal wire values shown in <span style="color:black"><i>black</i></span>, </li>
+    <li>with decoded values and field descriptions in <span style="color:green"><i>green</i></span></li>
     </ul>
 </div>
 
 ## Protocol buffers: Example model
 
 .code -numbers code/person.proto
+.caption 'Person' model containing fields for Name, ID, Email and multiple phone numbers.
 
-## My approach: Data protocol
+## Data protocol
 
 - New application paradigm ➔ Monolith vs Microservices
 - Microservices must communicate to share state
 - Layered communications crossing network stacks, data centers and regions
 
-.image images/UNT_green.png 3 850
+<hr style="margin: 2em 0 1.5em 0"/>
 
 Comparisons:
 - JSON over HTTP
@@ -168,6 +202,13 @@ Comparisons:
 - While not tied directly to Protobufs, uses same IDL
 - "Rides" on HTTP/2, and tested with HTTP/3
 
+<hr style="margin: 1em 0 1.5em 0"/>
+
+.image images/heartbeat_benchmark.png 300 _
+<div style="color:#666 ;text-align: center;font-size:0.75em">
+    μs/operation (gRPC is in <span style="color:black"><i>dark gray</i></span> and JSON over HTTP is in <span style="color:Gray"><i>light gray</i></span>)
+</div>
+
 ## gRPC: Architecture stack
 
 .image images/grpc-core-stack.svg 520 _
@@ -176,24 +217,27 @@ Comparisons:
 ## gRPC: Example service
 
 .code -numbers code/contacts.proto
+<div style="color:#666;text-align: center;font-size:0.75em;margin-top: -0.75em">
+'Contacts' service model with an endpoint for Creation, Getting, and Listing.
+</div>
 
 ## Protobuf/gRPC: Development lifecycle
 
 .image images/protobuf_lifecycle.png _ 950
 .caption Protocol buffer and gRPC developer workflow
 
-## My approach: Application orchestration
+## Application orchestration
 
 - Portable application deployment
 - Network topology is "unstable"; clusters should form dynamically
 - Multi-cloud capable (from edge clusters to public cloud providers)
 
-.image images/UNT_green.png 3 850
+<hr style="margin: 2em 0 1.5em 0;"/>
 
-<center>Virtualization and containerization is not enough</center>
+<div style="text-align: center"><i>Virtualization and containerization is not enough</i></div>
 
 .image images/virtualization-vs-containers.png 240 _
-.caption Type 1, Type 2 virtualization compared to containerization
+.caption Type 1 and Type 2 virtualization compared to containerization
 
 ## k3s
 
@@ -211,39 +255,171 @@ Comparisons:
 .image images/k3os_overview.svg 450 _
 .caption k3os overview
 
-## Prior work overview
-
-.image images/prior_work_overview.png _ 1024 
-
-## Prior work: Datacenter related
+## My other research: Cloud related
 
 - Reliability Characterization of Solid State Drives in a Scalable Production Data Center
 - Incorporate Proactive Data Protection in ZFS Towards Reliable Storage Systems
 - Developing Cost-Effective Data Rescue Schemes to Tackle Disk Failures in Data Centers
 - An Empirical Study of Quad-Level Cell (QLC) NAND Flash SSDs for Big Data Applications
 
-## Prior work: Edge related
+.image images/pdp_baseline.png _ 630
+<div style="color:#666 ;text-align: center;font-size:0.75em; line-height: 30px">Proactive disk cloning and post-failure disk recovery for a fully-utilized <i>zpool</i>. <b>0H</b> denotes the disk failure occurrence.</div>
+
+## My other research: Proactive data protection
+
+Disk access speed has been outpaced by the increasing capacity.  
+
+The stripe width of RAID arrays have grown to fill the gap between disk speed and capacity. 
+
+Unfortunately,the probability of having double and even triple failures also increases as the disk recovery time is significantly prolonged
+
+<hr/>
+
+In this work a Proactive Data Protection (PDP) framework for ZFS is proposed to reduce the recovery time for RAID systems.
+
+## My other research: Proactive data protection
+
+Three strategies:
+
+1. Proactive Disk Cloning (P-DISCO)
+
+     Migrates data on a predicted, failing drive to a hot spare using disk cloning.
+
+<hr/>
+
+2. Proactive Active-data Recovery (P-ADAR)
+
+    Proactively  rescues  only  active-data  to  the  spares, although computationally intensive,  recovering only the minimum amount  of  necessary  data  can  save  time. 
+
+<hr/>
+
+3. Proactive Active-data Cloning (P-DACO)
+
+      Only clones the active data during rescue, and eliminates the need to compute parity (combination of #1 and #2 strategies). 
+
+## My other research: Proactive data protection
+
+.image images/pdp_strategy.png _ 950
+.caption Time used by each proactive strategies for data rescue.
+
+## My other research: Edge related
 
 - TuranGo:  Mutation Testing a Language
 - Optimal Police Patrol Planning Strategy for Smart City Safety
 
-.image images/patrols_placed.png 430 _
-.caption 50 crime clusters with 25 patrols placed using entropy algorithm.Black cross-hairs show placed patrols.
+.image images/patrols_density.png 430 _
+<div style="color:#666 ;text-align: center;font-size:0.75em; line-height: 30px">LA County crime <i>stat_density2d</i> plot with size=1, bins=128.</div>
 
-## Prior work: CAV related
+## My other research: Police Patrol Planning
+
+Police are not an infinite resource and must be managed effectively to reduce overall crime.  
+
+This work uses a novel approach to police patrol placement by using the following workflow: 
+
+1. Process crime data set: statistical analysis, remove "bad" data, assign crime weights
+2. Cluster crime centroids by quantity and weight
+3. Use historical traffic information for distance calculation between these centroids
+3. Maximize entropy by placement of police patrols on the cluster centroids
+
+## My other research: Police Patrol Planning
+
+LA County was chosen for three reasons:
+1. Lower external variables (namely weather stability)
+
+     LA County: low of 8.6°C to a high of 23.5°C with 380mm rain <br/>
+     Cook (Chicago): low of -10.8°C to a high of 28.6°C with 940mm rain
+
+<hr/>
+
+2. Long drive distances to take advantage of the entropy calculation
+
+    LA County: 12,300 km<sup>2</sup> <br/>
+    Cook (Chicago): 4,235 km<sup>2</sup>
+
+<hr/>
+
+3. Open, consistent data
+
+     The Los Angeles Open Data project provides crime data for LA County, and in total comprised 2,130,504 crimes from 2005 to 2015.
+
+## My other research: Police Patrol Planning
+
+Number of clusters chosen from hexbin plots. 
+
+50 clusters plotted using K-means (weighted crimes replicated).
+
+Drive distances between all the centroids retrieved using historical traffic data.
+
+Patrols placed to maximize entropy using: 
+
+.image images/patrols_entropy.png _ 650
+<div style="color:#666 ;text-align: center;font-size:0.75em; line-height: 30px">The entropy is a combination of the weight of a crime centroid (w<sub>c1</sub>), 
+generated from crime clustering, over the total system weight (w<sub>sys</sub>), 
+added to the quickest path from the centroid to any other centroid (r<sub>c1</sub>), 
+over the quickest path in the entire system (r<sub>sys</sub>)<div>
+
+
+## My other research: Police Patrol Planning
+
+.image images/patrols_placed.png 530 _
+.caption 50 crime clusters with 25 patrols placed using entropy algorithm. Black cross-hairs show placed patrols.
+
+## My other research: CAV related
 
 - Embedded Deep Learning for Vehicular Edge Computing
 - Low-Latency High-Level Data Sharing for Connected and Autonomous Vehicular Networks
 
-.image images/ncs_fps_mobilnets.png 400 _
+.image images/ncs_fps.png _ 750
+.caption GoogLeNet CNN classifier: RPi3B + VCS versus Desktop + VCS
+
+## My other research: Embedded Deep Learning
+
+The proliferation of resource-constrained edge devices has pushed development of supplementary AI-specific devices for inference on already trained models. 
+
+.image images/rpi3b_diagram.png 350 _
+.caption The Raspberry Pi 3 Model B used in my experiments contains a 1.2gHz 64-bit quad-core Cortex-A53 (ARMv8) CPU, 1GB of low-power DDR2 SDRAM and four USB 2.0 ports via on-board 5-port USB hub, drawing 6.7W at peak load.
+
+## My other research: Embedded Deep Learning
+
+The AI stick is a USB device containing a specialized processing unit, in this case a Vision Processing Unit (VPU). 
+
+This VPU is optimized to execute models in TensorFlow and Caffe frameworks. 
+
+.image images/ncs_vpu.png 350 _
+.caption Intel™ Movidius® Neural Compute Stick (NCS) is a tiny fanless, USB 3.0 Type-A deep learning device containing a Myriad 2  Vision Processing Unit producing almost 100 GFLOPS while only using 1W of power.
+
+## My other research: Embedded Deep Learning
+
+.image images/ncs_fps_mobilnets.png 540 _
 .caption MobileNets RPi3B (FPS): CPU only vs.  1 x NCS
 
-## Conclusion: Node Management
+## Conclusion
 
 .image images/example_mgmt.png _ 1024 
 .caption Example Node management platform using Protobufs as data format for serialization and storage, along with gRPC for remote service calls.
 
-## Conclusion: Node excerpt
+## Conclusion
 
 .image images/example_edge.png _ 1024 
 .caption Example Edge node using application orchestration to deploy two Pods for microservices.
+
+## Future work
+
+- Large scale testing of Edge clusters using kubernetes OS, as miles of road can be simulated with a few small-board computers
+- Creation of Edge-focused Trust Management Platform
+- Negotiation and sharing of data between Edge and CAV systems
+
+.image images/cattle_pi.png _ 650 
+.caption k3s Raspberry Pi cattle case for Rancher cluster (Mark Abrams 2019)
+
+
+## Publications
+
+- <i>Embedded deep  learning  for  vehicular  edge  computing</i>,  2018
+- <i>An optimal police patrol planning strategy for smart city safety</i>,  2016 
+- <i>Low-latency high-level data sharing for connected and autonomous vehicular networks</i>, 2019
+- <i>Reliability characterization  of  solid  state  drives  in  a  scalable  production  data center</i>,  2018
+- <i>An  empirical  study  of  quad-level  cell  (QLC)  nand  flash  SSDs  for  big data applications</i>,  2019
+- <i>Incorporate proactive data protection in ZFS towards reliable storage systems</i>,  2018
+- <i>Developing cost-effective data rescue schemes to tackle disk failures in data centers</i>, 2018
+- <i>Incorporate  proactive  data  protection  in  ZFS  towards  reliable  storage  systems</i>,   2018
