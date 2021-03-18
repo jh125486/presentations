@@ -45,20 +45,33 @@ http://github.com/jh125486
 ## Background: Decentralized computing
 
 - Cloud computing
+    - Treating 'compute' like a utility
+    - IaaS: <b>I</b>nfrastructure <b>a</b>s <b>a</b> <b>S</b>ervice (OS, application & data)
+    - PaaS: <b>P</b>latform <b>a</b>s <b>a</b> <b>S</b>ervice (application & data)
+    - SaaS: <b>S</b>oftware <b>a</b>s <b>a</b> <b>S</b>ervice (only data)
 
 - Ubiquitous computing
+    - Rise of embedded devices and IoT computing
+    - Reducing the 'computer' interface, e.g. Apple Watch
 
 - Connected vehicles
-
-<hr style="margin: 2em 0 1.5em 0"/>
+    - Connected and Autonomous Vehicles (CAV)
+    - CAV ⇄ Edge /  Edge ⇄ Cloud / CAV ⇄ Cloud
 
 ## Background: In-Vehicle services and systems
 
 - Real-time diagnostics
+    - Started with standardized engine emission collection in 1994 (OBD-II)
+    - Independent RT diagnostics from separate manufacturers (mostly Sat-based)
+    - Modern systems use 3G/4G/LTE to haul data to cloud providers
 
 - Advanced Driver-Assistant Systems (ADAS)
+    - Camera/radar/LiDAR/Sonar(ultrasonic)-based
+    - From basic self-parking to highway lane "keeping" and 'smart' cruise control
 
 - Third-party applications
+    - Now: 'Infotainment' with integrated 1<sup>st</sup> and 2<sup>nd</sup>-party applications
+    - Future: 3<sup>rd</sup>-party applications (and government-party)
 
 ## Background: Vehicle Data Producers/Sensors
 
@@ -71,18 +84,23 @@ http://github.com/jh125486
 ## Problems and challenges
 
 1. Extensibility and compatibility
+    - Breaking changes in models/services
+    - Maintain ability to service older clients
+    - Interoperability between different manufacturers
 
-- ADD points
+<hr style="margin: 2em 0 1.5em 0"/>
 
 2. Data sharing
+    - End-user privacy
+    - Origination/maintenance of trust
+    - Legal and moral facets of data retention
 
-- ADD points
 
-## Problems and challenges: continued
+## Focus on extensibility and compatibility
 
 - Data format
 - Data protocol
-- 1st through 3rd party integration
+- 1<sup>st</sup> through 3<sup>rd</sup>-party integration
 
 <hr style="margin: 2em 0 1.5em 0"/>
 
@@ -97,21 +115,33 @@ http://github.com/jh125486
 
 ## Challenge: Data format
 
-- Backwards and forwards compatibility (preferably avoiding 'versioning')
+- Compatibility 
+    - Backwards (new fields won't incur collisions)
+    - Forwards (future clients accept 'older' versions)
+    - No additional metadata (avoiding 'versioning' fields)
+
 - Technical merits
+    - Encoding size (literal size on the 'wire')
+    - Speed (serialization / deserialization)
+    - Efficient (lightweight CPU/memory requirements)
+
 - Polyglot requirements
-
-<hr style="margin: 2em 0 1.5em 0"/>
-
+    - Wide variety of language support
+    - Integration with various development platforms/pipelines
 
 ## Challenge: Data protocol
 
-- Low-resource/low-bandwidth/low-latency environment
-- Machine-to-Machine
-- Also Polyglot requirements
+- Operates at all levels of CAV ecosystem
+    - <b>Edge/CAV</b>: Low-resource/low-bandwidth/low-latency environment
+    - <b>Cloud</b>: infinite resources/high-latency (depending on data gravity)
 
-<hr style="margin: 2em 0 1.5em 0"/>
+- Machine-to-Machine focused
+    - Human interfaces should not be a priority
+    - Can transverse heterogenous networks
 
+- Similar Polyglot requirements
+    - Wide variety of language support
+    - Integration with various development platforms/pipelines
 
 ## Challenge: 1st through 3rd party integration
 
@@ -138,9 +168,14 @@ Contains three parts:
 
 - Data protocol: `gRPC`
 
-- Application orchestration: k3s/k3OS
+- Application orchestration: *k3s* (lightweight kubernetes), *k3OS* (kubernetes OS)
 
+<div style="text-align:center">
+<img src="images/netflix_reduced.png" width=350/> &emsp;&emsp;
+<img src="images/netflix_actual.png" width=350/>
+</div>
 
+.caption Netflix's microservice Death Star
 
 ## Data Format
 
@@ -160,11 +195,21 @@ Comparisons:
 ## Protocol buffers: Background
 
 - Designed ~2001
-- Uses Interface Definition Language (IDL) for defining models
 - Binary serialization
-- Compiler creates interfaces for target languages
+- Interface Definition Language to define models, compiles to interfaces for targets
 
-<hr style="margin: 2em 0 1.5em 0"/>
+<hr style="margin: 1em 0 0 0"/>
+
+<table cellspacing="0" cellpadding="0" style="margin: 0; border:none;text-align:center">
+<tr><td colspan=2 style="border: none;">Serialization benchmark comparing Protobuf and JSON</td></tr>
+<tr>
+<td style="border: none;"><img src="images/pb1.png" height=330/></td>
+<td style="border: none;"><img src="images/pb2.png" height=330/></td>
+<tr/>
+<tr><td colspan=2 style="border: none;color:#666;margin-left: 30%;font-size:0.75em">
+Protobuf in <span style="color:black">dark gray</span>, with JSON in <span style="color:Gray">light gray</span>. 
+Serialization is solid, while deserialization is hatched.</td></tr>
+</table>
 
 ## Protocol buffers: Example serialized
 
@@ -197,17 +242,18 @@ Comparisons:
 
 ## gRPC: Background
 
-- Released ~2015
-- Designed for massively distributed systems spanning datacenters
+- Released ~2015, designed for massively distributed systems spanning data centers
 - While not tied directly to Protobufs, uses same IDL
 - "Rides" on HTTP/2, and tested with HTTP/3
 
-<hr style="margin: 1em 0 1.5em 0"/>
-
-.image images/heartbeat_benchmark.png 300 _
-<div style="color:#666 ;text-align: center;font-size:0.75em">
-    μs/operation (gRPC is in <span style="color:black"><i>dark gray</i></span> and JSON over HTTP is in <span style="color:Gray"><i>light gray</i></span>)
-</div>
+<hr style="margin: 1em 0 0 0"/>
+<table  cellspacing="0" cellpadding="0" style="margin: 0; border:none;text-align:center">
+<tr><td style="border: none;">Heartbeat benchmarks comparing Protobuf and JSON</td></tr>
+<tr><td style="border: none;"><img src="images/heartbeat_benchmark.png" height=330/></td></tr>
+<tr><td style="border: none;color:#666;margin-left: 30%;font-size:0.75em">   
+    gRPC is in <span style="color:black"><i>dark gray</i></span> and JSON over HTTP is in <span style="color:Gray"><i>light gray.</i></span>
+</td></tr>
+</table>
 
 ## gRPC: Architecture stack
 
