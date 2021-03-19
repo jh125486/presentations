@@ -317,11 +317,13 @@ Disk access speed has been outpaced by the increasing capacity.
 
 The stripe width of RAID arrays have grown to fill the gap between disk speed and capacity. 
 
-Unfortunately,the probability of having double and even triple failures also increases as the disk recovery time is significantly prolonged
+Unfortunately, the probability of having double and even triple failures also increases as the disk recovery time is significantly prolonged
 
 <hr/>
 
-In this work a Proactive Data Protection (PDP) framework for ZFS is proposed to reduce the recovery time for RAID systems.
+In this work a Proactive Data Protection (**PDP**) framework is proposed to reduce the recovery time for RAID systems in ZFS.
+
+**PDP** chooses among one of three strategies based upon real-time characteristics of the RAID pools to provide the quickest, most cost-effective recovery for data center storage.
 
 ## My other research: Proactive data protection
 
