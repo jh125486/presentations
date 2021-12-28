@@ -1,9 +1,8 @@
 Miles to Go:
 An in depth intro to Golang
-5 May 2016
+3 Dec 2021
 
-Jacob Hochstetler
-Cloud Engineer, Fidelity LLC
+Dr. Jacob Hochstetler
 jacob.hochstetler@gmail.com
 http://github.com/jh125486
 
@@ -99,22 +98,12 @@ However, Go is _not_suited_ for *real-time* software because:
 - garbage collector
 - automatic memory allocation
 
-* Hello, 世界!
+* Hello, 🦅!
 
-.play -numbers code/hello.go
+.play -numbers -edit code/hello.go
 
 - To play with Go programming interactively online: [[http://play.golang.org]]
 - *Activity*: Replace the text with some other language text and run
-
-* Sidebar: 地鼠 in China
-
-[[http://herman.asia/why-is-go-popular-in-china][Why _is_ Golang so popular in China?]]
-
-- Go has great unicode and Windows support, perhaps vital for 中国的程序员?
-- A high reverence in 中国 for things made by Google?
-
-.image image/alexa_rankings.png
-.caption Alexa site ranking for Golang.org [[http://www.alexa.com/siteinfo/golang.org][(retrieved May 3rd, 2016)]]
 
 * Installing Go Compiler on GNU/Linux
 
@@ -277,27 +266,27 @@ Commonly used commands:
 - Type is explicitly specified but initialized with default zero values
 - The zero value is 0 for numeric types, false for Boolean type and empty string for strings.
 
-.play -numbers code/variable1.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/variable1.go /START OMIT/,/END OMIT/
 
 * Variables ...
 
 - Type is explicitly specified and initialized with given values
 
-.play -numbers code/variable2.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/variable2.go /START OMIT/,/END OMIT/
 
 * Variables ...
 
 - Type is inferred from the values that is given for initialization:
 
-.play code/variable3.go /START OMIT/,/END OMIT/
+.play -edit code/variable3.go /START OMIT/,/END OMIT/
 
 - [[http://golang.org/ref/spec#Short_variable_declarations][Short variable declaration]] equivalent:
 
-.play code/variable4.go /START OMIT/,/END OMIT/
+.play -edit code/variable4.go /START OMIT/,/END OMIT/
 
 - Assignment:
 
-.play code/variable5.go /START OMIT/,/END OMIT/
+.play -edit code/variable5.go /START OMIT/,/END OMIT/
 
 * Constants
 
@@ -334,7 +323,7 @@ Commonly used commands:
 - A *struct* is a collection of fields
 - Struct fields are accessed using a dot (*.*)
 
-.play -numbers code/struct1.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/struct1.go /START OMIT/,/END OMIT/
 
 - Person is a _struct_ type
 
@@ -395,7 +384,7 @@ Commonly used commands:
 
 - A *map* maps keys to values
 
-.play code/maps1.go /START OMIT/,/END OMIT/
+.play -edit code/maps1.go /START OMIT/,/END OMIT/
 
 - [[https://blog.golang.org/go-maps-in-action]]
 
@@ -403,7 +392,7 @@ Commonly used commands:
 
 - Maps can be initialized with *make* before use
 
-.play code/maps2.go /START OMIT/,/END OMIT/
+.play -edit code/maps2.go /START OMIT/,/END OMIT/
 
 - the *nil* map is empty and cannot be assigned to
 
@@ -414,26 +403,26 @@ Commonly used commands:
 
 A function to return sum of two _int_ values:
 
-.play code/functiondeclaration1.go /START OMIT/,/END OMIT/
+.play -edit code/functiondeclaration1.go /START OMIT/,/END OMIT/
 
 * Function declarations ...
 
 A function with *multiple* returned values:
 
-.play code/functiondeclaration2.go /START OMIT/,/END OMIT/
+.play -edit code/functiondeclaration2.go /START OMIT/,/END OMIT/
 
 * Function declarations ...
 
 Made clearer by _naming_ the return values:
 
-.play code/functiondeclaration3.go /START OMIT/,/END OMIT/
+.play -edit code/functiondeclaration3.go /START OMIT/,/END OMIT/
 
 * If Conditions
 
 - Syntax inspired by C
 - Curly braces are mandatory
 
-.play code/if1.go /START OMIT/,/END OMIT/
+.play -edit code/if1.go /START OMIT/,/END OMIT/
 
 * If Conditions ...
 
@@ -522,25 +511,25 @@ For `imports`:
 - No parenthesis (*not*even*optional*)
 - Curly brace is *mandatory*!
 
-.play code/for1.go /START OMIT/,/END OMIT/
+.play -edit code/for1.go /START OMIT/,/END OMIT/
 
 * For Loop ...
 
 - Pre and post statements can be empty (and drop the semicolons!)
 
-.play code/for2.go /START OMIT/,/END OMIT/
+.play -edit code/for2.go /START OMIT/,/END OMIT/
 
 * For Loop ...
 
 - An infinite loop can be created by removing the loop condition
 
-.play -numbers code/for3.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/for3.go /START OMIT/,/END OMIT/
 
 * For Range Loops
 
 - The _range_ form of the _for_ loop iterates over a slice or map.
 
-.play code/range1.go /START OMIT/,/END OMIT/
+.play -edit code/range1.go /START OMIT/,/END OMIT/
 
 When ranging over a slice, two values are returned for each iteration:
 
@@ -550,7 +539,7 @@ When ranging over a slice, two values are returned for each iteration:
 
 * For Range with Maps
 
-.play -numbers code/range2.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/range2.go /START OMIT/,/END OMIT/
 
 *Note*: on line 22 the _blank_identifier_ is used to discard the 1st value  
 
@@ -559,7 +548,7 @@ When ranging over a slice, two values are returned for each iteration:
 - The zero value of a slice is _nil_
 - A _nil_ slice has a length and capacity of 0
 
-.play code/nil_slice1.go /START OMIT/,/END OMIT/
+.play -edit code/nil_slice1.go /START OMIT/,/END OMIT/
 
 * Switch statement
 
@@ -568,13 +557,13 @@ When ranging over a slice, two values are returned for each iteration:
 - Cases can be presented in comma-separated lists
 - _break_ statements can be used to terminate a switch early
 
-.play -numbers code/switch1.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/switch1.go /START OMIT/,/END OMIT/
 
 * Switch statement ...
 
 If the switch has no expression it switches on true (useful to write an _if-else-if-else_ chain)
 
-.play -numbers code/switch2.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/switch2.go /START OMIT/,/END OMIT/
 
 * Method declaration
 
@@ -601,7 +590,7 @@ If the switch has no expression it switches on true (useful to write an _if-else
 
 - Method bound to a custom type named Celsius (float64):
 
-.play -numbers code/types.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/types.go /START OMIT/,/END OMIT/
 
 * Method declaration ...
 
@@ -643,7 +632,7 @@ If the switch has no expression it switches on true (useful to write an _if-else
 
 * Pointers ...
 
-.play code/pointer1.go /START OMIT/,/END OMIT/
+.play -edit code/pointer1.go /START OMIT/,/END OMIT/
 
 * Pointers ...
 
@@ -674,7 +663,7 @@ Why pass by reference instead of pass by value?
 - To recover from runtime panic
 - Executed in LIFO order
 
-.play code/defer1.go /START OMIT/,/END OMIT/
+.play -edit code/defer1.go /START OMIT/,/END OMIT/
 
 * Interface
 
@@ -696,14 +685,14 @@ Why pass by reference instead of pass by value?
 
 * Interface ...
 
-.play -numbers code/interface1.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/interface1.go /START OMIT/,/END OMIT/
 
 * Concurrency
 
 - Goroutines are lightweight threads managed by the Go runtime
 - Calling a function with _go_ keyword starts the goroutine
 
-.play -numbers code/concurrency1.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/concurrency1.go /START OMIT/,/END OMIT/
 
 - Goroutines communicate to each other via channels (typed messaging conduits)
 
@@ -726,11 +715,11 @@ Why pass by reference instead of pass by value?
 * Concurrency ...
 
 
-.play -numbers code/concurrency2.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/concurrency2.go /START OMIT/,/END OMIT/
 
 * Concurrency ...
 
-.play -numbers code/concurrency3.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/concurrency3.go /START OMIT/,/END OMIT/
 
 * WaitGroup
 
@@ -743,11 +732,11 @@ Why pass by reference instead of pass by value?
 
 * WaitGroup ...
 
-.play -numbers code/concurrency5.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/concurrency5.go /START OMIT/,/END OMIT/
 
 * WaitGroup ...
 
-.play -numbers code/concurrency4.go /START OMIT/,/END OMIT/
+.play -numbers -edit code/concurrency4.go /START OMIT/,/END OMIT/
 
 * Who uses Go?
 
@@ -755,26 +744,26 @@ Why pass by reference instead of pass by value?
 - Uber
 - Dropbox
 - BBC
-- Docker
+- Spotify
 - Disqus
 - SoundCloud
-- UserVoice
+- Fidelity
 - [[https://github.com/golang/go/wiki/GoUsers][https://github.com/golang/go/wiki/GoUsers]]
 - [[https://github.com/golang/go/wiki/SuccessStories][https://github.com/golang/go/wiki/SuccessStories]]
 
 * Go Resources
 
-- Use the word "golang" to search about Go in Google, Bing etc.
-- Twitter hashtag #golang #GopherCon
+- Use the word "golang" to search about Go in Google, DuckDuckGo, Bing, etc.
 - Official website: [[http://golang.org][http://golang.org]]
 - Official blog: [[http://blog.golang.org][http://blog.golang.org]]
-- Experiment and share Go source code: [[http://play.golang.org][http://play.golang.org]]
-- [[https://gobyexample.com][https://gobyexample.com]]
+- Experiment and share Go source code: [[https://goplay.space/][Go Playground]]
+- [[https://gobyexample.com][Go by Example]]
+- [[https://tour.golang.org/][Golang.org: Tour of Go]]
+- [[https://golang.org/doc/effective_go.html#blank][Golang.org: Effective Go]]
+- [[http://dave.cheney.net/resources-for-new-go-programmers][Dave Cheney's Blog: Resources for new Go programmers]]
 - Forum/Mailing List: [[https://groups.google.com/forum/#!forum/golang-nuts][https://groups.google.com/forum/#!forum/golang-nuts]]
 - Subreddit: [[http://www.reddit.com/r/golang][http://www.reddit.com/r/golang]]
-- #go-nuts in the irc.freenode.org network
 - Slack: [[https://gophersinvite.herokuapp.com/][https://gophersinvite.herokuapp.com/]]
-- More: [[http://dave.cheney.net/resources-for-new-go-programmers][http://dave.cheney.net/resources-for-new-go-programmers]]
 
 * Go Proverbs
 
