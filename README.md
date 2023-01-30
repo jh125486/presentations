@@ -53,3 +53,6 @@ Jacob Hochstetler's presentations
 
 * [UNT: DeFog - Fog Computing Benchmarks
  (Jonathan McChesney et al)](https://go-talks.appspot.com/github.com/jh125486/presentations/UNT/DeFog.slide)
+
+* [Digital Divas 2023: Miles to Go: Golang for Competitive Programming?](https://go-talks.appspot.com/github.com/jh125486/presentations/golang/digital_divas_2023.slide)
+
