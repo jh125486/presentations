@@ -5,13 +5,15 @@ Tags: go, golang
 Summary: A quick introduction to Go, and its viability in competitive programming.
 
 Dr. Jacob Hochstetler
-Distinguished Engineer, Fidelity Investments / Assistant Professor, UNT
-Jacob.Hochstetler@unt.edu / Jacob.Hochstetler@Fidelity.com
+Distinguished Engineer, Vice President, Fidelity Investments
+Assistant Professor, University of North Texas 
+Jacob.Hochstetler@UNT.edu
+Jacob.Hochstetler@Fidelity.com
 https://github.com/jh125486
 
 Meghan Blanchard
-Distinguished Engineer, Fidelity Investments
-Meghan.Blanchard@unt.edu
+Distinguished Engineer, Vice President, Fidelity Investments
+Meghan.Blanchard@Fidelity.com
 
 * Agenda
 
@@ -28,6 +30,7 @@ Meghan.Blanchard@unt.edu
 .background image/gopher_eyes_blue.png
 
 * Our Background
+
 .background image/digital_divas_2023.png  
 
 - *Who* are we
@@ -38,6 +41,7 @@ Meghan.Blanchard@unt.edu
 .image image/gopher5.png _ 350
 
 * An Introduction to Go
+
 .background image/gopher_eyes_purple.png
 
 Created in 2009 at Google by:
@@ -60,12 +64,13 @@ Features:
 * Example code...
 
 .play -numbers -edit code/hello.go
-.caption The *immortal* Hello World.
+.caption Full program demonstrating the *immortal* Hello World.
 
 .play -numbers -edit code/client.go /START OMIT/,/END OMIT/
-.caption First five lines of _Digital_Divas_ website.
+.caption `main()` snippet printing first ten lines of _Digital_Divas_ website.
 
 * In "Industry"
+
 .background image/gopher_eyes_green.png
 
 *Web/service* companies:
@@ -98,6 +103,7 @@ Tutorials:
 - [[https://www.digitalocean.com/community/tutorial_series/how-to-code-in-go][DigitalOcean's Tutorial Series]]
 
 * Competition Pros/Cons/Notes
+
 .background image/gopher_eyes_peach.png
 
 *Pros*:
@@ -125,6 +131,7 @@ _Notes_:
 .caption STDIN input in red, and STDOUT output in green
 
 * A Tangent: Concurrency != Parallelism
+
 .background image/gopher_eyes_pink.png
    
 - Concurrency is the _composition_ of independently executing processes.
@@ -155,6 +162,7 @@ Online REPLs (Read-Eval-Print Loop):
 - [[https://replit.com/languages/go][Replit: Go]]
 
 * Wrapping Up & Something Fun
+
 .background image/gopher_eyes_red.png
 
 - Go is a great general purpose language, but isn't well supported in all competitions
