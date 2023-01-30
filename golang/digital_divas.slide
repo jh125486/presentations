@@ -1,8 +1,6 @@
 Miles to Go...
 Golang for Competitive Programming?
 14:30 11 Feb 2023
-Tags: go, golang
-Summary: A quick introduction to Go, and its viability in competitive programming.
 
 Dr. Jacob Hochstetler
 Distinguished Engineer, Vice President, Fidelity Investments
@@ -20,7 +18,7 @@ Meghan.Blanchard@Fidelity.com
 - Our Background
 - An Introduction to Go
 - Example code
-- In "Industry"
+- Use in "Industry"
 - Resources/Docs
 - Competition Pros/Cons/Notes
 - A Tangent...
@@ -69,7 +67,7 @@ Features:
 .play -numbers -edit code/client.go /START OMIT/,/END OMIT/
 .caption `main()` snippet printing first ten lines of _Digital_Divas_ website.
 
-* In "Industry"
+* Use in "Industry"
 
 .background image/gopher_eyes_green.png
 
@@ -172,3 +170,5 @@ Online REPLs (Read-Eval-Print Loop):
 .play -edit code/imgflip.go /START OMIT/,/END OMIT/
 
 - [[https://gopherize.me/][Gophermize.me]]
+
+- Questions ?
