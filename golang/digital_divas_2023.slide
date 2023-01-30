@@ -1,4 +1,4 @@
-# Miles to Go...
+Miles to Go...
 Golang for Competitive Programming?
 14:30 11 Feb 2023
 Tags: go, golang
@@ -13,146 +13,149 @@ Meghan Blanchard
 Distinguished Engineer, Fidelity Investments
 Meghan.Blanchard@unt.edu
 
-## Agenda
+* Agenda
 
-1. Our Background
-2. An Introduction to Go
-3. Example code
-4. In "Industry"
-5. Resources/Docs
-6. Competition Pros/Cons/Notes
-7. A Tangent...
-8. Local Setup/Online REPL
-9. Wrapping Up & Something Fun... *hopefully.*
+- Our Background
+- An Introduction to Go
+- Example code
+- In "Industry"
+- Resources/Docs
+- Competition Pros/Cons/Notes
+- A Tangent...
+- Local Setup/Online REPL
+- Wrapping Up & Something Fun... _hopefully._
 
 .background image/gopher_eyes_blue.png
 
-## Our Background
+* Our Background
+.background image/digital_divas_2023.png  
 
-- **Who** are we
-- **What** we do
-- **Where** we work
-- **Why** we are *here*
+- *Who* are we
+- *What* we do
+- *Where* we work
+- *Why* we are _here_
 
 .image image/gopher5.png _ 350
 
-.background image/digital_divas_2023.png  
-
-## An Introduction to Go
+* An Introduction to Go
+.background image/gopher_eyes_purple.png
 
 Created in 2009 at Google by:
-- Robert Griesemer (V8 JavaScript engine, Java HotSpot virtual machine)
-- Rob Pike (UNIX, Plan 9 OS, UTF-8)
-- Ken Thompson (designed/implemented UNIX)
 
-Development was jump started by their shared *hatred* of C++ ([_true!_](http://www.drdobbs.com/open-source/interview-with-ken-thompson/229502480))
+- *Robert* *Griesemer* (V8 JavaScript engine, Java HotSpot virtual machine)
+- *Rob* *Pike* (UNIX, Plan 9 OS, UTF-8)
+- *Ken* *Thompson* (designed/implemented UNIX)
+
+Development was jump started by their shared *hatred* of C++ ([[http://www.drdobbs.com/open-source/interview-with-ken-thompson/229502480][_true!_]])
+
+.image image/black.png 1 350
 
 Features:
 
 - Statically typed language in the tradition of C
-- Memory safety
-- Garbage collection
+- Memory safe with garbage collection
 - Structural typing
 - CSP-style (Hoare) concurrency
 
-.background image/gopher_eyes_purple.png
-
-## Example code...
+* Example code...
 
 .play -numbers -edit code/hello.go
 .caption The *immortal* Hello World.
 
 .play -numbers -edit code/client.go /START OMIT/,/END OMIT/
-.caption First five lines of __Digital__Divas__ website.
+.caption First five lines of _Digital_Divas_ website.
 
-## In "Industry"
+* In "Industry"
+.background image/gopher_eyes_green.png
 
-Web/service companies:
+*Web/service* companies:
+
 - Replacing Python where strong typing/performance is needed
 - Supplanting Java where simplicity is required 
 - Horizontal scaling with distributed systems and architecture
 
-Fintech (Financial Technology):
-- [Go1 Compatibility](https://go.dev/doc/go1compat) ensures code written for 1.0 will work for 1.XX
+.image image/black.png 1 350
+
+*Fintech* (Financial Technology):
+
 - Very popular in Blockchain/Hyperledger applications
-- Cross-platform
 - Maintainable!
+- Cross-platform
+- [[https://go.dev/doc/go1compat][Go1 Compatibility]] (code written for 1.0 will work for 1.X.Y)
 
-.background image/gopher_eyes_green.png
-
-## Resources/Docs
+* Resources/Docs
 
 Docs:
-- [Official Documentation](https://go.dev/doc/)
-- [Standard Library](https://pkg.go.dev/std)
+
+- [[https://go.dev/doc/][Official Documentation]]
+- [[https://pkg.go.dev/std][Standard Library]]
 
 Tutorials: 
-- [Tour of Go](https://go.dev/tour)
-- [Go By Example](https://gobyexample.com/)
-- [Cracking Competitive Programming With Go (DZone)](https://dzone.com/articles/cracking-competitive-programming-with-go)
-- [DigitalOcean's Tutorial Series](https://www.digitalocean.com/community/tutorial_series/how-to-code-in-go)
 
-## Competition Pros/Cons/Notes
+- [[https://go.dev/tour][Tour of Go]]
+- [[https://gobyexample.com/][Go By Example]]
+- [[https://dzone.com/articles/cracking-competitive-programming-with-go][Cracking Competitive Programming With Go (DZone)]]
+- [[https://www.digitalocean.com/community/tutorial_series/how-to-code-in-go][DigitalOcean's Tutorial Series]]
+
+* Competition Pros/Cons/Notes
+.background image/gopher_eyes_peach.png
 
 *Pros*:
+
 - Large builtin standard library
 - Easy string processing and input
 - Scale out concurrency with `go` keyword
 
 *Cons*:
+
 - Competition support for recent compilers is not great
-- Some Competitions don't even support it at all (e.g. ICPC)
+- Some Competitions don't even support it at all (e.g. [[https://icpc.global/worldfinals/programming-environment#heading-2][ICPC]])
 - Many problem sets aren't suitable to parallelizing
 
-*Notes*:
+_Notes_:
+
 - `fmt` I/O is not buffered by default → use `bufio` instead
 - `defer` has a performance impact, so avoid usage
 
-.background image/gopher_eyes_peach.png
-
-## Competition continued: A Buffered I/O Example
+* Competition continued: A Buffered I/O Example
 
 .code -numbers code/buffered_io.go /START OMIT/,/END OMIT/
 
 .image code/buffered_io.png _ 700
 .caption STDIN input in red, and STDOUT output in green
 
-## A Tangent: Concurrency != Parallelism
-    
-- Concurrency is the **composition** of independently executing processes.
-- Parallelism is the **simultaneous** execution of computations. 
-
-.image image/black.png 1 400
-
-- So, concurrency is about **dealing** with lots of things at once. 
-- While parallelism is about **doing** lots of things at once.
-
-.image image/black.png 0 0
-
-*Note*:
-
-    Some competition platforms only provide environments with one CPU...
-    So while you can program concurrency, you can't execute in parallel.
-
+* A Tangent: Concurrency != Parallelism
 .background image/gopher_eyes_pink.png
+   
+- Concurrency is the _composition_ of independently executing processes.
+- Parallelism is the _simultaneous_ execution of computations. 
+- In other words, concurrency is about *dealing* with lots of things at once, while parallelism is about *doing* lots of things at once.
 
+_Note_:
 
-## Local Setup/Online REPL
+  Some competition platforms only provide environments with one CPU...
+  So while you can program concurrency, you can't execute in parallel.
+
+* Local Setup/Online REPL
 
 Compilers available for Windows, Linux & macOS:
-- Download Go compiler from [Go.dev](https://go.dev/dl/)
 
-macOS w/[Homebrew](https://brew.sh/):
+- Download Go compiler from [[https://go.dev/dl/][Go.dev]]
+
+macOS w/[[https://brew.sh/][Homebrew]]:
+
 - `brew install go`
 
 .image image/black.png 1 800
 
 Online REPLs (Read-Eval-Print Loop):
-- [Official Go Playground](https://go.dev/play/)
-- [Better Go Playground](https://goplay.tools/)
-- [Replit: Go](https://replit.com/languages/go)
 
-## Wrapping Up & Something Fun
+- [[https://go.dev/play/][Official Go Playground]]
+- [[https://goplay.tools/][Better Go Playground]]
+- [[https://replit.com/languages/go][Replit: Go]]
+
+* Wrapping Up & Something Fun
+.background image/gopher_eyes_red.png
 
 - Go is a great general purpose language, but isn't well supported in all competitions
 
@@ -160,6 +163,4 @@ Online REPLs (Read-Eval-Print Loop):
 
 .play -edit code/imgflip.go /START OMIT/,/END OMIT/
 
-- [Gophermize.me](https://gopherize.me/)
-
-.background image/gopher_eyes_red.png
+- [[https://gopherize.me/][Gophermize.me]]
