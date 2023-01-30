@@ -3,7 +3,7 @@ Jacob Hochstetler's presentations
 
 ## Produced work
 
-* [Intro to Go](https://go-talks.appspot.com/github.com/jh125486/presentations/golang/intro.slide)
+* [Go Forth: An in-depth introduction to Golang](https://go-talks.appspot.com/github.com/jh125486/presentations/golang/intro.slide)
 
 * [OpenStack](https://go-talks.appspot.com/github.com/jh125486/presentations/openstack/openstack.slide)
 
