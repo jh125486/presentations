@@ -16,13 +16,16 @@ Meghan.Blanchard@Fidelity.com
 * Agenda
 
 - Our Background
-- An Introduction to Go
-- Example code
+- An Introduction to Go (`golang`)
+- Hello _Digital_Divas!_
+- Why I program in Go
+- A more serious example
 - Use in "Industry"
-- Resources/Docs
+- Docs/Resources/Channels
 - Competition Pros/Cons/Notes
 - A Tangent...
 - Local Setup/Online REPL
+- Builtin performance benchmarking demonstration
 - Wrapping Up & Something Fun... _hopefully._
 
 .background image/gopher_eyes_blue.png
@@ -36,7 +39,7 @@ Meghan.Blanchard@Fidelity.com
 - *Where* we work
 - *Why* we are _here_
 
-.image image/gopher5.png _ 350
+.image image/gopher5.png _ 450
 
 * An Introduction to Go
 
@@ -44,22 +47,26 @@ Meghan.Blanchard@Fidelity.com
 
 Created in 2009 at Google by:
 
-- *Robert* *Griesemer* (V8 JavaScript engine, Java HotSpot virtual machine)
+- *Robert* *Griesemer* (V8 JavaScript engine, Java HotSpot and JVM)
 - *Rob* *Pike* (UNIX, Plan 9 OS, UTF-8)
 - *Ken* *Thompson* (designed/implemented UNIX)
+.caption _Fun_Fact_: Development was jump started by their shared *hatred* of C++ ([[http://www.drdobbs.com/open-source/interview-with-ken-thompson/229502480][_true!_]])
 
-Development was jump started by their shared *hatred* of C++ ([[http://www.drdobbs.com/open-source/interview-with-ken-thompson/229502480][_true!_]])
+*Protip*: _When_searching_on_the_web,_use_ "`golang`" _as_the_search_term._
 
-.image image/black.png 1 350
+.image image/Go-Logo_Fuchsia_left.png 250 _
 
-Features:
+* An Introduction to Go continued (features)
 
-- Statically typed language in the tradition of C
-- Memory safe with garbage collection
-- Structural typing
-- CSP-style (Hoare) concurrency
+- Statically typed, compiled language (like C), but memory safe, and garbage collected
+- CSP-style concurrency: message passing via `channels` & lightweight `goroutines`
+- Minimal OOP (no classes or type hierarchy) 
+- Structural typing with encapsulated, embeddable, and aliasable types
 
-* Example code...
+.image image/gopher_brown.png 275 _
+.caption And yes, the mascot is a [[https://go.dev/blog/gopher][Gopher]].
+
+* Hello Digital Divas!
 
 .play -numbers -edit code/hello.go
 .caption Full program demonstrating the *immortal* Hello World.
@@ -67,9 +74,22 @@ Features:
 .play -numbers -edit code/client.go /START OMIT/,/END OMIT/
 .caption `main()` snippet printing first ten lines of _Digital_Divas_ website.
 
-* Use in "Industry"
+* Why I program in Go
 
-.background image/gopher_eyes_green.png
+- *Features* (impressive standard library and easy-to-use package system)
+- *Fast* (easy to climb up "rungs" on a performance "ladder")
+- *Fun* (but still opinionated)
+
+.image image/gopher_digital_divas.png
+
+* A more serious example
+
+.play -numbers -edit code/goroutines.go /START OMIT/,/END OMIT/
+.caption Concurrent `goroutines` fighting each other for screen time. (Lines 14, 18 & 22 show the `goroutine` "control".)
+
+.image image/gopher_digital_divas.png 200 _
+
+* Use in "Industry"
 
 *Web/service* companies:
 
@@ -82,23 +102,30 @@ Features:
 *Fintech* (Financial Technology):
 
 - Very popular in Blockchain/Hyperledger applications
-- Maintainable!
+- Maintainable ← _Underrated_factor_in_complex_systems!_
 - Cross-platform
 - [[https://go.dev/doc/go1compat][Go1 Compatibility]] (code written for 1.0 will work for 1.X.Y)
 
-* Resources/Docs
+.background image/gopher_eyes_green.png
+
+* Docs/Resources/Channels
 
 Docs:
 
 - [[https://go.dev/doc/][Official Documentation]]
 - [[https://pkg.go.dev/std][Standard Library]]
 
-Tutorials: 
+Tutorials/examples: 
 
 - [[https://go.dev/tour][Tour of Go]]
 - [[https://gobyexample.com/][Go By Example]]
 - [[https://dzone.com/articles/cracking-competitive-programming-with-go][Cracking Competitive Programming With Go (DZone)]]
 - [[https://www.digitalocean.com/community/tutorial_series/how-to-code-in-go][DigitalOcean's Tutorial Series]]
+
+YT Channels:
+
+- [[https://www.youtube.com/@GolangCafe][Golang Cafe]]
+- [[https://www.youtube.com/@JustForFunc][justforfunc: Programming in Go]]
 
 * Competition Pros/Cons/Notes
 
@@ -149,7 +176,7 @@ Compilers available for Windows, Linux & macOS:
 
 macOS w/[[https://brew.sh/][Homebrew]]:
 
-- `brew install go`
+- `brew` `install` `go`
 
 .image image/black.png 1 800
 
@@ -159,16 +186,27 @@ Online REPLs (Read-Eval-Print Loop):
 - [[https://goplay.tools/][Better Go Playground]]
 - [[https://replit.com/languages/go][Replit: Go]]
 
+* Builtin performance benchmarking demonstration
+
+Fire up laptops and let's head to Github: [[https://github.com/jh125486/dd_benchmarking][https://github.com/jh125486/dd_benchmarking]]
+
+.image https://go.dev/images/gophers/machine-colorized.svg _ 700
+
 * Wrapping Up & Something Fun
 
 .background image/gopher_eyes_red.png
 
-- Go is a great general purpose language, but isn't well supported in all competitions
+- *Go* is an amazing general purpose-language; not well supported in competitions.
 
-- Let's make some memes
+- Builtin benchmarking and profiling makes finding slow code faster. 
 
 .play -edit code/imgflip.go /START OMIT/,/END OMIT/
+.caption Let's make some memes.
 
-- [[https://gopherize.me/][Gophermize.me]]
+.image image/black.png 1 100
 
-- Questions ?
+- Personalize your avatar as a _Gopher_: [[https://gopherize.me/][Gophermize.me]]
+
+* Questions ?
+
+.image image/gopher_digital_divas.png

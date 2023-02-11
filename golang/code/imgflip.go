@@ -19,7 +19,6 @@ func main() {
 	print(OneDoesNot("learn go concurrency in one day"))
 	print(Aliens("added more goroutines, program runs slower"))
 	print(ToyStory("goroutines"))
-	print(WinterIsComing("go generics"))
 	print(BadTime("write go like java"))
 	print(GrusPlan("everyone loves memes", "make a meme generator", "no one likes the memes"))
 }
