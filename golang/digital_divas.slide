@@ -188,9 +188,11 @@ Online REPLs (Read-Eval-Print Loop):
 
 * Builtin performance benchmarking demonstration
 
+.background image/Fid_green_light.png
+
 Fire up laptops and let's head to Github: [[https://github.com/jh125486/dd_benchmarking][https://github.com/jh125486/dd_benchmarking]]
 
-.image https://go.dev/images/gophers/machine-colorized.svg _ 700
+.image image/machine-colorized.svg _ 700
 
 * Wrapping Up & Something Fun
 
