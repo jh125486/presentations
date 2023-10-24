@@ -15,13 +15,13 @@ func (d Dog) Sound() string {
 	return "Woof"
 }
 
+// Receive an interface, return a concrete type.
 func AnimalSound(s Sounder) string {
 	return s.Sound()
 }
 
 func main() {
-	d := Dog{}
-	fmt.Println(AnimalSound(d))
+	fmt.Println(AnimalSound(Dog{}))
 }
 
 // END OMIT

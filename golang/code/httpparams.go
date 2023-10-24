@@ -5,9 +5,11 @@ import (
 	"net/http"
 )
 
-// helloHandler is an HTTP handler that writes a "hello, world" response.
+// helloHandler is an HTTP handler that writes a "hello, $BROWSER" response.
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello, World"))
+	// Get the User-Agent from the HTTP request headers.
+	userAgent := r.Header.Get("User-Agent")
+	w.Write([]byte("Hello, client using " + userAgent))
 }
 
 func main() {

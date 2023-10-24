@@ -11,15 +11,15 @@ func main() {
 	if err != nil { // HL
 		fmt.Printf("couldn't convert number: %v\n", err)
 		return
-	}  
+	}
 	fmt.Println("Converted integer:", i)
-    
-    // Should fail to convert
-    if j, err := strconv.Atoi("Elephant"); err != nil { // HL
-        fmt.Printf("couldn't convert number: %v\n", err)
+
+	// Should fail to convert
+	if i, err := strconv.Atoi("Elephant"); err != nil { // HL
+		fmt.Printf("couldn't convert number: %v\n", err)
 		return
-    } else {
-	   fmt.Println("Converted integer:", j)
-    }
+	} else {
+		fmt.Println("Converted integer:", i)
+	}
 	// END OMIT
 }

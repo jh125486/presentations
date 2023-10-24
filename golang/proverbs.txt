@@ -1,0 +1,19 @@
+The bigger the interface, the weaker the abstraction.
+Syscall must always be guarded with build tags.
+Cgo must always be guarded with build tags.
+Errors are values.
+Concurrency is not parallelism.
+Channels orchestrate; mutexes serialize.
+Ggo is not Go.
+A little copying is better than a little dependency.
+Documentation is for users.
+Don't panic.
+Make the zero value useful.
+Gofmt's style is no one's favorite, yet gofmt is everyone's favorite.
+With the unsafe package there are no guarantees.
+Clear is better than clever.
+Reflection is never clear.
+Don't just check errors, handle them gracefully.
+Design the architecture, name the components, document the details.
+Don't communicate by sharing memory, share memory by communicating.
+interface{} says nothing.

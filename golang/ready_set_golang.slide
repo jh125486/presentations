@@ -1,0 +1,762 @@
+# Ready, Set, Go(lang)!
+Boring by design: Simplicity and depth in software engineering
+
+Dr. Jacob Hochstetler
+25 Oct 2023
+Clinical Assistant Professor, CSE, UNT
+jacob.hochstetler@unt.edu
+http://github.com/jh125486
+
+## What we are going to cover
+
+0. **What is software engineering?** *A Philosophy of Software Design*
+---
+1. **From Zero to Gopher**: *Language design and constructs*
+---
+2. **The Way of the Gopher**: *Creating your first program*
+---
+3. **Where do we Go from here?** *Modern foundations*
+---
+4. **Go(ld)-Standard**: *Ensuring software quality*
+---
+5. **The Final Bytes**: *Conclusion: docs, resources, and proverbs*
+
+.image image/gopher1.png 60 _
+
+## Part 0: What is software engineering?
+
+### A Philosophy of Software Design
+
+.image image/gopher5.png 
+
+## How code becomes software
+
+Programming means getting a program working. 
+
+You have a problem to solve... 
+you *write* some code, you *run* it, you get your *answer*.
+
+You’re done...you've created *software*.
+
+.image image/UNT_green.png 1 800
+
+That’s programming, and that's **difficult** enough by itself. 
+
+.image image/UNT_green.png 1 400
+
+But what if that code has to keep **working**, *day after day*?
+
+ ...what if five **other** programmers need to work on the code too? 
+
+ ...what if security **vulnerabilities** emerge in the libraries you've used?
+
+## How software becomes software engineering
+
+Then you start to think about *version control systems*, to track how the code changes over time and to coordinate with the other programmers. 
+
+You add *unit tests* to ensure bugs you fix aren't reintroduced...not by future you in six months, and not by that new team member unfamiliar with the code. 
+
+You think about *modularity and design patterns*, to divide the program into parts that team members can work on mostly independently. 
+
+You use *static analysis and linting tools* to help you find bugs earlier. 
+
+You look for ways to make programs as *clear* as possible, so that bugs are less likely. 
+
+You make sure that small changes can be *tested quickly*, even in large programs. 
+
+.image image/UNT_green.png 1 400
+
+You're doing all of this because your software has turned into ***software engineering***.
+
+## The Philosophy of Software Design
+
+.image https://ia902204.us.archive.org/BookReader/BookReaderImages.php?zip=/20/items/a-philosophy-of-software-design/A%20Philosophy%20of%20Software%20Design%20by%20John%20Ousterhout_jp2.zip&file=A%20Philosophy%20of%20Software%20Design%20by%20John%20Ousterhout_jp2/A%20Philosophy%20of%20Software%20Design%20by%20John%20Ousterhout_0000.jp2&id=a-philosophy-of-software-design&scale=4&rotate=0 350 _
+.caption [[https://web.stanford.edu/~ouster/cgi-bin/aposd.php][A Philosophy of Software Design]] by John Ousterhout (ISBN-13: 978-1732102217)
+
+.image https://api.qrserver.com/v1/create-qr-code/?data=https://a.co/d/2bZD02P 100 _
+
+## It's all about complexity
+
+- Hinders software understanding, debugging, modification, and enhancement.
+- Incrementally increases through tactical or strategic decisions.
+- Primarily resides in interfaces between layers/modules/components.
+- Arises from short-term solutions that ignore long-term implications.
+- Grows due to unintentional inconsistencies in large systems.
+- Stemming from overgeneralization or premature optimization.
+- Increased by systems that are hard to observe or predict.
+- Can emerge from multiple ways of doing similar things.
+
+.image image/UNT_green.png 1 400
+
+      "Software engineering is what happens to programming when you add time and other programmers."
+                                                                                       - Russ Cox
+
+## What creates this complexity?
+
+- *Dependencies*: Heavy reliance on external modules complicates code management.
+
+- *Stateful Components*: Unnecessary mutable state hinders predictability.
+
+- *Over-Abstraction*: Abstraction is good, but overuse obscures clear implementations.
+
+- *Lack of Encapsulation*: Overexposing details muddles module clarity.
+
+- *Inconsistent Design*: Inconsistent solutions add unwarranted complexity.
+
+- *Inadequate Documentation*: Hinders understanding and future changes.
+
+- *Premature Optimization*: Premature optimization sacrifices clarity for complexity.
+
+.image image/complexity.png 231 _
+
+## Tackling complexity: Module design & abstraction
+
+Principles that guide the structural aspects of software design.
+
+1. **Working Code Isn't Enough:** 
+   - Emphasize readability and maintainability, not just functional code.
+   
+2. **Make Deep Modules:** 
+   - Design where intricate details are internal, exposing a clear interface.
+
+3. **Information Hiding:** 
+   - Adhere to clear visibility rules, deciding what should be exposed vs concealed.
+
+4. **Different Layers for Different Abstractions:** 
+   - Support clean abstraction layers for a clear hierarchy in code.
+
+5. **Choosing the Right Set of Modules:** 
+   - Prioritize modular design to manage complexity and keep functions cohesive.
+
+## Tackling complexity: Information & error management
+
+Principles centered around handling information and errors in design.
+
+1. **Pull Complexity Downwards:** 
+   - Abstract away complications, offering a user-friendly interface.
+
+2. **Better to Have More Information than Less:** 
+   - Make errors and issues visible for resolution, avoid silent failures.
+
+3. **Define Errors Out of Existence:** 
+   - Design with clarity and simplicity to minimize potential pitfalls.
+
+4. **Information Should Be Local:** 
+   - Design patterns to provide necessary information within the immediate context.
+
+5. **Design It Twice:** 
+   - Emphasize iteration in design to refine solutions.
+
+## Part 1: From Zero to Gopher
+
+### Language design and constructs
+
+.image image/gopher2.png 
+
+## The problems at Google: software at scale
+
+Pain points:
+
+- Slow builds
+- Uncontrolled dependencies
+- Each programmer using a different subset of the language
+- Poor program understanding (code hard to read, poorly documented, and so on)
+- Duplication of effort
+- Cost of updates
+- Version skew
+- Difficulty of writing automatic tools
+- Cross-language builds
+
+## Creation
+
+- General purpose programming language in the C family (and influenced by others).
+- Created at Google by Robert Griesemer, Rob Pike and Ken Thompson.
+- Development started by their shared *hatred* of C++ ([_true!_](http://www.drdobbs.com/open-source/interview-with-ken-thompson/229502480)).
+- Started in 2007, publicly released in November 2009, version 1.0 released May 2012.
+- Fully open sourced: Google imports the public repository, not the other way around.
+- Has a mascot, the [Go Gopher](https://blog.golang.org/gopher).
+
+.image image/gopher_brown.png 250 _
+
+## Enter Go
+
+The primary considerations for any language to succeed in this context are:
+
+- **Scalability:** Support for large programs, large teams, and numerous dependencies.
+  
+- **Familiarity:** Considering that many early-career developers are adept with the C family, the language shouldn't deviate too far from that syntax.
+  
+- **Modern features:** Older languages like C, C++, and Java predate multicore machines, extensive networking, and web app development, so modern languages must address these evolved needs.
+
+- **Tooling:** The language should be easily parsed for tool analysis.
+
+.background image/gopher_eyes_pink.png
+
+## Syntax is the UI of programming
+
+- Determines readability and clarity.
+- Critical to tooling; easy-to-parse syntax means better automated tools.
+- Focus on clarity and tooling, boasting a clean syntax.
+- Modest grammar: 25 keywords. C99: 37, C++20: 95, Java21: 51 (with 20 contextual).
+- Grammar is mostly regular, easy to parse; doesn’t need type info or symbol table.
+- Type syntax differs from its expression syntax, reducing ambiguity, unlike C or Java.
+- Go lacks default function arguments to prevent API design flaws.
+- Absence requires defining more functions/methods, leading to a clearer API.
+- Forces thoughtful naming, enhancing clarity and readability.
+- Go compensates with type-safe, easy-to-use variadic functions.
+
+## Starting from the top
+
+- Dependency management starts with the *module*.
+- A Go `module` is a versioned collection of related `packages`.
+- A `package` is a directory of Go source files named by the `package` name.
+- A directory can contain only one `package`.
+
+Every Go program starts with a `package` declaration.
+
+The `main` package uniquely defines an executable, not a library to be imported, e.g.:
+
+```go
+package main
+```
+
+Libraries are defined by `package <name>` declarations, e.g.:
+   
+```go
+package fmt
+```
+
+.image image/gopher3.png 93 _
+
+## Dependencies
+
+Contrast to dependencies in C and C++, dependencies in Go are:
+- Defined in the code
+- Explicit, clear, and "computable" (easy to write tools to analyze them)
+- Not just header files, but entire packages
+- Produce compile-time errors if missing
+- Imports can be grouped by parentheses.
+- Semantically versioned through git tags
+
+If there is no URL in the import declaration, the package is part of the standard library, otherwise, it is a remote package named by the last element of the path. 
+
+```go 
+import (
+    "fmt"                              // Standard library package "fmt"
+    "github.com/jh125486/coolfmt"      // Remote package "coolfmt"
+    "github.com/jh125486/otherfmt/v2"  // Remote package "otherfmt" version ~2
+)
+```
+
+## Keywords and syntax
+
+```go
+break          default        func        interface      select
+case           defer          go          map            struct
+chan           else           goto        package        switch
+const          fallthrough    if          range          type
+continue       for            import      return         var
+```
+
+Keywords Highlight: `func`, `interface`, `select`, `defer`, `go`, `range`
+
+- *Familiar*: C like syntax (no semicolons though).
+- *Curly Braces*: Mandatory, even for single-statement blocks.
+- *Zero Values*: Without an explicit initial value, variables are set to their "zero value".
+- *Multiple Returns*: Functions can return multiple values.
+- *Named Returns*: Functions can return named values.
+
+## Declarations and functions
+
+- Declaration is closer to Pascal than C.
+
+   ```go
+   var fn func([]int) int
+   type T struct { a, b int }
+   ```
+
+- Allows derived type initialization, making code shorter and more idiomatic.
+
+   ```go
+   var buf *bytes.Buffer = bytes.NewBuffer(x)
+   buf := bytes.NewBuffer(x)
+   ```
+
+- Simple function declaration: 
+
+   ```go
+   func Abs(x T) float64
+   func Abs2(x T) (float64, error)        // Method with multiple return values
+   func Abs3(x T) (f float64, err error)  // Method with multiple named return values
+   func (x T) Abs() float64               // Method with a receiver
+   ```
+
+- First-class functions and closures are supported: 
+   ```go
+   negAbs := func(x T) float64 { return -Abs(x) }
+   ```
+
+## Types
+
+**Basics:**
+  - **Numbers**: `int`, `int[8/16/32/64]`, `uint`, `uint[8/16/32/64]`, `float[32/64]`
+  - **Complex numbers**: `complex64`, `complex128`
+  - **Strings**: Immutable sequences of characters.
+  - **Booleans**: `true`, `false`
+  - **Byte and Rune**: `byte` (alias for `uint8`), `rune` (alias for `int32`)
+
+**Composites:**
+  - **Arrays**: Fixed-length sequences.
+  - **Slices**: Dynamic arrays.
+  - **Maps**: Key-value pairs.
+  - **Structs**: User-defined composite types.
+
+## Advanced types
+
+- **Interfaces**: Define a set of methods.
+- **Pointers**: Reference to a memory location.
+- **Functions**: Treat functions as first-class citizens.
+- **Constants**: Immutable values.
+
+**Type Conversions**: Explicit type conversion is required in Go.
+
+```go
+i := 42
+f := float64(i)
+```
+
+**Type Inference**: Go can deduce types during initialization.
+
+```go
+i := 42  // int
+```
+
+.image image/gopher2.png 
+
+##  Naming and visibility
+
+**Visibility determined by name** 
+- Initial upper-case letter: Exported (public).
+- Otherwise: Not exported (private).
+
+**Broad application**
+- Rules apply to variables, types, functions, methods, constants, and fields.
+
+**Clear naming benefits**
+- Instant recognition of an identifier's visibility.
+- No need to refer to declarations or use visibility keywords.
+- Enhances clarity and intent in source text.
+
+## Scope hierarchy and method lookup
+
+**Scoping** (note absence of class or namespace specific scopes)
+- universe (predeclared identifiers such as `int` and `string`)
+- package (all the source files of a package live at the same scope)
+- function (the usual)
+- block (the usual)
+
+**Explicit naming**
+- Use of explicit receivers like `rcvr.Field`.
+- Always use package qualifiers: `io.Reader`, not just `Reader`.
+
+**Method lookup** 
+- Solely by name, not method's signature.
+- Ensures simplicity and clarity in method referencing.
+
+## Control
+
+`if` and `else`: conditional execution with an optional initialization statement
+
+.play -edit -numbers code/if2.go /START OMIT/,/END OMIT/
+
+`switch`: multi-way branching, with an optional `default` case (note no fallthrough)
+
+.play -numbers -edit code/switch1.go /START OMIT/,/END OMIT/
+
+## Looping & iteration
+
+Loops with `for` can have zero, one, or three parts:
+- infinite loop: `for { ... }`
+- "while" loop: `for <condition> { ... }`
+- traditional loop: `for <init>; <condition>; <post> { ... }`
+- `break` and `continue` work as expected
+
+.play -edit -numbers code/for1.go /START OMIT/,/END OMIT/
+
+Iterating over elements (slices, arrays, maps, strings, channels) with `range`:
+
+.play -edit -numbers code/range1.go /START OMIT/,/END OMIT/
+
+## Part 2: The Way of the Gopher
+
+### Creating your first program
+
+.image image/gopher5.png 
+
+## The unified toolchain
+
+- **Unified Toolchain**: All essential tasks, from fetching dependencies to running code, are handled by the singular `go` command.
+- **Beginner-friendly**: Go's straightforward syntax and large standard library make starting easier.
+- **Consistency Across Projects**: The built-in formatter, go fmt, ensures universally readable and standardized code.
+- **Cross-Compiling Baked In**: Effortlessly produce binaries for multiple platforms and architectures with simple go build flags.
+
+.background image/gopher_eyes_red.png 
+
+## The go command
+
+- **Central Tool**: The `go` command is the standard way to fetch, build, and install Go packages and commands.
+  
+- **Versatility**: It's not just for compilation! Use it for testing, documentation, module management, and more.
+  
+- **Simplicity**: No need for separate makefiles or scripts; the `go` tool understands the structure of Go code.
+
+- **Convention over Configuration**: It uses conventions to determine the structure of your program, making common tasks straightforward.
+
+- **Examples**: 
+  - `go run`: Compiles and runs Go program
+  - `go test`: Runs tests in the current package
+  - `go get`: Downloads and installs a package
+  - `go fmt`: Formats Go code to the standard style
+
+## Canonical Hello World
+
+1. Download and install Go from https://golang.org/dl/
+2. Make a directory for your program:  `mkdir hello`
+3. Change to that directory.
+4. Initialize the Go module with the name of the module: `go mod init hello`
+5. Create a file named `hello.go` with the following contents:
+
+.play -numbers -edit code/hello.go
+
+6. Run your program: `go run .`
+
+## Go modules
+
+Next let's add a remote dependency to our program.
+
+We'll use `github.com/dtung2008/fortune` for fortune cookie messages.
+
+1. Add the import to `hello.go`, and update `main()` with the new `Quote` function:
+
+.code -numbers code/fortune.go
+
+2. Update your `go.mod` file for the new dependency: `go mod tidy`
+3. Run your program: `go run .`
+
+## Compiling & executing
+
+1. **The Build command**:
+   - `go build`: Compiles the program into an executable.
+   - `go install`: installs the executable into `$GOPATH/bin`.
+
+2. **Executable naming**:
+   - By default, the executable will be named after the directory/package.
+   - Use `go build -o customname` to specify a custom executable name.
+
+3. **Running the executable**:
+   - On Unix-based systems: `./hello`
+   - On Windows: `hello.exe`
+
+4. **Go naming conventions**:
+   - Go filenames: Lowercase, concise, and descriptive.
+
+## Let's do something more interesting...let's create a HTTP server
+
+.play -numbers -edit code/hellohttp.go
+
+## What about file serving?
+
+.play -numbers code/fileserver.go 
+
+## Dynamic HTTP
+
+.play -numbers code/httpparams.go 
+
+## Guessing game with HTTP
+
+.play -numbers code/httpgame.go 
+
+## Part 3: Where do we Go from here?
+
+### Modern Foundations
+
+.image image/gopher5.png 
+
+## Golang: Software engineering simpler and easier
+
+So up until now, this is all standard stuff...but what sets Go apart in today's landscape?
+
+- **Scalability**: Designed for modern multi-core systems through goroutines.
+- **Channels:** Concurrent thread communication for scaling with safety and clarity.
+- **Minimal OOP**: No crazy OOP "features" like inheritance, operator overloading, etc.
+- **Error Handling:** Instead of exceptions, Go uses a pattern where functions return an error value alongside the primary return value.
+- **Standard Library:** A robust, all-in-one toolkit that supports modern development without the need for external dependencies.
+
+.background image/gopher_eyes_blue.png 
+
+## Harnessing concurrency
+
+- **Concurrency ≠ Parallelism**
+   - **Concurrency:** Managing multiple tasks at once (not necessarily simultaneously).
+   - **Parallelism:** Executing multiple tasks at the exact same time.
+- **Goroutines**: Lightweight threads managed by the Go runtime.
+- **Easy Concurrency**: Launch 1000s without the overhead of traditional OS threads.
+
+.play -numbers -edit code/concurrency1.go /START OMIT/,/END OMIT/
+
+## Channels
+- **Send and Receive**: Use chan to communicate between goroutines.
+- **Strongly Typed**: they are typed by the values they send/receive.
+- **Synchronize**: they synchronize access, ensuring data safety ([Hoare's CSP model](https://en.wikipedia.org/wiki/Communicating_sequential_processes)).
+
+.play -numbers -edit code/sum3.go /START OMIT/,/END OMIT/
+
+## Interfaces 
+
+- Defines behavior, not implementation.
+- Enables polymorphism without inheritance.
+- Offers flexibility and interchangeability.
+
+.play -numbers -edit code/interface1.go /START OMIT/,/END OMIT/
+
+## Complex interface example
+
+.play -numbers -edit code/interface2.go /START OMIT/,/END OMIT/
+
+## Generics
+
+**Why Generics?**
+- Type safety without sacrificing performance.
+- Reduces boilerplate.
+
+.play -numbers -edit code/generics.go  /START OMIT/,/END OMIT/
+
+## Structs and composition
+
+- **Structs**: Custom types to encapsulate related data.
+   - No "class" in Go; `struct`s are used instead.
+   - Go promotes composition instead of inheritance.
+   - Embed one struct into another to "inherit" its properties and methods.
+
+.play -numbers -edit code/struct2.go /START OMIT/,/END OMIT/
+
+## Error Handling in Depth
+
+*The Go Way:* **Explicit** is better than implicit.
+- Check errors immediately, handle them, or propagate them.
+- Use methods like Error() string to satisfy the `error` interface.
+- "Indented" code block are the "error path", making scanning easier.
+
+.play -numbers -edit code/error1.go /START OMIT/,/END OMIT/
+
+## Defer, Panic, and Recover
+`defer`: Schedule a function to run after the surrounding function returns.
+- Useful for cleanup actions like closing files, releasing locks, etc.
+- `defers` stack, executing in LIFO order.
+
+.play -numbers -edit code/defer1.go /START OMIT/,/END OMIT/
+
+`panic` and `recover`:
+- panic: Stops normal execution, similar to throwing an exception.
+- recover: Captures a panic and allows the program to continue.
+
+.image image/gopher4.png
+
+## The standard library
+
+- **Documentation**: Comprehensive and well-structured documentation is available, with examples and guidelines for best practices, all easily accessible at [pkg.go.dev](https://pkg.go.dev).
+- **Extensive**: A vast collection encompassing various domains.
+- **Performant**: Rigorously optimized for best-case efficiency and speed, ensuring that applications built using the standard library perform at their best.
+- **Reliability**: Stable and mature, the standard library has been vetted over years of use in production environments around the world.
+- **Backward Compatibility**: The Go team commits to backward compatibility, ensuring that your code remains functional. 
+
+.image image/Go-Logo_Blue.png 250 _
+
+## The present tool
+
+**Overview:**
+- A tool to create presentations using Go.
+- Slide templates written in plain text using a subset of Markdown format.
+- Supports code execution within slides.
+- This presentation was created with `present`.
+
+**Usage:**
+1. Install:
+   ```bash
+   go install golang.org/x/tools/cmd/present@latest
+   ```
+2. Run:
+   ```bash
+   present
+   ```
+
+## Part 4: Go(ld)-Standard
+
+### Ensuring software quality
+
+.image image/gopher5.png 
+
+## Go's Emphasis on Software Quality
+  
+- **Safety Through Testing:** Go’s built-in testing suite encourages regular testing, ensuring code robustness.
+- **Coverage:** Assess how well your tests cover your codebase.
+- **Fuzzing:** Identify vulnerabilities by feeding random input.
+- **Performance Insights:** Diagnose performance bottlenecks with in-depth profiling.
+- **Optimize with Confidence:** Quantify and diff performance over time or changes.
+- **Consistent Tooling:** All these tools are accessible through the centralized `go` command, streamlining the development process.
+
+.background image/gopher_eyes_green.png
+
+## Built-in Testing
+
+**Overview:**
+- Go's built-in testing framework.
+- Utilizes the `testing` package.
+- Name test functions with prefix `Test`.
+
+```go
+func TestFunctionName(t *testing.T) {
+    if got := YourFunction(); got != "expectedValue" {
+        t.Errorf("got %v, want expectedValue", got)
+    }
+}
+```
+**Usage:** `go test`
+
+[GoLang Unit Testing and Mock Testing Tutorial](https://www.youtube.com/watch?v=XQzTUa9LPU8)
+
+## Built-in Coverage
+
+**Overview:**
+- Measure the tested portion of your code.
+- Identify untested parts of your codebase.
+- Can collect [coverage from multiple tests as of Go 1.20](https://go.dev/testing/coverage/).
+
+**Commands:**
+- Run tests with coverage: `go test -cover`
+- View detailed coverage: 
+  ```
+  go test -coverprofile=coverage.out
+  go tool cover -html=coverage.out
+  ```
+
+[GopherCon UK 2021: Eleni Fragkiadaki - Test coverage in Go, the whole package](https://www.youtube.com/watch?v=JTLB7j8M85A)  
+
+## Built-in Fuzzing
+
+**Overview:**
+- Find edge cases and potential bugs.
+- Has become popular for finding [security vulnerabilities](https://owasp.org/www-community/Fuzzing) in sensitive code.
+- [Introduced in Go 1.18](https://go.dev/doc/tutorial/fuzz).
+
+```go
+func FuzzFunctionName(f *testing.F) {
+    f.Add("initial input")
+    f.Fuzz(func(t *testing.T, input string) {
+        // Use input in some way
+    })
+}
+```
+**Usage:** `go test -fuzz`
+
+[GopherCon 2022: Katie Hockman - Fuzz Testing Made Easy](https://www.youtube.com/watch?v=7KWPiRq3ZYI)
+
+## Built-in Profiling
+
+**Overview:**
+- Diagnose performance bottlenecks.
+- CPU, memory, and block profilers included.
+
+**Tips:**
+- Import `net/http/pprof` in your main program.
+- Start your application.
+- Visit: `http://localhost:PORT/debug/pprof/`
+
+[Profiling & Optimizing in Go / Brad Fitzpatrick](https://www.youtube.com/watch?v=xxDZuPEgbBU)
+
+[GopherCon 2019: Dave Cheney - Two Go Programs, Three Different Profiling Techniques](https://www.youtube.com/watch?v=nok0aYiGiYA)
+
+## Built-in Benchmarking
+
+**Overview:**
+- Assess your functions' performance.
+- Use the `testing` package.
+
+```go
+func BenchmarkFunctionName(b *testing.B) {
+    for i := 0; i < b.N; i++ {
+        YourFunction()
+    }
+}
+```
+**Usage:** `go test -bench`
+
+[Golang Live: The Art of Performance - Profiling & Benchmarking in Go](https://youtu.be/R_C2KqmlqY8?si=Ma3B1LIZCLW6Yb81&t=81)
+
+## Live demo: Prime number benchmarking
+
+Fire up laptops and let's head to Github: [Benchmarking demo](https://github.com/jh125486/dd_benchmarking) (https://github.com/jh125486/dd_benchmarking)
+
+.image image/machine-colorized.png 450 _
+
+## Part 5: The Final Bytes
+
+### Conclusion: docs, resources, and proverbs
+
+.image image/gopher5.png 
+
+## Embracing the Boring: Go's Principles and Resources
+
+- **Docs**: Go's extensive documentation that reflects its commitment to clarity and consistency.
+- **Resources & Community**: The vast array of resources is a testament to an active, supportive community. Learn from blogs, forums, and more.
+- **Proverbs**: The Go proverbs encapsulate the language's design principles in memorable phrases.
+- **Boring is Good**: "Boring" in software often means stability, predictability, and focus. It leads to fewer surprises and reliable outcomes.
+
+.background image/gopher_eyes_peach.png
+
+## Docs & resources
+
+- [Official Documentation](https://go.dev/doc/) / [Standard Library](https://pkg.go.dev/std)
+- Online REPLs (Read-Eval-Print Loop):
+   - [Official](https://go.dev/play/) / [Better](https://goplay.tools/) Go Playground
+- Tutorials/examples: 
+   - [Tour of Go](https://go.dev/tour)
+   - [Go By Example](https://gobyexample.com/)
+   - [DigitalOcean's Tutorial Series](https://www.digitalocean.com/community/tutorial_series/how-to-code-in-go)
+   - [Dave Cheney's Blog: Resources for new Go programmers](https://dave.cheney.net/resources-for-new-go-programmers)
+- YT Channels:
+   - [Golang Cafe](https://www.youtube.com/@GolangCafe)
+   - [justforfunc: Programming in Go](https://www.youtube.com/@JustForFunc)
+
+## Go Proverbs
+
+    Don't communicate by sharing memory, share memory by communicating.
+    Concurrency is not parallelism.
+    Channels orchestrate; mutexes serialize.
+    The bigger the interface, the weaker the abstraction.
+    Make the zero value useful.
+    interface{} says nothing.
+    Gofmt's style is no one's favorite, yet gofmt is everyone's favorite.
+    A little copying is better than a little dependency.
+    Syscall must always be guarded with build tags.
+    With the unsafe package there are no guarantees.
+    Clear is better than clever.
+    Reflection is never clear.
+    Errors are values.
+    Don't just check errors, handle them gracefully.
+    Design the architecture, name the components, document the details.
+    Documentation is for users.
+    Don't panic.
+
+## Conclusion: Go is "boring" and that's good.
+
+- **Mature from the Start**: Utilized internally at Google pre-release, ensuring a seasoned initial public offering.
+- **Celebrating Simplicity**: Designed for clarity and ease, making it accessible and dependable.
+- **Focused Purpose**: Doesn't chase every trend; sticks to its strengths.
+- **Stability Promise**: A staunch commitment to backward compatibility protects existing applications.
+- **Robust Standard Library**: Comprehensive tools right out of the box reduce the need for third-party libraries.
+- **No Surprises**: Explicitness over "magic" ensures clarity and predictability.
+
+A language that's steadfast and predictable, Go's "boring" nature is its most significant asset for programmers valuing stability and maintainability.
+
+## Questions?
