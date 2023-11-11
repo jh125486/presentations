@@ -695,7 +695,7 @@ func BenchmarkFunctionName(b *testing.B) {
 
 ## Live demo: Prime number benchmarking
 
-Fire up laptops and let's head to Github: [Benchmarking demo](https://github.com/jh125486/dd_benchmarking) (https://github.com/jh125486/dd_benchmarking)
+Fire up laptops and let's head to Github: [Benchmarking demo](https://github.com/jh125486/benchmarking_demo) (https://github.com/jh125486/benchmarking_demo)
 
 .image image/machine-colorized.png 450 _
 

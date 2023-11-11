@@ -1,43 +1,35 @@
 Miles to Go...
 Golang for Competitive Programming?
-14:30 11 Feb 2023
+15:00 11 Nov 2023
 
 Dr. Jacob Hochstetler
 Distinguished Engineer, Vice President, Fidelity Investments
-Assistant Professor, University of North Texas 
+Clinical Assistant Professor, University of North Texas 
 Jacob.Hochstetler@UNT.edu
 Jacob.Hochstetler@Fidelity.com
 https://github.com/jh125486
 
-Meghan Blanchard
-Distinguished Engineer, Vice President, Fidelity Investments
-Meghan.Blanchard@Fidelity.com
-
 * Agenda
 
-- Our Background
+- My Background
 - An Introduction to Go (`golang`)
-- Hello _Digital_Divas!_
 - Why I program in Go
-- A more serious example
-- Use in "Industry"
-- Docs/Resources/Channels
+- Setup & Documentation
 - Competition Pros/Cons/Notes
-- A Tangent...
-- Local Setup/Online REPL
+- A Tangent on Concurrency...
 - Builtin performance benchmarking demonstration
 - Wrapping Up & Something Fun... _hopefully._
 
 .background image/gopher_eyes_blue.png
 
-* Our Background
+* My Background
 
-.background image/digital_divas_2023.png  
+.background image/hackunt_2023.png  
 
-- *Who* are we
-- *What* we do
-- *Where* we work
-- *Why* we are _here_
+- *Who* am I
+- *What* I do
+- *Where* I work
+- *Why* I am _here_
 
 .image image/gopher5.png _ 450
 
@@ -66,13 +58,13 @@ Created in 2009 at Google by:
 .image image/gopher_brown.png 275 _
 .caption And yes, the mascot is a [[https://go.dev/blog/gopher][Gopher]].
 
-* Hello Digital Divas!
+* Hello HackUNT!
 
 .play -numbers -edit code/hello.go
 .caption Full program demonstrating the *immortal* Hello World.
 
-.play -numbers -edit code/client.go /START OMIT/,/END OMIT/
-.caption `main()` snippet printing first ten lines of _Digital_Divas_ website.
+.play -numbers -edit code/client_hackunt.go /START OMIT/,/END OMIT/
+.caption `main()` snippet printing first ten lines of _HackUNT_ website.
 
 * Why I program in Go
 
@@ -80,21 +72,22 @@ Created in 2009 at Google by:
 - *Fast* (easy to climb up "rungs" on a performance "ladder")
 - *Fun* (but still opinionated)
 
-.image image/gopher_digital_divas.png
+.image image/fancygopher.jpg 350 _
+.caption Fancy Gopher, by [[http://reneefrench.blogspot.com][Renée French]]
 
 * A more serious example
 
 .play -numbers -edit code/goroutines.go /START OMIT/,/END OMIT/
 .caption Concurrent `goroutines` fighting each other for screen time. (Lines 14, 18 & 22 show the `goroutine` "control".)
 
-.image image/gopher_digital_divas.png 200 _
+.image image/fancygopher.jpg 200 _
 
 * Use in "Industry"
 
 *Web/service* companies:
 
 - Replacing Python where strong typing/performance is needed
-- Supplanting Java where simplicity is required 
+- Supplanting Java where simplicity is required ( _and_memory_costs_$$$_ )
 - Horizontal scaling with distributed systems and architecture
 
 .image image/black.png 1 350
@@ -107,6 +100,24 @@ Created in 2009 at Google by:
 - [[https://go.dev/doc/go1compat][Go1 Compatibility]] (code written for 1.0 will work for 1.X.Y)
 
 .background image/gopher_eyes_green.png
+
+* Local Setup/Online REPL
+
+Compilers available for Windows, Linux & macOS:
+
+- Download Go compiler from [[https://go.dev/dl/][Go.dev]]
+
+macOS w/[[https://brew.sh/][Homebrew]]:
+
+- `brew` `install` `go`
+
+.image image/black.png 1 800
+
+Online REPLs (Read-Eval-Print Loop):
+
+- [[https://go.dev/play/][Official Go Playground]]
+- [[https://goplay.tools/][Better Go Playground]]
+- [[https://replit.com/languages/go][Replit: Go]]
 
 * Docs/Resources/Channels
 
@@ -161,36 +172,29 @@ _Notes_:
    
 - Concurrency is the _composition_ of independently executing processes.
 - Parallelism is the _simultaneous_ execution of computations. 
-- In other words, concurrency is about *dealing* with lots of things at once, while parallelism is about *doing* lots of things at once.
+- In other words, concurrency is about *dealing* with lots of things at once,⠀⠀⠀⠀⠀⠀⠀ while parallelism is about *doing* lots of things at once.
 
 _Note_:
 
   Some competition platforms only provide environments with one CPU...
   So while you can program concurrency, you can't execute in parallel.
 
-* Local Setup/Online REPL
+* Concurrency
 
-Compilers available for Windows, Linux & macOS:
+[[https://divan.dev/posts/go_concurrency_visualize/][divan's blog: Visualizing Concurrency in Go]]
 
-- Download Go compiler from [[https://go.dev/dl/][Go.dev]]
+  ... have you ever wondered - how various concurrency patterns look like?
 
-macOS w/[[https://brew.sh/][Homebrew]]:
-
-- `brew` `install` `go`
-
-.image image/black.png 1 800
-
-Online REPLs (Read-Eval-Print Loop):
-
-- [[https://go.dev/play/][Official Go Playground]]
-- [[https://goplay.tools/][Better Go Playground]]
-- [[https://replit.com/languages/go][Replit: Go]]
+.image image/workers2.gif 420 _ 
+.caption Producer/consumer pattern with 5 workers that each have 3 subworkers
 
 * Builtin performance benchmarking demonstration
 
 .background image/Fid_green_light.png
 
-Fire up laptops and let's head to Github: [[https://github.com/jh125486/benchmarking_demo][https://github.com/jh125486/benchmarking_demo]]
+Fire up laptops and let's head to Github: 
+
+[[https://github.com/jh125486/benchmarking_demo][https://github.com/jh125486/benchmarking_demo]]
 
 .image image/machine-colorized.png _ 700
 
@@ -211,4 +215,4 @@ Fire up laptops and let's head to Github: [[https://github.com/jh125486/benchmar
 
 * Questions ?
 
-.image image/gopher_digital_divas.png
+.image image/gopher_mic-drop.png 500 _

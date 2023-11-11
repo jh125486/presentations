@@ -58,3 +58,5 @@ Jacob Hochstetler's presentations
 
 * [Ready, Set, Go(lang)!: Boring by design: Simplicity and depth in software engineering](https://go-talks.appspot.com/github.com/jh125486/presentations/golang/ready_set_golang.slide)
 
+* [HackUNT 2023: Miles to Go: Golang for Competitive Programming?](https://go-talks.appspot.com/github.com/jh125486/presentations/golang/HackUNT-2023.slide)
+
