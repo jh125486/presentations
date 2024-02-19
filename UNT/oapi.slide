@@ -1,0 +1,514 @@
+# API mastery with OpenAPI
+JSON and Servers and Clients, Oh My!
+18:00 20 Feb 2024
+
+Dr. Jacob Hochstetler
+Distinguished Engineer, Vice President, Fidelity Investments
+Clinical Assistant Professor, University of North Texas 
+Jacob.Hochstetler@UNT.edu
+Jacob.Hochstetler@Fidelity.com
+https://github.com/jh125486
+
+## Agenda
+
+- Client-Server Architecture
+- OpenAPI
+- Workshop
+  - Creating an OpenAPI Specification
+  - Generating a Server (Go)
+  - Generating a Client (Python)
+- Next Steps
+- Conclusion
+
+## Client-Server: The model
+
+What is a **client**?
+
+> Software that users *directly* interact with to **request** data.  
+
+What is a **server**? 
+
+> Software designed to *process* and *respond* to **requests** from clients. 
+
+---
+
+- **1960s-1970s: Emergence** 
+    - Time-sharing systems introduce early client-server model concepts.
+- **1980s: Expansion** 
+    - Personal computers and LANs popularize the client-server model.
+- **1990s-Present: Internet Era** 
+    - Web technologies evolve to become cloud computing and microservices.
+
+## Client-Server: Protocols
+
+A *protocol* is a set of rules that dictate how data is exchanged over a network.
+
+- [Hypertext Transfer Protocol Secure (HTTPS)](https://en.wikipedia.org/wiki/HTTPS): encrypted web traffic communication.
+- [SSH File Transfer Protocol (SFTP)](https://en.wikipedia.org/wiki/SSH_File_Transfer_Protocol): encrypted file transfers.
+- [Network Time Protocol (NTP)](https://en.wikipedia.org/wiki/Network_Time_Protocol): time synchronization.
+- [Simple Mail Transport Protocol (SMTP)](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol): sending mail service.
+- [Post Office Protocol (POP3)](https://en.wikipedia.org/wiki/Post_Office_Protocol): receiving mail service.
+
+.image images/protocol_specification_implementation.png _ 460
+.caption Example of a driving protocol specification and its implementation.
+
+## Client-Server: Types/Examples
+
+Types of Clients
+- **Web** Browsers: Chrome, Firefox
+- **Mobile** Applications: Instagram, Snapchat
+- **Desktop** Applications: Microsoft Outlook, Slack, VSCode
+- **API** Clients [raw API]: Bruno, Insomnia, Postman
+
+Types of Servers
+- **Proxy/Web** Servers: Envoy, Caddy, Traefik, Apache, `nginx`
+- **Database** Servers: PostgreSQL, MySQL, MongoDB
+- **File** Servers: SMB/CIFS, NFS, AFS
+- **Mail** Servers: Postfix, Microsoft Exchange
+- **Application** Servers: Glassfish, Gunicorn, Tomcat, Node.js
+
+## Client-Server: Communication elements & flow
+
+**Request-Response cycle**
+- Clients request data & servers respond with information.
+
+**Stateless interactions** (for HTTP)
+- Each request is treated independently (no state is saved).
+
+**Protocol-Based**
+- Uses *protocols* (HTTP, FTP) for standardized communication.
+
+**Data format**
+- Defined by a standard/specification, or negotiated by the client and server.
+
+.image images/json_voorhees.png _ 175
+
+## Client-Server: Data formats
+
+Data formats define how information is structured/encoded for exchange:
+- [**JSON** (JavaScript Object Notation)](https://en.wikipedia.org/wiki/JSON): A lightweight format for data interchange.
+- [**XML** (eXtensible Markup Language)](https://en.wikipedia.org/wiki/XML): Legacy format and a "cousin" of HTML.
+- [`protobuf` (Protocol Buffers)](https://en.wikipedia.org/wiki/Protocol_Buffers): Binary format for serializing structured data.
+
+.image images/vehicles.jpeg _ 650
+.caption Different kinds of vehicles are like different kinds of formats. Each has its own strengths and weaknesses.
+
+## Client-Server: What is JSON? JAY-Sawn? JEH-Sun?  
+- **J**ava**S**cript **O**bject **N**otation.
+- **Readable**: Stored as text (not binary) easy for humans and machines to read/write.
+- **Value Types**:
+    - String: sequence of characters enclosed in double quotes → `"Hello!"`
+    - Number: integer or floating-point number → `42`, `3.14`
+    - Boolean: a true or false value → `true`, `false`
+    - Null: a null value, representing the absence of a value → `null`
+- **Complex Types**:
+    - Object: Key-value pairs, enclosed in braces → `{"name": "Jay", "age": 30}`
+    - Array: An ordered list of values, enclosed in brackets → `["apple", "banana"]`
+
+## Client-Server: Generic application components and scaling terms
+
+- **Frontend:** What you see and interact with on a website, e.g. the layout/design.
+- **Backend:** The database(s), server(s), and application logic hidden from the user.
+- **Vertical:** Increasing the power (CPU/RAM) of individual servers to handle more load.
+- **Horizontal:** Distributing your workload across a pool of servers.
+
+.image images/scaling.png _ 1000
+
+## Client-Server: Generic application components and scaling diagram
+
+.image images/frontend_backend.png _ 1000
+
+## Client-Server: What is an Application Programming Interface (API)?
+
+A set of rules that allow different software applications to communicate with each other.
+
+For example, an HTTP *API* is composed of six parts of the [HTTP *protocol*](https://en.wikipedia.org/wiki/HTTPS):
+
+- **Headers**: Optional metadata about the request. (e.g., authN, accept, encoding, etc.)
+- **Endpoint**: The specific URL where requests can be sent.
+- **Method**: The type of request being made (e.g., `GET`, `POST`, `DELETE`).
+- **Body**: Optional content being sent with the request or response.
+- **Status Code**: A code that indicates the success or failure of a request (e.g., `200`, `404`).
+- **Trailers**: Optional metadata about the response.
+
+.image images/http.png 165 _
+
+## Client-Server: What is a Uniform Resource Locators (URLs)?
+
+- **URL**: A web address that specifies the location of a resource on the internet.
+
+Composed of several parts:
+- **Scheme**: The protocol used to access the resource (e.g., `sftp`, `https`).
+- **Host**: The domain name or IP address of the server.
+- **Port**: The specific port on the server to connect to (optional).
+- **Path**: The specific location of a resource on the server.
+- **Query**: Additional parameters for the request (optional).
+- **Anchor**: A named anchor pointing to a DOM ID (optional and *not* sent to the server).
+
+.image images/url_example.png _ 900
+.caption Full example of a URL with Scheme, Host, Port, Path, Query, and Anchor.
+
+## Client-Server: Representational State Transfer (REST) in API Design
+
+[REST](https://en.wikipedia.org/wiki/REST) was developed by Roy Fielding in his 2000 doctoral dissertation.<br/>
+✎ _**Not**_ a protocol, but a set of constraints for creating web services. 
+
+Web APIs that adhere to the REST architectural constraints are called [RESTful APIs](https://restfulapi.net/):
+
+- **Uniform Interface**: Decouples client-server & enables independent evolution.
+    - **Resources**: Central concept in REST, each identified by a URL.
+    - **Stateless**: Each request contains all information needed to fulfill the request.
+    - **CRUD Operations**: Utilizes standard HTTP methods: 
+        - Create: `POST`
+        - Read: `GET`
+        - Update: `PUT`
+        - Delete: `DELETE`
+    - **Representation**: Uses formats chosen through client↔server negotiation.
+
+## Client-Server: Summary
+
+- Client-Server model
+- Protocols & Types
+- Communication elements & flow
+- Data formats
+- Generic application terms
+- HTTP APIs & REST
+
+---
+The role and impact of APIs:
+1. Translation for interaction & provides universal vocabulary
+: Just as people use language to communicate, APIs act as a common language that lets different software systems talk to each other.
+: They define a set of rules ('vocabulary') that both clients and servers understand, ensuring they can exchange information accurately.
+
+2. Facilitates cooperation & enables integration
+: APIs enable diverse applications (like a phone app and a server) to work together seamlessly, similar to a translator facilitating a conversation between speakers of different languages.
+: They allow for the integration of different services, making it possible for applications to offer more complex functionality by leveraging existing services (like logging in using social media accounts).
+
+3. Simplifies complexity & hides implementation details
+: APIs abstract the complex inner workings of a server, providing a simple interface that clients can use, akin to ordering food in a restaurant without knowing the details of how it's prepared.
+
+## Client-Server: Meme time
+
+.image images/api.gif 580 _
+
+## OpenAPI: Software Engineering Challenges
+
+HTTP APIs are widely used for web services but they come with challenges:
+
+- **Validation**: Ensure the integrity and validity of data being exchanged.
+- **Documentation maintenance**: Keeping docs up-to-date with the implementation.
+- **Version control**: Manage changes and backward compatibility of APIs over time.
+- **Error handling**: Meaningful error messages and status codes for various failures.
+- **Compatibility**: Ensure APIs work across diverse clients & programming languages.
+- **Security**: Implement secure and flexible authN/authZ mechanisms.
+
+.image images/se_challenge.png _ 350
+
+## OpenAPI: Enter the specification
+
+[OpenAPI](https://www.openapis.org/) is a specification for building APIs that aims to address a range of challenges associated with *designing*, *developing*, *documenting*, and even *using* web APIs:
+
+- **Validation**: Mechanisms for validating query params, headers, and body content.
+- **Documentation**: Automatically generates interactive documentation.
+- **Client SDK Generation**: Enables easy creation of client libraries across languages.
+- **Versioning**: Helps manage different versions of an API effectively.
+- **Error handling**: Allows for the definition of standard error structures and messages.
+- **Interface consistency**: Ensures consistency of HTTP methods, codes, and payloads.
+- **Content negotiation**: Specifies support for multiple request/response formats.
+- **Security definitions**: Standardizes the way API security schemes are defined.
+- **Discovery**: Makes it easier for clients to discover the capabilities of an API.
+- **Testing**: Enables easy creation of tests for API validation and verification.
+
+## OpenAPI: What is a schema?
+
+A [**schema**](https://json-schema.org/understanding-json-schema) is a formal description of the structure of data and can validate the content.
+
+.image images/basic_JSON_Example.png _ 230
+.caption A basic JSON payload example.
+
+.image images/basic_JSON_Schema.png  _ 430
+.caption A basic JSON schema used to validate the example above.
+
+## OpenAPI: The specification
+
+The [OpenAPI Specification (OAS)](https://swagger.io/specification/v3/) uses schemas to define request/response payloads.
+
+- **Data types**: Define the type of data (e.g., `string`, `number`, `boolean`).
+- **Properties**: Define the structure of an object (e.g., "name", "age", "address").
+- **Required fields**: Define which fields are mandatory for a request or response.
+- **Nested objects**: Define complex data structures with nested objects and arrays.
+
+An OAS document serves as a blueprint for:
+1. Generating client & server (stub) code. 
+2. Generating interactive documentation.
+3. Generating test cases.
+4. Creating mock servers.
+---
+✎ The doc can be [JSON](https://en.wikipedia.org/wiki/JSON) or [YAML](https://en.wikipedia.org/wiki/YAML) format but YAML is preferred for [commentability](https://www.tutorialspoint.com/yaml/yaml_comments.htm).
+
+
+## OpenAPI: Main parts of the specification
+
+The [OAS](https://swagger.io/specification/v3/) includes:
+- **Paths**: URLs to access various API functionalities. Represents endpoints.
+- **Operations**: HTTP methods applied to paths (e.g., GET, POST).
+- **Parameters**: Details on request info like headers, query strings.
+- **Responses**: Expected data structure and status codes from API calls.
+
+	  openapi: 3.0.0
+	  info:
+	    title: Books API
+	    version: 1.0.0
+	  paths:
+	    /books:
+	      get:
+	        summary: Get a list of books
+	        responses:
+	          200:
+	            description: Success
+
+.caption An example minimum viable OpenAPI document.
+
+## OpenAPI: Code-first or Schema-first?
+
+**Code-first**:
+1. Design your program "normally" then start writing code/manually writing docs.
+3. Generate an OpenAPI spec from code annotations or comments (*optional*).
+- *Pros*: Easy for developers, keeps code and spec in sync.
+- *Cons*: Can lead to less comprehensive specs, depends on tooling.
+
+---
+
+**Schema-first**, also referred to as **Spec-first**:
+1. Design the OpenAPI spec, then generate server stubs, client SDKs, and docs.
+2. Implement business logic in the stubs (*required...it's not magic*).
+- *Pros*: Clear API contract, promotes design thinking, tool-agnostic.
+- *Cons*: Requires upfront design effort, potential for spec-code divergence.
+
+.caption I refuse to call it *Design-first* as the OpenAPI Initiative does...
+
+## OpenAPI: Code-first or Schema-first flowcharts
+
+.image images/code-first.png 200 _
+.caption Code-first approach: Start with code and generate an OpenAPI spec from code annotations or comments.
+
+---
+
+.image images/schema-first.png 230 _
+.caption Schema-first approach: Design the OpenAPI spec and then generate server stubs, client SDKs, and docs.
+
+## OpenAPI: The tools
+
+.image https://www.openapis.org/wp-content/uploads/sites/3/2016/10/OpenAPI_Pantone.png _ 200
+
+Pages of OpenAPI tools are available at [OpenAPI.Tools](https://openapi.tools/) and [OpenAPI Tooling](https://tools.openapis.org/).
+
+Official Swagger tooling:
+- **[Editor](https://editor.swagger.io/)**: A web-based tool for creating and editing OpenAPI documents.
+- **[UI](https://petstore.swagger.io/)**: A tool for visualizing and interacting with the API's resources.
+- **[Codegen](https://swagger.io/tools/swagger-codegen/)**: Generates client and server stubs from an OpenAPI document.
+
+--- 
+
+> > > > > > >**✎** "*OpenAPI*" vs. "*Swagger*"
+- [Swagger](https://en.m.wikipedia.org/wiki/Swagger_(software)) is the original toolkit for building APIs with a specification format.
+- [OpenAPI Specification](https://en.wikipedia.org/wiki/OpenAPI_Specification) versions (3.0+) are evolved from the original Swagger (2.0).
+- "*Swagger*" now refers to the *API tools* supporting the OpenAPI Specification.
+
+## Workshop: The plan
+
+0. **Tutorial**: [OpenAPI tutorial](https://support.smartbear.com/swaggerhub/docs/en/get-started/openapi-3-0-tutorial.html)
+---
+1. **Editor**: Design an OpenAPI spec for `PetStore™`.
+2. **UI**: Demonstrate Swagger UI.
+3. **CodeGen**: Generate a Go server from spec.
+1. **Server**: Sprinkle in business logic and deploy.
+2. **Client**: Create a Python CLI from spec.
+
+.background images/openapi_workflow.png
+
+## Workshop: Swagger Editor
+
+.image images/swagger_editor.svg _ 250
+
+"Official" editors:
+1. [Swagger Editor](https://editor.swagger.io/)
+2. [Swagger Editor Next](https://editor-next.swagger.io/)
+3. [Swagger Offline Editor](https://swagger.io/tools/swagger-editor/download/)
+
+Open online editors (and many others):
+- [Apibldr](https://www.apibldr.com/)
+- [Frogment](https://www.frogment.com/)
+
+VSCode plugin:
+- [OpenAPI Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi)
+
+## Workshop: Swagger UI
+
+.background images/swagger_ui_background.png
+
+"Official":
+1. Online: [Swagger UI](https://swagger.io/tools/swagger-ui/) ![swagger logo](https://avatars.githubusercontent.com/u/7658037?s=28&v=4)
+
+
+Opensource:
+
+2. Desktop: [Bruno](https://www.usebruno.com/) ![bruno logo](https://avatars.githubusercontent.com/u/114530840?s=28&v=4)
+3. Desktop: [Hoppscotch](https://hoppscotch.com/download) ![hoppscotch logo](https://avatars.githubusercontent.com/u/56705483?s=28&v=4)
+
+Forces you to have an account:
+
+3. Desktop: [Insomnia](https://insomnia.rest/) ![insomnia logo](https://avatars.githubusercontent.com/u/962416?s=28&v=4)
+4. Desktop: [Postman](https://www.postman.com/) ![postman logo](https://avatars.githubusercontent.com/u/10251060?s=28&v=4)
+
+Embeddable:
+
+5. Package: [SWGUI](https://github.com/swaggest/swgui) ![swaggest logo](https://avatars.githubusercontent.com/u/19609628?s=28&v=4)
+
+## Workshop: Swagger Codegen
+
+Since the OpenAPI Spec is open-source, many different generators are available...
+
+I'll use [`oapi-codegen`](https://github.com/deepmap/oapi-codegen) from [DeepMap, Inc](https://www.deepmap.ai/) since it can generate a [Chi](https://github.com/go-chi/chi) router (I like [Chi](https://github.com/go-chi/chi)).
+
+```shell
+git clone https://github.com/jh125486/petstore && cd petstore
+make generate
+```
+This will:
+1. Install the the `oapi-gen` code generator, and
+2. Execute the `go generate` comments in the `petstore.go` file.
+
+**✎** More info on `generate` comments can be found in the blog post ["Generating code"](https://go.dev/blog/generate).
+
+---
+Two files will be generated based on the OAPI-codegen YAML configs: 
+- `api/petstore-server.gen.go`: Petstore endpoint handlers (interface)
+- `api/petstore-types.gen.go`: Petstore models
+
+## Workshop: Server implementation
+
+Now that we've got our handlers interface and models, we'll add the business logic.
+
+For our simple Petstore™, we'll just use a mutexed `map` to store our `Pets`:
+```go
+type PetStore struct {
+	Pets   map[int64]Pet
+	NextId int64
+	Lock   sync.Mutex
+}
+```
+
+Then we'll write some functions to satisfy the `ServerInterface`:
+
+```go
+// ServerInterface represents all server handlers.
+type ServerInterface interface {
+	// Returns all pets
+	FindPets(w http.ResponseWriter, r *http.Request, params FindPetsParams)
+	// Creates a new pet
+	AddPet(w http.ResponseWriter, r *http.Request)
+	// Deletes a pet by ID
+	DeletePet(w http.ResponseWriter, r *http.Request, id int64)
+	// Returns a pet by ID
+	FindPetByID(w http.ResponseWriter, r *http.Request, id int64)
+}
+```
+
+## Workshop: Server deployment
+
+With the business logic added, we can serve our handler in a few lines from `main.go`:
+```go
+r := chi.NewRouter()                                    // Create the Chi router.
+spec, _ := api.GetSwagger()                             // Get OpenAPI spec and ignore any errors.
+r.Use(mw.OapiRequestValidator(spec))                    // Use OpenAPI spec request middleware.
+handler := api.NewStrictHandler(api.NewPetStore(), nil) // Use the repo to create our handler.
+api.HandlerFromMux(handler, r)                          // Add the handler  to the Chi router.
+log.Fatal(http.ListenAndServe(":"+port, r))             // Serve HTTP until the world ends.
+```
+
+Then we can manually test our server: 
+```shell
+PORT=3000 go run .
+```
+OK, that works (hopefully 🤞), so let's deploy to [Google Cloud Run](https://cloud.google.com/run):
+```shell
+make deploy
+```
+
+.image images/petstore_cloud_run.png _ 980
+
+## Workshop: Server deployment verification
+
+Open your browser and head to the [Cloud Run App URL](https://petstore-2jruimmcrq-vp.a.run.app/)
+
+.caption It should return a 404 since we don't have any handler defined for '/'
+
+We've embedded a Swagger UI though, at [/docs/](https://petstore-2jruimmcrq-vp.a.run.app/docs/)
+
+<iframe  style="border:2px inset;" width=980 height=450 src="https://petstore-2jruimmcrq-vp.a.run.app/docs/"></iframe>
+
+## Workshop: Client generation
+
+I don't have an opinion on client-generators, so I'll just use [Swagger Editor](https://editor.swagger.io/).
+
+.image images/swagger_editor_generate_client.png _ 1000
+
+This uses the Java `swagger-codegen` CLI from [Swagger API](https://github.com/swagger-api/swagger-codegen).
+
+There's plenty of other generators, like this pure Python one from [
+openapi-generators](https://github.com/openapi-generators/openapi-python-client).
+
+## Workshop: Client implementation
+
+Now that the client is generated, we'll have to wire up `main.py` to actually call the API:
+
+    # main.py
+    # Setup the client configuration and point the `host` to our server.
+    configuration = swagger_client.Configuration()
+    configuration.host = "https://petstore-2jruimmcrq-vp.a.run.app/"
+
+    # Create an API instance from the client configuration.
+    api_instance = swagger_client.DefaultApi(swagger_client.ApiClient(configuration))
+
+    # Create a cat named "Hank" and print the response.
+    pprint(api_instance.add_pet(swagger_client.NewPet("Hank", "cat")))
+    
+    # Delete the pet with ID #1000
+    api_instance.delete_pet(1000)
+
+    # Find a pet with ID #1001 and print the response.
+    pprint(api_instance.find_pet_by_id(1001))
+
+    # Find first 3 pets tagged with "dog"
+    pprint(api_instance.find_pets(tags=['dog'], limit=3))
+
+.caption ✎ In reality, you'd want to have `try`/`except` blocks to catch any API errors returned.
+
+## Next Steps
+
+- **[Security](https://openapi.tools/#security)**:
+  - Define authN [security schemes](https://swagger.io/docs/specification/authentication/) in the OpenAPI spec (e.g., OAuth2, JWT).
+
+- **[Mocking](https://openapi.tools/#mock)**:
+  - [Prism by Stoplight](https://stoplight.io/open-source/prism/): A set of packages for API mocking and contract testing.
+  - [Mocks Server](https://www.mocks-server.org/docs/integrations/openapi/): A Node.js mock server running live mocks in place of real APIs.
+
+- **[Testing](https://openapi.tools/#testing)**:
+  - [Dredd](https://dredd.org/en/latest/): A tool for validating API document against implementation of the API.
+
+- **[Versioning](https://redocly.com/docs/api-registry/resources/versioning-strategies/)**:
+  - [RESTful API best practices](https://restfulapi.net/versioning/): *When* and *How* to version a REST API.
+  - [Semantic Versioning](https://semver.org/): Uses three numbers to convey changes and compatibility.
+
+## Summary
+
+What we discussed today:
+1. *Client-server*
+   - From protocols to REST to data formats.
+2. *OpenAPI*
+   - The specification and the problems it aims to solve.
+3. *Workshop activities*
+   - Generated a server, deployed it, and then called it with a generated client.
+4. *Next Steps*
+   - Resources for Security, Mocking, Testing and Versioning OpenAPIs.
