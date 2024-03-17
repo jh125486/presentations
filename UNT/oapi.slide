@@ -438,6 +438,20 @@ make deploy
 
 .image images/petstore_cloud_run.png _ 980
 
+## Workshop Server deployment (alternative)
+
+We can also host our [Go app](https://www.koyeb.com/docs/deploy/go) with [Koyeb](https://www.koyeb.com/) and use git hooks to deploy to a free instance.
+
+0. Ensure we have a Github repo for our project.
+1. Create an account at Koyeb
+2. Click "Create App" in the Koyeb [control panel](https://app.koyeb.com/).
+3. Select GitHub as the deployment option.
+4. Choose the GitHub repository and branch containing your application code.
+5. Name your service, for example go-service.
+6. Name the App, for example example-go.
+7. Set the healthcheck to `/openapi.json`.
+8. Click the "Deploy" button.
+
 ## Workshop: Server deployment verification
 
 Open your browser and head to the [Cloud Run App URL](https://petstore-2jruimmcrq-vp.a.run.app/)
