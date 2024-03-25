@@ -63,14 +63,14 @@ Almost all modern applications involve distributed computing in some form, e.g.:
 
 The ["Fallacies of distributed computing"](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing) are: 
 
-1. The network is reliable;
-2. Latency is zero;
-3. Bandwidth is infinite;
-4. The network is secure;
-5. Topology doesn't change;
-6. There is one administrator;
-7. Transport cost is zero;
-8. The network is homogeneous.
+      1. The network is reliable;
+      2. Latency is zero;
+      3. Bandwidth is infinite;
+      4. The network is secure;
+      5. Topology doesn't change;
+      6. There is one administrator;
+      7. Transport cost is zero;
+      8. The network is homogeneous.
 
 .caption Sun Microsystems' Peter Deutsch (1994).
  
@@ -198,8 +198,8 @@ The ["Fallacies of distributed computing"](https://en.wikipedia.org/wiki/Fallaci
 - **Redundancy Limitation**: Even with redundant top-of-rack switches, a power distribution unit failure led to service loss for [Fog Creek](https://en.wikipedia.org/wiki/Glitch,_Inc.) customers.
 - **Unexpected Power Loss**: A second switch also lost power for undetermined reasons, isolating neighboring racks and taking down On Demand services.
 
-.image images/redundant_pdu.png 255 _
-.caption A typical datacenter's server and network rack setup with dual uninterruptible power supplies (UPS), showcasing redundancy (hopefully) with automatic power transfer switches connected to primary and secondary utility power sources for fail-safe operation.
+.image images/redundant_pdu.png 285 _
+.caption A typical datacenter's server / network rack setup with dual uninterruptible power supplies (UPS), with redundancy (hopefully) through automatic power transfer switches connected to primary and secondary utility power sources for fail-safe operation.
 
 ## Datacenter Network Failures: Switch Split-brain by BPDU Flood
 
@@ -247,14 +247,14 @@ The ["Fallacies of distributed computing"](https://en.wikipedia.org/wiki/Fallaci
 - **Data Loss**: When the old primary rejoined after 2 hours, it caused a rollback and write loss on the new primary.
 - **Common Failures**: Large-scale [MongoDB](https://en.wikipedia.org/wiki/MongoDB) users frequently experience failover on EC2 due to network events.
 
-.image images/mongodb.jpeg 320 _
+.image images/mongodb.jpeg 310 _
 
 ## Cloud Networks: Mnesia Split-brain on EC2
 
 - **Outage Consequence**: Two [Mnesia](https://en.wikipedia.org/wiki/Mnesia) nodes stayed online but disconnected from each other, leading to data inconsistency and loss.
 - **Operational Decision**: The team nuked one side of the cluster, underlining the need for better network partition recovery strategies.
 
-.image images/split_brain.png 300 _
+.image images/split_brain.png 320 _
 .caption How a split-brain scenario in an Mnesia cluster develops: A network 'glitch' results in a partitioned cluster, creating two separate 'left' and 'right' clusters, each with their own set of nodes that can no longer communicate with each other.
 
 ## Cloud Networks: EC2 Instability Affecting MongoDB and ElasticSearch
@@ -262,7 +262,7 @@ The ["Fallacies of distributed computing"](https://en.wikipedia.org/wiki/Fallaci
 - **Selective Disruptions**: Network issues on EC2 caused partitions between front-end and back-end servers, leading to short but impactful outages.
 - **Service Impact**: Despite brief network glitches, resulting outages lasted 30 to 45 minutes with a corrupted index for ElasticSearch ([OpenSearch](https://en.wikipedia.org/wiki/OpenSearch_(software))).
 
-.image images/elasticsearch_failure.png 300 _
+.image images/elasticsearch_failure.png 290 _
 .caption Elasticsearch cluster mishap: Node A's missed heartbeat prompts shard redistribution to Nodes B, C, and D. Resharding typically starts after one minute, but Node A's quick (< 10s) reconnection causes index corruption due to interim writes.
 
 ## Cloud Networks: AWS EBS Outage
