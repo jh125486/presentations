@@ -13,9 +13,9 @@ https://github.com/jh125486
 
 - Introduction
 - Background
-- AWS' Physalia
-- Cockroach Labs' CockroachDB
-- TigerBeetle Inc.'s TigerBeetle
+- AWS' *Physalia*
+- Cockroach Labs' *CockroachDB*
+- TigerBeetle Inc.'s *TigerBeetle*
 - Conclusion
 
 ## Introduction
@@ -42,6 +42,9 @@ https://github.com/jh125486
 - Distributed computing
 - ACID vs. BASE
 - Catalogs of Databases
+
+.image images/database_background.png 320 _
+.caption Image generated using Adobe Photoshop.
 
 ## Background: Networks?
 
@@ -70,8 +73,10 @@ https://github.com/jh125486
 - Data replication and consistency
 - Consensus algorithms
 - CAP Theorem with PACELC Extension
-  - Raft example
 - Types of failures
+
+.image images/database_distributed_computing.png 280 _
+.caption Image generated using Adobe Photoshop.
 
 ## Background: Distributed computing
 
@@ -101,28 +106,31 @@ https://github.com/jh125486
 - **[Scaling](https://en.wikipedia.org/wiki/Scalability):** [*Scale-out* (horizontal)](https://en.wikipedia.org/wiki/Database_scalability#Horizontal) → more `nodes`. [*Scale-up* (vertical)](https://en.wikipedia.org/wiki/Database_scalability#Vertical) → more `resources`.
 - **[Distributed Transactions](https://en.wikipedia.org/wiki/Distributed_transaction):** Spans multiple nodes, requiring coordination.
 
-## Background: Distribution dynamics in distributed databases
+## Background: Data partitioning
 
-**Data partitioning:** Dividing the database into smaller, manageable segments.
+Dividing the database into smaller, manageable segments.
+
+**Types:**
 - *Horizontal* partitioning (**[sharding](https://en.wikipedia.org/wiki/Shard_(database_architecture))**): Distributing rows across multiple nodes.
 - *Vertical* partitioning: Distributing columns across different nodes.
+
+**Strategies:**
+- *Range-based:* Assigning data based on a range of values.
+- *Hash-based:* Assigning data based on a hash function.
+- *List-based:* Assigning data based on a predefined list.
+- *Composite:* Combining multiple strategies.
+
 ---
-**Replication:** Copying data across different nodes for redundancy and availability.
+
+**Question:** 
+  - *Which type is better?*
+
+## Background: Replication
+
+Copying data across different nodes for redundancy and availability.
 - *Synchronous* replication: Ensuring data consistency across nodes in real-time.
 - *Asynchronous* replication: Allowing for slight delays in data synchronization.
----
-**Consistency models:** Balancing consistency, availability, and partition tolerance.
-- *[Strong](https://en.wikipedia.org/wiki/Strong_consistency)* consistency: Ensuring all nodes have the same data at the same time.
-- *[Eventual](https://en.wikipedia.org/wiki/Eventual_consistency)* consistency: Allowing temporary inconsistencies for more performance.
-- *[Causal](https://en.wikipedia.org/wiki/Causal_consistency)* consistency: Orders causally related operations consistently across nodes.
-- *[Weak](https://en.wikipedia.org/wiki/Weak_consistency)* consistency: Delays data updates' visibility to prioritize performance.
 
-## Background: Replication types
-
-**Models:**
-  - *Client-Server:* A centralized server manages data, while multiple clients access it.
-  - *Peer-to-Peer:* Each node in the network acts both as a client and a server.
----
 **Active/Active:**
   - Both nodes are active and can handle read and write operations.
   - Data is replicated bi-directionally for synchronization.
@@ -132,6 +140,24 @@ https://github.com/jh125486
   - The primary node handles write operations, while replica nodes are read-only.
   - Changes are propagated from the primary to the replicas.
   - Provides data redundancy and read scalability.
+
+## Background: Data consistency
+
+Ensuring that all nodes in a distributed system have the same data.
+
+---
+
+**[Consistency models](https://en.wikipedia.org/wiki/Consistency_model):** Balancing consistency, availability, and partition tolerance.
+
+- *[Strong](https://en.wikipedia.org/wiki/Strong_consistency)* consistency: Ensuring all nodes have the same data at the same time.
+- *[Eventual](https://en.wikipedia.org/wiki/Eventual_consistency)* consistency: Allowing temporary inconsistencies for more performance.
+- *[Causal](https://en.wikipedia.org/wiki/Causal_consistency)* consistency: Orders causally related operations consistently across nodes.
+- *[Weak](https://en.wikipedia.org/wiki/Weak_consistency)* consistency: Delays data updates' visibility to prioritize performance.
+
+---
+
+**Question:** 
+  - *Why different models?*
 
 ## Background: Consensus algorithms
 
@@ -173,10 +199,10 @@ https://github.com/jh125486
 
 ---
 
-**Questions:** 
+**Question:** 
   - *What is "blast radius"?* 
 
-## Background: Failure example "Split-Brain"
+## Background: Failure effect "Split-Brain"
 
 - A split-brain occurs when a network partition divides a cluster into subclusters.
 - Each subcluster may operate independently, risking data inconsistency.
@@ -256,6 +282,9 @@ DB-engines: [https://db-engines.com/](https://db-engines.com/)
 - Handling failures
 - NSDI '20 presentation
 
+.image images/aws_physalia.png 380 _
+.caption Portuguese man-of-war (Physalia physalis). Image courtesy of NSDI '20 AWS Physalia presentation.
+
 ## Physalia: An Overview
 
 *"Millions of tiny databases"* by Marc Brooker, Tao Chen, and Fan Ping. [DOI](https://dl.acm.org/doi/10.5555/3388242.3388276)
@@ -287,11 +316,16 @@ For a more in-depth exploration, read Adrian Colyer's summary on [The Morning Pa
 
 <iframe width="952" height="535" src="https://www.youtube.com/embed/ZO9AxJTlgsU?si=AdUpW5O9e24f21Ul" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+[NSDI '20 presentation](https://youtu.be/ZO9AxJTlgsU?si=X9V-FQHf4uGLhVqm)
+
 ## CockroachDB
 
 - Overview
 - Transaction techniques
 - SIGMOD '20 presentation
+
+.image https://upload.wikimedia.org/wikipedia/en/3/31/Cockroach_Labs_Logo.png 350 _
+.caption Cockroach Labs logo. Image courtesy of Cockroach Labs.
 
 ## CockroachDB: An Overview
 
@@ -324,11 +358,16 @@ SIGMOD '20: Proceedings of the 2020 ACM SIGMOD International Conference on Manag
 
 <iframe width="952" height="535" src="https://www.youtube.com/embed/ivVFAd9erfo?si=L9Bt_0VaNLfOee8Z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+[SIGMOD '20 presentation](https://youtu.be/ivVFAd9erfo)
+
 ## TigerBeetle
 
 - Overview
 - Safety and testing
-- SIGMOD '20 presentation
+- Simulator presentation
+
+.image images/tigerbeetle.png 350 _
+.caption TigerBeetle mascot. Courtesy of TigerBeetle Inc.
 
 ## TigerBeetle: An Overview
 
@@ -346,18 +385,18 @@ SIGMOD '20: Proceedings of the 2020 ACM SIGMOD International Conference on Manag
 ## TigerBeetle: Safety and testing
 
 - Utilizes the [Zig programming language](https://ziglang.org/) for safety features such as OOM safety, bounds checking, and explicit control flow.
-- Emphasizes safety with a robust storage fault model, protecting against a variety of storage-related failures.
+- Protects against varying storage-related failures with a robust storage fault model.
 - Rigorous testing regime, including automated testing, audits of consensus and replication protocols, and state machine verification.
 - *Viewstamped Operation Replicator ([VOPR](https://tigerbeetle.com/blog/2023-07-11-we-put-a-distributed-database-in-the-browser/))* is a deterministic game to simulate TigerBeetle's protocol to test distributed behaviors.
 
-.image https://tigerbeetle.com/assets/sim-city-breeze.webp 160 _
+.image https://tigerbeetle.com/assets/sim-city-breeze.webp 190 _
 .caption VOPR Level 1: City Breeze, simulating a perfect environment. No network partitions. No packet loss or replays. No crashes or disk corruption, and, of course, low latency network and disk I/O.
 
 ## TigerBeetle: SimTigerBeetle [The TigerBeetle Sessions]
 
-[SimTigerBeetle](https://sim.tigerbeetle.com/): A simulator (as a game) for TigerBeetle in your browser.
-
 <iframe width="952" height="535" src="https://www.youtube.com/embed/Vch4BWUVzMM?si=yGPnBH0D5fUBIMk4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+[SimTigerBeetle Director's Cut!](https://youtu.be/Vch4BWUVzMM): [SimTigerBeetle](https://sim.tigerbeetle.com/), a TigerBeetle simulator in your browser.
 
 ## Conclusion
 
