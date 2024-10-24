@@ -1,0 +1,293 @@
+# Red, Green, Refactor
+A Roadmap to Cleaner, Reliable Code
+18:00 25 Oct 2024
+
+Dr. Jacob Hochstetler
+Distinguished Engineer, Vice President, Fidelity Investments
+Clinical Assistant Professor, University of North Texas 
+Jacob.Hochstetler@UNT.edu
+Jacob.Hochstetler@Fidelity.com
+https://github.com/jh125486
+
+
+## Agenda
+
+- Why test?
+- Background
+- What is Test-Driven Development (TDD)  
+- Sidenote: Types of tests...
+- The Red, Green, Refactor Cycle  
+  - Writing your first test  
+  - Making the test pass  
+  - Refactoring for clean code
+- Top-Down vs. Bottom-Up TDD
+- Challenges of TDD  
+- Demo  
+- Q&A
+
+## Why test?
+
+<div align="center">
+    You already test your code, right?</br>
+    I mean, you <i>know</i> it works...</br>
+    But you probably only test <i>manually</i>, and not as thoroughly as you think.</br>
+</div>
+
+.image tdd/tested.jpg 250 _
+
+<div align="center"><i>There's a better way...</i></div>
+
+**Automated testing** is a way to ensure that your code works as expected, even as it evolves, and more requirements are added.
+
+## What is Test-Driven Development (TDD)?
+
+Now that we know we need *automated* testing, let's look at how to do it well.
+
+One of the ways that developers can take responsibility for the quality of their code is through Test-Driven Development (**TDD**).
+
+In 2002, Kent Beck published [“Test Driven Development: By Example”](https://www.amazon.com/dp/0321146530):
+
+> "Test-driven development is meant to eliminate fear in app development.</br>
+While some fear is healthy (often viewed as a conscience that tells programmers to "be careful!"),
+the author believes that byproducts of fear include tentative, grumpy, and uncommunicative programmers
+who are unable to absorb constructive criticism.</br>
+When programming teams adopt TDD, they eliminate fear, become better equipped to tackle challenges,
+and learn to communicate and seek criticism.</br>
+However, the author admits that grumpiness must be worked out individually!"
+<p><cite>- Amazon.com book description (https://a.co/d/4lhZmHw)</cite></p>
+
+## Background
+
+In yesteryear, testing was a separate **SDLC** phase, after development was completed.
+
+But this meant "easier-to-fix" bugs were found later in the development cycle</br>...which was more expensive to fix.
+
+As software grew in complexity, enterprises created separate software testing teams.
+
+They had names like **QC** (Quality Control), or **QA** (Quality Assurance), <br/>or **UAT** (User Acceptance Testing) or even **V&V** (Verification and Validation).
+
+But this was still expensive and time-consuming,<br/>and developers were not *accountable* for quality, relying on other teams to catch bugs.
+
+With the rise of **productized** software, the Agile Manifesto, and the DevOps movement, the idea of *"shifting left"* became popular. 
+
+This pushed testing earlier (to *"the left"*) in the development cycle, and made developers responsible for the quality of their code.
+
+## Sidenote: Types of tests...
+
+**Unit Testing**: Testing a single function or method
+
+- Tests individual components in isolation
+- Fast, focused, and numerous
+
+**Integration Testing**: Testing API with database, or frontend with backend
+
+- Tests multiple components working together to verify interactions
+- Usually much slower than unit tests
+
+**End-to-End Testing (E2E)**: Testing a full user flow from start to finish
+
+- Simulates real user behavior
+- Slowest but most comprehensive
+
+## OK... but where does TDD fit in?
+
+## The Software Development Life Cycle (SDLC)
+
+Instead of a separate testing phase, TDD integrates testing directly into development.
+
+There's lots of different SLDC methodologies, but TDD is a **development** practice.
+
+.image tdd/sldc.jpg 420 _
+
+.caption SDLC Models – Software Development Models
+
+## OK... but how does TDD work?
+
+## The Red, Green, Refactor Cycle
+
+TDD pushes testing so far "*left*", that you write the test **before** you write the code.
+
+.image tdd/phases.png 470 _
+.caption Red, Green, Refactor Cycle
+
+## Writing your first test
+
+The <span style="background:red;color:white">&nbsp;"Red"&nbsp;</span> phase of TDD.
+
+<div align=center>"TDD starts off with the opposite of a <i>normal</i> development process..."</div>
+
+You know what the *output* of your functions should be,
+</br>so you write a test that checks that output:
+
+- Define the expected behavior of a single function or unit.
+- Use assertions to verify the output matches expectations.
+- Tests should be fast and focused.
+- *The test will initially fail*.
+
+## Making the test pass
+
+The <span style="background:green;color:white">&nbsp;"Green"&nbsp;</span> phase of TDD.
+
+<div align=center>"Next, you write just enough code to pass the failing test..."</div>
+
+Once you have a failing test,</br>
+you write the *minimal* amount of code to make the test pass:
+
+- Write just enough code to make the test pass.
+- Don’t focus on optimization or clean code at this stage.
+- Keep the solution simple and direct, with minimal logic.
+- *Once the test passes, move on to the next step.*
+
+## Refactoring for clean code & maintainable code
+
+The <span style="background:blue;color:white">&nbsp;"Refactor"&nbsp;</span> phase of TDD.
+
+<div align=center>"Finally, you clean up the code while ensuring the test still passes..."</div>
+
+Once you have a passing test,</br>
+you can *refactor* your code to make it cleaner and more maintainable:
+
+- Refactor the code to make it more readable.
+- Remove duplication and improve the design.
+- Ensure the code is easy to understand and maintain.
+- *Run the tests after each refactoring to ensure nothing is broken*.
+
+## Top-Down vs. Bottom-Up TDD
+
+There's actually two different ways to do TDD:
+
+**Top-Down TDD**: IMHO better for frontend as it focuses on user interface and behavior.
+- Also called Outside-In Testing: Because you start from the user-facing or external behavior and work inward toward the underlying logic.
+- Sometimes associated with *Behavior-Driven Development (BDD)*: Focuses on specifying the behavior of the system from a user perspective.
+
+---
+
+**Bottom-Up TDD**: IMHO better for backend as it tests core logic and services first.
+- Sometimes referred to as Inside-Out Testing: Since you begin with the core components or internal logic and work outward to higher levels.
+- Often linked to *Unit Testing First*: Where the focus is on writing tests for individual units or small parts of the code before testing higher-level functionality.
+
+## Challenges of TDD
+
+- Greenfield only: difficult to apply to legacy systems.
+- Requires individual discipline and team adherence to strict testing practices.
+- Initial development feels slower due to constant test writing.
+- For many developers, writing tests is not as fun as writing code.
+- Tests need regular maintenance as code evolves.
+- Not all scenarios are easily testable with TDD, e.g. UI-heavy apps, game behaviors.
+- Some languages or frameworks are not well-suited to TDD, e.g. DI or mocking.
+
+## Demo
+
+.image https://github.com/quii/learn-go-with-tests/raw/main/red-green-blue-gophers-smaller.png _ 770
+.caption Art by Denise: https://twitter.com/deniseyu21
+
+## Demo: Write the test first
+
+.image tdd/red.png 200 _
+
+`integers/integer_test.go`
+
+```go
+func TestAdd(t *testing.T) {
+	sum := Add(2, 2)
+	expected := 4
+
+	if sum != expected {
+		t.Errorf("expected '%d' but got '%d'", expected, sum)
+	}
+}
+```
+
+We haven't written the *`Add()`* function yet, so this test **won't even compile.**
+
+## Demo: Write enough code to make the test fail
+
+.image tdd/red.png 200 _
+
+With this minimal implementation, the test will fail *correctly*, aka **make it red**.
+
+`integers/integer.go`
+
+```go
+func Add(x, y int) int {
+	return 0
+}
+```
+
+## Demo: Make the test pass
+
+.image tdd/green.png 200 _
+
+Write the *minimal* amount of code to make the test pass, aka **make it green**.
+
+`integers/integer.go`
+
+```go
+func Add(x, y int) int {
+	return 4
+}
+```
+
+*Note that we're being pedantic about TDD here.*
+
+
+## Demo: Robustify the tests
+
+If you noticed, the test is not very robust... always expecting **`4`** isn't very useful. 
+
+Let's make `integers/integer_test.go` more robust by making it a table test:
+
+```go
+func TestAdd(t *testing.T) {
+	t.Parallel() // Run tests in parallel
+	tests := []struct { // table test
+		name     string
+		a, b     int
+		expected int
+	}{
+		{"Add positive numbers", 2, 3, 5},
+		{"Add negative numbers", -1, -2, -3},
+		{"Add mix of positive and negative", -1, 2, 1},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel() // Run tests in parallel
+			if result := Add(tt.a, tt.b); result != tt.expected {
+				t.Errorf("Add(%d, %d) = %d; want %d", tt.a, tt.b, result, tt.expected)
+			}
+		})
+	}
+}
+```
+
+## Demo: Make the test pass the robust tests
+
+.image tdd/green.png 200 _
+
+Write the *minimal* amount of code to make the new table test pass.
+
+`integers/integer.go`
+
+```go
+func Add(x, y int) int {
+	return x + y
+}
+```
+
+## Demo: Refactor the code
+
+.image tdd/refactor.png 200 _
+
+Honestly, there's nothing to refactor with this code...
+
+With more complex code, you might refactor to make the code:
+- more organized,
+- maintainable,
+- or performant.
+
+Once you have a baseline of "<span style="color:green">green</span>" tests, 
+<br/>you can refactor with confidence that any errors will be caught by the tests.
+
+## Questions?
+
+.image tdd/rgr.png _ 550
