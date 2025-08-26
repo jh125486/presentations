@@ -389,7 +389,7 @@ SIGMOD '20: Proceedings of the 2020 ACM SIGMOD International Conference on Manag
 - Rigorous testing regime, including automated testing, audits of consensus and replication protocols, and state machine verification.
 - *Viewstamped Operation Replicator ([VOPR](https://tigerbeetle.com/blog/2023-07-11-we-put-a-distributed-database-in-the-browser/))* is a deterministic game to simulate TigerBeetle's protocol to test distributed behaviors.
 
-.image https://tigerbeetle.com/assets/sim-city-breeze.webp 190 _
+.image https://tigerbeetle.com/blog/2023-07-11-we-put-a-distributed-database-in-the-browser/sim-city-breeze.webp 190 _
 .caption VOPR Level 1: City Breeze, simulating a perfect environment. No network partitions. No packet loss or replays. No crashes or disk corruption, and, of course, low latency network and disk I/O.
 
 ## TigerBeetle: SimTigerBeetle [The TigerBeetle Sessions]
