@@ -1,6 +1,6 @@
 # API mastery with OpenAPI
 JSON and Servers and Clients, Oh My!
-18:00 20 Feb 2024
+18:00 03 Mar 2026
 
 Dr. Jacob Hochstetler
 Distinguished Engineer, Vice President, Fidelity Investments
@@ -231,7 +231,7 @@ A [**schema**](https://json-schema.org/understanding-json-schema) is a formal de
 
 ## OpenAPI: The specification
 
-The [OpenAPI Specification (OAS)](https://swagger.io/specification/v3/) uses schemas to define request/response payloads.
+The [OpenAPI Specification (OAS)](https://swagger.io/specification/) uses schemas to define request/response payloads.
 
 - **Data types**: Define the type of data (e.g., `string`, `number`, `boolean`).
 - **Properties**: Define the structure of an object (e.g., "name", "age", "address").
@@ -249,13 +249,13 @@ An OAS document serves as a blueprint for:
 
 ## OpenAPI: Main parts of the specification
 
-The [OAS](https://swagger.io/specification/v3/) includes:
+The [OAS](https://swagger.io/specification/) includes:
 - **Paths**: URLs to access various API functionalities. Represents endpoints.
 - **Operations**: HTTP methods applied to paths (e.g., GET, POST).
 - **Parameters**: Details on request info like headers, query strings.
 - **Responses**: Expected data structure and status codes from API calls.
 
-	  openapi: 3.0.0
+	  openapi: 3.1.0
 	  info:
 	    title: Books API
 	    version: 1.0.0
@@ -310,7 +310,7 @@ Official Swagger tooling:
 
 --- 
 
-> > > > > > >**✎** "*OpenAPI*" vs. "*Swagger*"
+> **✎** "*OpenAPI*" vs. "*Swagger*"
 - [Swagger](https://en.m.wikipedia.org/wiki/Swagger_(software)) is the original toolkit for building APIs with a specification format.
 - [OpenAPI Specification](https://en.wikipedia.org/wiki/OpenAPI_Specification) versions (3.0+) are evolved from the original Swagger (2.0).
 - "*Swagger*" now refers to the *API tools* supporting the OpenAPI Specification.
@@ -322,8 +322,8 @@ Official Swagger tooling:
 1. **Editor**: Design an OpenAPI spec for `PetStore™`.
 2. **UI**: Demonstrate Swagger UI.
 3. **CodeGen**: Generate a Go server from spec.
-1. **Server**: Sprinkle in business logic and deploy.
-2. **Client**: Create a Python CLI from spec.
+4. **Server**: Sprinkle in business logic and deploy.
+5. **Client**: Create a Python CLI from spec.
 
 .background images/openapi_workflow.png
 
@@ -333,12 +333,11 @@ Official Swagger tooling:
 
 "Official" editors:
 1. [Swagger Editor](https://editor.swagger.io/)
-2. [Swagger Editor Next](https://editor-next.swagger.io/)
-3. [Swagger Offline Editor](https://swagger.io/tools/swagger-editor/download/)
+2. [Swagger Offline Editor](https://swagger.io/tools/swagger-editor/download/)
 
 Open online editors (and many others):
 - [Apibldr](https://www.apibldr.com/)
-- [Frogment](https://www.frogment.com/)
+- [DeveloperHub API Editor](https://app.developerhub.io/api-editor)
 
 VSCode plugin:
 - [OpenAPI Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi)
@@ -369,14 +368,14 @@ Embeddable:
 
 Since the OpenAPI Spec is open-source, many different generators are available...
 
-I'll use [`oapi-codegen`](https://github.com/deepmap/oapi-codegen) from [DeepMap, Inc](https://www.deepmap.ai/) since it can generate a [Chi](https://github.com/go-chi/chi) router (I like [Chi](https://github.com/go-chi/chi)).
+I'll use [`oapi-codegen`](https://github.com/oapi-codegen/oapi-codegen) since it can generate a [Chi](https://github.com/go-chi/chi) router (I like [Chi](https://github.com/go-chi/chi)).
 
 ```shell
 git clone https://github.com/jh125486/petstore && cd petstore
 make generate
 ```
 This will:
-1. Install the the `oapi-gen` code generator, and
+1. Install the `oapi-codegen` code generator, and
 2. Execute the `go generate` comments in the `petstore.go` file.
 
 **✎** More info on `generate` comments can be found in the blog post ["Generating code"](https://go.dev/blog/generate).
@@ -438,7 +437,7 @@ make deploy
 
 .image images/petstore_cloud_run.png _ 980
 
-## Workshop Server deployment (alternative)
+## Workshop: Server deployment (alternative)
 
 We can also host our [Go app](https://www.koyeb.com/docs/deploy/go) with [Koyeb](https://www.koyeb.com/) and use git hooks to deploy to a free instance.
 
@@ -501,21 +500,22 @@ Now that the client is generated, we'll have to wire up `main.py` to actually ca
 
 ## Next Steps
 
-- **[Security](https://openapi.tools/#security)**:
+- **[Security](https://openapi.tools/categories/security)**:
   - Define authN [security schemes](https://swagger.io/docs/specification/authentication/) in the OpenAPI spec (e.g., OAuth2, JWT).
 
-- **[Mocking](https://openapi.tools/#mock)**:
-  - [Prism by Stoplight](https://stoplight.io/open-source/prism/): A set of packages for API mocking and contract testing.
-  - [Mocks Server](https://www.mocks-server.org/docs/integrations/openapi/): A Node.js mock server running live mocks in place of real APIs.
+- **[Mocking](https://openapi.tools/categories/mocking)**:
+  - [Prism by Stoplight](https://stoplight.io/open-source/prism/): API mocking and contract testing.
+  - [Mocks Server](https://www.mocks-server.org/docs/integrations/openapi/): Live mocks in place of real APIs.
 
-- **[Testing](https://openapi.tools/#testing)**:
-  - [Dredd](https://dredd.org/en/latest/): A tool for validating API document against implementation of the API.
+- **[Testing](https://openapi.tools/categories/testing)/[Linting](https://en.wikipedia.org/wiki/Lint_(software))**:
+  - [Schemathesis](https://schemathesis.readthedocs.io/): Property-based test generation from an OpenAPI spec.
+  - [vacuum](https://quobix.com/vacuum/): Fast OpenAPI linter written in Go, compatible with Spectral rulesets.
 
 - **[Versioning](https://redocly.com/docs/api-registry/resources/versioning-strategies/)**:
   - [RESTful API best practices](https://restfulapi.net/versioning/): *When* and *How* to version a REST API.
-  - [Semantic Versioning](https://semver.org/): Uses three numbers to convey changes and compatibility.
+  - [Semantic Versioning](https://semver.org/): Three numbers to convey changes and compatibility.
 
-## Summary
+## Conclusion
 
 What we discussed today:
 1. *Client-server*
