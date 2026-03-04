@@ -4,7 +4,7 @@ JSON and Servers and Clients, Oh My!
 
 Dr. Jacob Hochstetler
 Distinguished Engineer, Vice President, Fidelity Investments
-Clinical Assistant Professor, University of North Texas 
+Clinical Assistant Professor, University of North Texas
 Jacob.Hochstetler@UNT.edu
 Jacob.Hochstetler@Fidelity.com
 https://github.com/jh125486
@@ -19,25 +19,29 @@ https://github.com/jh125486
   - Generating a Client (Python)
 - Next Steps
 - Conclusion
+: About 30 minutes on client-server fundamentals, then OpenAPI concepts, then hands-on workshop.
+: Feel free to ask questions throughout - this is a workshop, not a lecture.
 
 ## Client-Server: The model
 
 What is a **client**?
 
-> Software that users *directly* interact with to **request** data.  
+> Software that users *directly* interact with to **request** data.
 
-What is a **server**? 
+What is a **server**?
 
-> Software designed to *process* and *respond* to **requests** from clients. 
+> Software designed to *process* and *respond* to **requests** from clients.
+: These are intentionally simple definitions - the key distinction is who initiates the request (always the client) and who responds (always the server).
 
 ---
 
-- **1960s-1970s: Emergence** 
+- **1960s-1970s: Emergence**
     - Time-sharing systems introduce early client-server model concepts.
-- **1980s: Expansion** 
+- **1980s: Expansion**
     - Personal computers and LANs popularize the client-server model.
-- **1990s-Present: Internet Era** 
+- **1990s-Present: Internet Era**
     - Web technologies evolve to become cloud computing and microservices.
+: The client-server model is 50+ years old - it's a fundamental pattern, not a trend. Everything we're building today is an evolution of this.
 
 ## Client-Server: Protocols
 
@@ -51,6 +55,8 @@ A *protocol* is a set of rules that dictate how data is exchanged over a network
 
 .image images/protocol_specification_implementation.png _ 460
 .caption Example of a driving protocol specification and its implementation.
+: The image shows the key distinction: a spec (the rulebook) vs. an implementation (the actual road/signage). Protocols are the rulebook - they don't care how you implement them.
+: Notice these protocols are single-purpose - SMTP sends mail, POP3 receives it. Good protocol design follows the same single-responsibility principle.
 
 ## Client-Server: Types/Examples
 
@@ -66,6 +72,8 @@ Types of Servers
 - **File** Servers: SMB/CIFS, NFS, AFS
 - **Mail** Servers: Postfix, Microsoft Exchange
 - **Application** Servers: Glassfish, Gunicorn, Tomcat, Node.js
+: These categories blur in practice - VSCode is a client but also spawns language servers, making it both. A mobile app can be a client to your backend but also a server to its own local database.
+: API clients are worth highlighting for this audience - Bruno and Insomnia are tools they'll use in the workshop to manually test endpoints.
 
 ## Client-Server: Communication elements & flow
 
@@ -82,6 +90,8 @@ Types of Servers
 - Defined by a standard/specification, or negotiated by the client and server.
 
 .image images/json_voorhees.png _ 175
+: Stateless is critical to understand - the server has no memory between requests. This is why you have to send auth tokens on every request rather than logging in once.
+: The JSON Voorhees image is a pun. JSON can become a horror show in poorly designed APIs - mismatched types, missing fields, undocumented changes. OpenAPI is the solution.
 
 ## Client-Server: Data formats
 
@@ -92,8 +102,10 @@ Data formats define how information is structured/encoded for exchange:
 
 .image images/vehicles.jpeg _ 650
 .caption Different kinds of vehicles are like different kinds of formats. Each has its own strengths and weaknesses.
+: JSON = compact car: human-readable, easy to debug, good for most web APIs. XML = SUV: verbose and bulky but powerful validation with schemas. protobuf = race car: blindingly fast and compact but you can't read it without the schema file.
+: We're focusing on JSON today since it's dominant for REST APIs, but protobuf is worth knowing for high-performance internal services (gRPC).
 
-## Client-Server: What is JSON? JAY-Sawn? JEH-Sun?  
+## Client-Server: What is JSON? JAY-Sawn? JEH-Sun?
 - **J**ava**S**cript **O**bject **N**otation.
 - **Readable**: Stored as text (not binary) easy for humans and machines to read/write.
 - **Value Types**:
@@ -104,6 +116,8 @@ Data formats define how information is structured/encoded for exchange:
 - **Complex Types**:
     - Object: Key-value pairs, enclosed in braces → `{"name": "Jay", "age": 30}`
     - Array: An ordered list of values, enclosed in brackets → `["apple", "banana"]`
+: It's pronounced "JAY-son" like the name Jason. RFC 8259 (the JSON standard) settles this - the author Douglas Crockford says either is fine, but JAY-son is dominant.
+: These value types map directly to primitives in every major language. Objects map to dicts/maps/structs, arrays to lists. This universality is why JSON won.
 
 ## Client-Server: Generic application components and scaling terms
 
@@ -113,10 +127,14 @@ Data formats define how information is structured/encoded for exchange:
 - **Horizontal:** Distributing your workload across a pool of servers.
 
 .image images/scaling.png _ 1000
+: Vertical scaling has a hard ceiling - you can only buy so large a machine. Horizontal scaling is theoretically unlimited, which is why cloud computing won.
+: The tradeoff: horizontal scaling introduces distributed systems complexity (consistency, coordination, network partitions). There's no free lunch.
 
 ## Client-Server: Generic application components and scaling diagram
 
 .image images/frontend_backend.png _ 1000
+: Walk through the diagram left to right: user → browser → load balancer → app servers → database. Each arrow is an API call.
+: Notice the database is a single point - scaling it (sharding, replication) is one of the hardest problems in distributed systems.
 
 ## Client-Server: What is an Application Programming Interface (API)?
 
@@ -132,6 +150,8 @@ For example, an HTTP *API* is composed of six parts of the [HTTP *protocol*](htt
 - **Trailers**: Optional metadata about the response.
 
 .image images/http.png 165 _
+: The image shows HTTP method + status code combinations - these form the vocabulary of an API. Every API interaction is one of these combinations.
+: Headers are often overlooked by beginners but critical in production: Content-Type, Authorization, Accept, Cache-Control are headers you'll encounter constantly.
 
 ## Client-Server: What is a Uniform Resource Locators (URLs)?
 
@@ -147,23 +167,27 @@ Composed of several parts:
 
 .image images/url_example.png _ 900
 .caption Full example of a URL with Scheme, Host, Port, Path, Query, and Anchor.
+: Emphasize that anchors (#) are NOT sent to the server - this surprises people. The browser strips them before sending the request. They're purely for client-side page navigation.
+: In REST APIs, the path identifies the resource (/users/42), query params filter or modify (/users?role=admin), and the method declares the action.
 
 ## Client-Server: Representational State Transfer (REST) in API Design
 
 [REST](https://en.wikipedia.org/wiki/REST) was developed by Roy Fielding in his 2000 doctoral dissertation.<br/>
-✎ _**Not**_ a protocol, but a set of constraints for creating web services. 
+✎ _**Not**_ a protocol, but a set of constraints for creating web services.
 
 Web APIs that adhere to the REST architectural constraints are called [RESTful APIs](https://restfulapi.net/):
 
 - **Uniform Interface**: Decouples client-server & enables independent evolution.
     - **Resources**: Central concept in REST, each identified by a URL.
     - **Stateless**: Each request contains all information needed to fulfill the request.
-    - **CRUD Operations**: Utilizes standard HTTP methods: 
+    - **CRUD Operations**: Utilizes standard HTTP methods:
         - Create: `POST`
         - Read: `GET`
         - Update: `PUT`
         - Delete: `DELETE`
     - **Representation**: Uses formats chosen through client↔server negotiation.
+: Roy Fielding also co-authored the HTTP/1.1 spec - he designed REST to match how the web already worked. CRUD maps to SQL's INSERT/SELECT/UPDATE/DELETE, which is why REST fits database-backed apps so naturally.
+: "RESTful" is often misused - many APIs called REST are actually just "HTTP APIs." True REST requires statelessness, uniform interface, layered system, and more. OpenAPI helps enforce some of these constraints.
 
 ## Client-Server: Summary
 
@@ -190,6 +214,8 @@ The role and impact of APIs:
 ## Client-Server: Meme time
 
 .image images/api.gif 580 _
+: Give the audience a moment to breathe and laugh before transitioning into the more technical OpenAPI content.
+: This is also a good moment to ask: "Who has built an API before? Who has consumed one? Who has been burned by a poorly documented one?"
 
 ## OpenAPI: Software Engineering Challenges
 
@@ -203,6 +229,8 @@ HTTP APIs are widely used for web services but they come with challenges:
 - **Security**: Implement secure and flexible authN/authZ mechanisms.
 
 .image images/se_challenge.png _ 350
+: Ask the audience which challenge they've felt most painfully. Documentation drift and validation gaps are usually top answers.
+: These aren't hypothetical - every team shipping an API has hit all of these. OpenAPI addresses each one systematically.
 
 ## OpenAPI: Enter the specification
 
@@ -218,6 +246,15 @@ HTTP APIs are widely used for web services but they come with challenges:
 - **Security definitions**: Standardizes the way API security schemes are defined.
 - **Discovery**: Makes it easier for clients to discover the capabilities of an API.
 - **Testing**: Enables easy creation of tests for API validation and verification.
+: Previous slide had 6 challenges; this slide answers each directly: 
+: Validation→Validation, Documentation maintenance→Documentation, Version control→Versioning, Error handling→Error handling, 
+: Compatibility→Client SDK Generation + Interface consistency, Security→Security definitions.
+: Four bullets here have no direct challenge counterpart - OpenAPI gives them for free: 
+: Discovery (serve /openapi.json and clients can self-configure), 
+: Content negotiation (spec declares which formats the API accepts/returns), 
+: Testing (tools like Schemathesis generate test cases directly from the spec), 
+: Interface consistency (the spec enforces correct HTTP methods and status codes by definition).
+: Client SDK Generation is the headline feature for this audience: define the spec once, get a working Python client, Go server stub, TypeScript SDK, etc. - no manual HTTP wiring.
 
 ## OpenAPI: What is a schema?
 
@@ -228,6 +265,8 @@ A [**schema**](https://json-schema.org/understanding-json-schema) is a formal de
 
 .image images/basic_JSON_Schema.png  _ 430
 .caption A basic JSON schema used to validate the example above.
+: The top image is the data (an actual JSON payload), the bottom image is the schema that validates it. Think of a schema like a form template - it defines which fields are required and what types they must be.
+: Schemas are machine-readable contracts. If data doesn't match the schema, it gets rejected - no more "why is this field sometimes a string and sometimes a number?"
 
 ## OpenAPI: The specification
 
@@ -239,12 +278,14 @@ The [OpenAPI Specification (OAS)](https://swagger.io/specification/) uses schema
 - **Nested objects**: Define complex data structures with nested objects and arrays.
 
 An OAS document serves as a blueprint for:
-1. Generating client & server (stub) code. 
+1. Generating client & server (stub) code.
 2. Generating interactive documentation.
 3. Generating test cases.
 4. Creating mock servers.
 ---
 ✎ The doc can be [JSON](https://en.wikipedia.org/wiki/JSON) or [YAML](https://en.wikipedia.org/wiki/YAML) format but YAML is preferred for [commentability](https://www.tutorialspoint.com/yaml/yaml_comments.htm).
+: YAML is preferred because you can add `#` comments to explain design decisions inline. JSON doesn't support comments. For a spec that serves as a contract, inline documentation is invaluable.
+: "Blueprint" is the right mental model - the spec is the source of truth, and everything else (code, docs, tests) is derived from it.
 
 
 ## OpenAPI: Main parts of the specification
@@ -268,6 +309,8 @@ The [OAS](https://swagger.io/specification/) includes:
 	            description: Success
 
 .caption An example minimum viable OpenAPI document.
+: This minimal example is only 10 lines. That's the baseline. Real production specs can be thousands of lines but follow this exact same structure - paths, operations, parameters, responses.
+: Notice the hierarchy: path → HTTP method → parameters/responses. This mirrors how you'd describe an API in plain English: "GET /books returns a 200 with a list."
 
 ## OpenAPI: Code-first or Schema-first?
 
@@ -286,6 +329,9 @@ The [OAS](https://swagger.io/specification/) includes:
 - *Cons*: Requires upfront design effort, potential for spec-code divergence.
 
 .caption I refuse to call it *Design-first* as the OpenAPI Initiative does...
+: For greenfield projects, schema-first is strongly recommended - it forces you to think about the API contract before writing any code, which almost always leads to better design.
+: For existing APIs being documented retroactively, code-first is the pragmatic choice. Ask what the audience's current situation is.
+: The "potential for spec-code divergence" con in schema-first is real but solvable with generated code (what we do in the workshop) - if the code IS the spec output, they can't diverge.
 
 ## OpenAPI: Code-first or Schema-first flowcharts
 
@@ -296,6 +342,8 @@ The [OAS](https://swagger.io/specification/) includes:
 
 .image images/schema-first.png 230 _
 .caption Schema-first approach: Design the OpenAPI spec and then generate server stubs, client SDKs, and docs.
+: The schema-first flow has more upfront steps but the payoff is generated code in any language. The code-first flow is faster to start but creates ongoing maintenance burden.
+: In schema-first, the spec IS the source of truth. When requirements change, you update the spec first, then regenerate. In code-first, you update code and hope the spec stays in sync.
 
 ## OpenAPI: The tools
 
@@ -308,16 +356,19 @@ Official Swagger tooling:
 - **[UI](https://petstore.swagger.io/)**: A tool for visualizing and interacting with the API's resources.
 - **[Codegen](https://swagger.io/tools/swagger-codegen/)**: Generates client and server stubs from an OpenAPI document.
 
---- 
+---
 
 > **✎** "*OpenAPI*" vs. "*Swagger*"
 - [Swagger](https://en.m.wikipedia.org/wiki/Swagger_(software)) is the original toolkit for building APIs with a specification format.
 - [OpenAPI Specification](https://en.wikipedia.org/wiki/OpenAPI_Specification) versions (3.0+) are evolved from the original Swagger (2.0).
 - "*Swagger*" now refers to the *API tools* supporting the OpenAPI Specification.
+: The rename happened in 2016 when SmartBear donated the Swagger spec to the OpenAPI Initiative (part of the Linux Foundation). The tools kept the Swagger brand, the spec became OpenAPI.
+: In practice: if someone says "Swagger spec," they probably mean OpenAPI 2.0. If they say "OpenAPI spec," they likely mean 3.0+. The tooling works with both but prefer 3.1.
 
 ## Workshop: The plan
 
 0. **Tutorial**: [OpenAPI tutorial](https://support.smartbear.com/swaggerhub/docs/en/get-started/openapi-3-0-tutorial.html)
+: Have the tutorial open in a browser tab as a reference - you won't walk through it all, but it's a good resource for students to follow along or revisit later.
 ---
 1. **Editor**: Design an OpenAPI spec for `PetStore™`.
 2. **UI**: Demonstrate Swagger UI.
@@ -326,6 +377,7 @@ Official Swagger tooling:
 5. **Client**: Create a Python CLI from spec.
 
 .background images/openapi_workflow.png
+: Have the petstore repo pre-cloned and Swagger Editor open before starting. Steps 3-5 will go faster if the make generate and make deploy commands have been run at least once.
 
 ## Workshop: Swagger Editor
 
@@ -341,6 +393,8 @@ Open online editors (and many others):
 
 VSCode plugin:
 - [OpenAPI Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi)
+: The online Swagger Editor is the best choice for demos - no install required and everyone can follow along at the same URL.
+: The VSCode plugin is the better choice for real projects - inline validation, autocomplete, and preview without leaving your editor.
 
 ## Workshop: Swagger UI
 
@@ -363,6 +417,8 @@ Forces you to have an account:
 Embeddable:
 
 5. Package: [SWGUI](https://github.com/swaggest/swgui) ![swaggest logo](https://avatars.githubusercontent.com/u/19609628?s=28&v=4)
+: Recommend Bruno for students - it's fully open-source, no account required, and imports OpenAPI specs directly. Postman and Insomnia both now require accounts, which is frustrating for quick testing.
+: SWGUI is what the petstore demo uses - the Go server embeds the Swagger UI and serves it at /docs/. This means every API ships with its own live documentation.
 
 ## Workshop: Swagger Codegen
 
@@ -381,9 +437,11 @@ This will:
 **✎** More info on `generate` comments can be found in the blog post ["Generating code"](https://go.dev/blog/generate).
 
 ---
-Two files will be generated based on the OAPI-codegen YAML configs: 
+Two files will be generated based on the OAPI-codegen YAML configs:
 - `api/petstore-server.gen.go`: Petstore endpoint handlers (interface)
 - `api/petstore-types.gen.go`: Petstore models
+: oapi-codegen is Go-specific but very actively maintained. The `.gen.go` suffix is convention - it signals that these files are generated and should not be manually edited.
+: The go generate approach means the spec and generated code stay in sync. When the spec changes, re-run make generate. The compiler then enforces that your implementation still satisfies the interface.
 
 ## Workshop: Server implementation
 
@@ -413,6 +471,8 @@ type ServerInterface interface {
 	FindPetByID(w http.ResponseWriter, r *http.Request, id int64)
 }
 ```
+: The interface pattern is the key insight - oapi-codegen defines what methods your server MUST implement, and the Go compiler enforces it at build time. You physically cannot ship a server missing an endpoint.
+: In production, you'd replace the in-memory map with a real database. The interface doesn't change - only the PetStore struct's implementation does. This is the power of the contract.
 
 ## Workshop: Server deployment
 
@@ -426,7 +486,7 @@ api.HandlerFromMux(handler, r)                          // Add the handler  to t
 log.Fatal(http.ListenAndServe(":"+port, r))             // Serve HTTP until the world ends.
 ```
 
-Then we can manually test our server: 
+Then we can manually test our server:
 ```shell
 PORT=3000 go run .
 ```
@@ -436,6 +496,8 @@ make deploy
 ```
 
 .image images/petstore_cloud_run.png _ 980
+: The OapiRequestValidator middleware is the payoff - it rejects invalid requests before they reach your business logic. No manual input validation needed; the spec handles it.
+: GetSwagger() returns the embedded spec at runtime. The server literally carries its own contract around with it and can validate itself.
 
 ## Workshop: Server deployment (alternative)
 
@@ -450,6 +512,8 @@ We can also host our [Go app](https://www.koyeb.com/docs/deploy/go) with [Koyeb]
 6. Name the App, for example example-go.
 7. Set the healthcheck to `/openapi.json`.
 8. Click the "Deploy" button.
+: Koyeb's free tier is generous for student projects. Use this as the fallback if Cloud Run credentials aren't available.
+: The healthcheck path /openapi.json is important - the server embeds the spec and serves it there. If the spec isn't being served, the server isn't healthy. Smart use of the OpenAPI spec as a liveness check.
 
 ## Workshop: Server deployment verification
 
@@ -460,6 +524,8 @@ Open your browser and head to the [Cloud Run App URL](https://petstore-2jruimmcr
 We've embedded a Swagger UI though, at [/docs/](https://petstore-2jruimmcrq-vp.a.run.app/docs/)
 
 <iframe  style="border:2px inset;" width=980 height=450 src="https://petstore-2jruimmcrq-vp.a.run.app/docs/"></iframe>
+: Live demo time. Show the 404 on the root path first (expected!), then navigate to /docs/ to show the embedded Swagger UI.
+: Use the Swagger UI to make a live API call - add a pet, then retrieve it. This demonstrates the full loop: spec → server → live interactive docs → real API call.
 
 ## Workshop: Client generation
 
@@ -471,6 +537,8 @@ This uses the Java `swagger-codegen` CLI from [Swagger API](https://github.com/s
 
 There's plenty of other generators, like this pure Python one from [
 openapi-generators](https://github.com/openapi-generators/openapi-python-client).
+: The Swagger Editor can generate clients in 40+ languages from the same spec. This is the core promise of OpenAPI - write the spec once, get clients everywhere.
+: For production Python use, openapi-python-client generates more idiomatic Python with proper type hints and async support. The Swagger-generated client is fine for demos.
 
 ## Workshop: Client implementation
 
@@ -486,7 +554,7 @@ Now that the client is generated, we'll have to wire up `main.py` to actually ca
 
     # Create a cat named "Hank" and print the response.
     pprint(api_instance.add_pet(swagger_client.NewPet("Hank", "cat")))
-    
+
     # Delete the pet with ID #1000
     api_instance.delete_pet(1000)
 
@@ -497,6 +565,8 @@ Now that the client is generated, we'll have to wire up `main.py` to actually ca
     pprint(api_instance.find_pets(tags=['dog'], limit=3))
 
 .caption ✎ In reality, you'd want to have `try`/`except` blocks to catch any API errors returned.
+: The method names (add_pet, delete_pet, find_pet_by_id) come directly from the operationId fields in the OpenAPI spec. Naming your operations well in the spec pays off in readable client code.
+: Notice there's no HTTP in sight - no requests.post(), no JSON parsing, no status code checking. The generated client handles all of that. This is the productivity win of schema-first development.
 
 ## Next Steps
 
@@ -514,6 +584,8 @@ Now that the client is generated, we'll have to wire up `main.py` to actually ca
 - **[Versioning](https://redocly.com/docs/api-registry/resources/versioning-strategies/)**:
   - [RESTful API best practices](https://restfulapi.net/versioning/): *When* and *How* to version a REST API.
   - [Semantic Versioning](https://semver.org/): Three numbers to convey changes and compatibility.
+: Schemathesis is underrated - it reads your spec and automatically generates edge-case test inputs. It finds bugs that hand-written tests miss. Highly recommend adding it to any CI pipeline.
+: For security in production, OAuth2 with JWT is the standard. The spec defines the security scheme once, and generated clients automatically know how to authenticate.
 
 ## Conclusion
 
@@ -526,3 +598,5 @@ What we discussed today:
    - Generated a server, deployed it, and then called it with a generated client.
 4. *Next Steps*
    - Resources for Security, Mocking, Testing and Versioning OpenAPIs.
+: Open for questions. The petstore repo (github.com/jh125486/petstore) is public - students can fork it as a template for their own projects.
+: Key takeaway: the OpenAPI spec is the source of truth. Everything else - code, docs, tests, clients - flows from it. Invest in the spec, and the rest gets easier.
