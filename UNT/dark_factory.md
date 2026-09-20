@@ -12,7 +12,7 @@
 - Auditing, security, and real incidents
 - Team health: PR churn, context discipline, worktrees, commits
 - Industry and economics: adoption, token costs, layoffs
-- Limits: model collapse, why humans stay in the loop
+- Limits: model collapse, why humans design the guardrails
 
 ---
 
@@ -646,14 +646,15 @@ flowchart TD
 ---
 
 <!-- meta: 50 aiindustry -->
-# Why Human Review Still Matters
+# Why Human-Made Guardrails Still Matter
 
 - Not a self-correcting loop — potentially a self-poisoning one
-- Bad AI code can train future AI models
-- Quality erodes as synthetic data compounds — model collapse, next slide
-- Guardrails don't catch what nobody's watching anymore
-- Human review breaks the cycle before it compounds
-- Non-negotiable: a human validates input, not just output
+- Human review alone doesn't scale to LLM output volume
+  - It's also gameable: the xz backdoor, the UMN "hypocrite commits"
+- The fix isn't more eyeballs — it's more human-designed checks
+  - Fuzzing, mutation testing, specs written before code exists
+- Bad AI code can train future AI models — model collapse, next slide
+- Non-negotiable: a human designs the checks, not just reviews output
 
 ---
 
@@ -716,4 +717,4 @@ flowchart TD
 - Security, permission scoping, audit trails are the hard parts
 - Small commits, clean context, triaged review keep teams functional
 - Adoption is near-universal; autonomy and trust are not
-- Human review is what keeps the loop from poisoning itself
+- Human-designed guardrails are what keep the loop from poisoning itself
