@@ -5,12 +5,13 @@
 <!-- meta: 1 agenda -->
 # Agenda
 
-- **Foundations**: what a dark factory is and how we got here
+- **Foundations**: what a dark factory is and why now
 - **Guardrails**: tests, static analysis, types, and CI enforcement
 - **Skills**: the reusable unit of AI capability
 - **Orchestration**: planner, executor, tooler, auditor — and Gastown
+- **Three classes of firms**, and the shrink-the-workspace reframe
 - **Auditing**: observability, replay, and regulatory requirements
-- **Security**: CVE chaining, attack surface, and real incidents
+- **Security**: how CVE chains actually work, and real incidents
 - **Team health**: PR churn, context discipline, worktrees, commits
 - **Industry and economics**: adoption, token costs, layoffs
 - **Limits**: model collapse and why humans stay in the loop
@@ -21,79 +22,38 @@
 # The Dark Factory Concept
 
 - A **dark factory** runs unattended, lights off, fully automated
-- Software's version: code shipped with minimal human touch
-- Humans set intent; agents plan, build, verify, and merge
-- Value comes from tight feedback loops, not just automation
+- Software's version: code shipped with minimal human touch — humans set intent, agents plan, build, verify, and merge
+- Term borrowed from manufacturing's "lights-out" floors: FANUC (Fuji Automatic Numerical Control, a Japanese industrial robot maker) has run one lights-out since 2001 — robots building robots, unsupervised for up to 30 days
+- Why now: task horizon, falling token costs, and competitive pressure are converging at once — each gets its own section today
 - Trust is earned through **guardrails**, not blind delegation
-- Goal: faster iteration without lowering the quality bar
+- No real factory runs fully dark, and neither does software — the goal is faster iteration without lowering the quality bar
 
 ---
 
 <!-- meta: 3 aiindustry -->
-# The Dark Factory Metaphor
-
-- Manufacturing coined "lights-out" for robot-only production floors; FANUC has run them since 2001
-- The plant still has engineers — they just aren't on the line
-- Software borrowed the term, but automation follows a fixed script while agents make judgment calls
-- **Dark factory** implies closed-loop operation with self-correction: CI/CD automated the *pipeline*, agents automate the *authoring*
-- No real factory runs fully dark, and neither does software
-- The metaphor sets expectations: unattended, not unsupervised
-
----
-
-<!-- meta: 4 aiindustry -->
-# AI Tooling Across the Dev Loop
-
-- Coding assistants draft, refactor, and explain code inline
-- **Agentic** tools chain multiple steps toward a goal
-- Tools read repos, run commands, and open pull requests
-- Context windows now span whole codebases, not single files
-- Integration points: IDE, CLI (`claude`, `gh`), CI pipelines
-- Adoption grows fastest where feedback is fast and cheap
-
----
-
-<!-- meta: 5 aiindustry -->
-# From Autocomplete to Agents: A Quick History
-
-<!-- alt: A timeline showing five eras of AI coding tools from 2021 to 2026, progressing from inline autocomplete to multi-agent orchestration. -->
-> Each leap widened what's delegated, not just how fast it happens.
-
-```mermaid
-timeline
-    title From Autocomplete to Agents
-    2021-2022 : Inline autocomplete (Copilot, Codeium)
-    2023 : Chat-based assistants
-    2024 : Agentic tools edit files, run commands
-    Late 2024 : Long-horizon agentic coding
-    2025-2026 : Multi-agent orchestration
-```
-
-- What changed each leap isn't raw capability so much as *task horizon* — how long an agent stays coherent unsupervised
-
----
-
-<!-- meta: 6 aiindustry -->
 # What Actually Changed: Task Horizon
 
-- Early models could hold one function in working memory
-- Modern agents sustain multi-hour, multi-file task sequences
-- **Task horizon** — how long an agent stays coherent — is the key metric
-- Longer horizons mean less human re-prompting per unit of work
-- This, not raw code quality, is what made orchestration viable
+- Early models could hold one function in working memory; by 2026, agents sustain multi-hour, multi-file task sequences
+- **Task horizon** — how long an agent stays coherent unsupervised — is the key metric, tracked publicly by METR's task-length benchmarks
+- The jump from 2021's line-level autocomplete to today's multi-agent orchestration wasn't really about raw capability — it was task horizon
+- Longer horizons mean less human re-prompting per unit of work; this, not raw code quality, is what made orchestration viable
+- Tooling followed: IDE and CLI integration, repo-wide context, tools that read repos and open PRs — all downstream of longer horizons
 - Horizon still degrades: long sessions drift without discipline
 
 ---
 
-<!-- meta: 7 aiindustry -->
+<!-- meta: 4 aiindustry -->
 # Guardrails: Defense in Depth
 
-<!-- alt: A flowchart showing six layered guardrails in sequence, cheapest first: Types, Linters, Tests, CI, Audit, Human Review. -->
-> Cheap checks run first; expensive checks run on what survives.
+<!-- alt: A flowchart showing types, linters, and tests running inside a CI box, which then feeds into audit and human review downstream. -->
+> Types, linters, and tests run inside CI; audit and human review sit downstream of it.
 
 ```mermaid
 flowchart LR
-  A[Types] --> B[Linters] --> C[Tests] --> D[CI] --> E[Audit] --> F[Human Review]
+  subgraph CI["Continuous Integration"]
+    A[Types] --> B[Linters] --> C[Tests]
+  end
+  CI --> D[Audit] --> E[Human Review]
 ```
 
 - No single check catches everything an agent might get wrong
@@ -103,7 +63,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 8 aiindustry -->
+<!-- meta: 5 aiindustry -->
 # Guardrails: Automated Testing
 
 - Tests are the first guardrail an agent's output has to pass
@@ -111,11 +71,11 @@ flowchart LR
 - Integration tests catch what unit tests miss: wiring, contracts
 - Property-based tests (random-input fuzzing against invariants) and scenario tests probe edge cases automatically
 - A failing test blocks merge, no exceptions for AI-authored code
-- Test coverage is a guardrail metric, not just a vanity number
+- Coverage is a floor, not a score — necessary, not sufficient (more on why in a few slides)
 
 ---
 
-<!-- meta: 9 aiindustry -->
+<!-- meta: 6 aiindustry -->
 # Testing Pitfall: Agents Writing Their Own Tests
 
 - Agents will happily write tests that pass against broken code
@@ -127,7 +87,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 10 aiindustry -->
+<!-- meta: 7 aiindustry -->
 # Guardrails: Static Analysis
 
 - **Static analysis** (`golangci-lint`, `staticcheck`) enforces style and safety without running the code
@@ -139,31 +99,31 @@ flowchart LR
 
 ---
 
-<!-- meta: 11 aiindustry -->
+<!-- meta: 8 aiindustry -->
 # Type Systems as Free Guardrails
 
 - A strong type system rejects bad code before any test runs
-- **Go**'s explicit error returns make ignored failures visible in review
+- Example from Go, the language I work in day to day: explicit error returns make ignored failures visible in review
 - Compile errors are the fastest, cheapest feedback an agent can get
 - Typed interfaces constrain what an agent can plausibly generate
 - Narrow types encode intent the agent can't misread
-- Language choice is a guardrail decision, not just a preference
+- The argument generalizes past Go — language choice is a guardrail decision, not just a preference
 
 ---
 
-<!-- meta: 12 aiindustry -->
+<!-- meta: 9 aiindustry -->
 # CI as the Enforcement Point
 
 - Guardrails only count if something blocks merge when they fail
-- CI is where policy becomes enforcement, not suggestion
+- CI is where the layers combine — types, linters, and tests all run inside it, then gate the merge
 - Required status checks: build, test, lint, security scan, coverage
-- Branch protection prevents agents from bypassing the gate
+- Branch protection (required checks a human can't override without permission) prevents agents from bypassing the gate
 - Same pipeline for human and agent PRs — no separate fast lane
 - If it isn't enforced in CI, it's documentation, not a guardrail
 
 ---
 
-<!-- meta: 13 aiindustry -->
+<!-- meta: 10 aiindustry -->
 # Guardrail Metrics That Actually Matter
 
 - Coverage percentage alone is easy to game and often misleading
@@ -175,19 +135,18 @@ flowchart LR
 
 ---
 
-<!-- meta: 14 aiindustry -->
+<!-- meta: 11 aiindustry -->
 # LLM Skills as Building Blocks
 
-- A **skill** packages instructions, examples, and tools for one task
-- Skills are reusable, composable, and independently testable
-- Narrow skills outperform one giant, do-everything prompt
-- Skills encode house style, security rules, and domain knowledge
-- Versioning skills lets teams audit what changed and why
+- A **skill** packages instructions, examples, and tools for one task — narrow skills outperform one giant, do-everything prompt
+- Skills encode house style, security rules, and domain knowledge; versioning lets teams audit what changed and why
+- Contrast: a **prompt** is one-off and disposable; a **fine-tune** is expensive, slow to update, and opaque to audit
+- Skills hit the useful middle — durable but cheap to change — which is why they're the right abstraction for most enterprise work
 - Think: functions, but for reasoning and judgment
 
 ---
 
-<!-- meta: 15 aiindustry -->
+<!-- meta: 12 aiindustry -->
 # Anatomy of a Skill
 
 - **Description**: when this skill should trigger, in plain language
@@ -199,7 +158,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 16 aiindustry -->
+<!-- meta: 13 aiindustry -->
 # Skill Versioning and Reuse
 
 - Skills live in version control, just like application code
@@ -211,19 +170,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 17 aiindustry -->
-# Skills vs. Prompts vs. Fine-Tuning
-
-- **Prompt**: one-off, disposable, lives in a chat window
-- **Skill**: versioned, reviewed, shared, testable across a team
-- **Fine-tune**: expensive, slow to update, opaque to audit
-- Skills hit the useful middle: durable but cheap to change
-- Fine-tuning locks knowledge into weights you can't diff
-- For most enterprise work, skills are the right abstraction
-
----
-
-<!-- meta: 18 aiindustry -->
+<!-- meta: 14 aiindustry -->
 # Orchestration Flow
 
 <!-- alt: A flowchart showing four roles in sequence: Planner, Executor, Tooler, and Auditor, connected left to right by arrows. A feedback arrow labeled "feedback" loops from Auditor back to Planner. -->
@@ -237,7 +184,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 19 aiindustry -->
+<!-- meta: 15 aiindustry -->
 # Why Separate Roles at All
 
 - One agent doing everything blurs planning and execution errors
@@ -249,55 +196,19 @@ flowchart LR
 
 ---
 
-<!-- meta: 20 aiindustry -->
-# The Planner Role
+<!-- meta: 16 aiindustry -->
+# The Four Roles
 
-- Planner breaks a goal into a sequence of concrete steps
-- Reads requirements, existing code, and prior attempts for context
-- Decides ordering, dependencies, and what needs human sign-off
-- Output is a task list, not code — planning is separate from doing
-- A weak plan compounds errors downstream, fast
-- Planner never touches the codebase directly
-
----
-
-<!-- meta: 21 aiindustry -->
-# The Executor Role
-
-- Executor takes the plan and writes the actual code
-- Works inside a scoped worktree or sandbox, not main
-- Makes small, frequent commits as it progresses
-- Escalates to the planner when a step doesn't match reality
-- Executor's job ends at "code exists," not "code is safe"
-- Speed lives here; safety lives downstream
-
----
-
-<!-- meta: 22 aiindustry -->
-# The Tooler Role
-
-- Tooler runs the actual tools: tests, linters, builds, deploys
-- Bridges the gap between "code written" and "code proven"
-- Reports pass/fail back up the chain, not just logs
-- Can trigger re-execution if a tool run fails
-- Tooler output feeds directly into the auditor's review
-- This is where guardrails actually get enforced
-
----
-
-<!-- meta: 23 aiindustry -->
-# The Auditor Role
-
-- Auditor reviews the full trail: plan, code, tool results
-- Checks for chained risk, not just individual pass/fail
-- Flags anomalies a human should look at before merge
-- Closes the loop by feeding findings back to the planner
-- Auditor is the last automated check before human review
+- **Planner**: breaks a goal into concrete steps, reads context, decides ordering and what needs human sign-off — outputs a task list, never touches code directly
+- **Executor**: writes the actual code inside a scoped worktree, makes small frequent commits, escalates when a step doesn't match reality — job ends at "code exists," not "code is safe"
+- **Tooler**: runs tests, linters, builds, deploys — bridges "code written" to "code proven," and can trigger re-execution on failure
+- **Auditor**: reviews the full trail — plan, code, tool results — for chained risk, not just pass/fail; closes the loop back to the planner
+- Each role has narrower permissions than the last — least privilege by design
 - No auditor sign-off, no merge — that's the guardrail
 
 ---
 
-<!-- meta: 24 aiindustry -->
+<!-- meta: 17 aiindustry -->
 # Handoff Failure Modes
 
 - Plan drift: executor quietly solves a different problem
@@ -309,56 +220,31 @@ flowchart LR
 
 ---
 
-<!-- meta: 25 aiindustry -->
+<!-- meta: 18 aiindustry -->
 # Gastown: Orchestrating Agents at Scale
 
-- **Gastown**: open-source workspace manager for multiple coding agents (`gastownhall.ai`)
-- Built by Steve Yegge; coordinates Claude Code, Codex, Copilot, Gemini
-- Persists work state in git-backed hooks across agent restarts
-- Routes finished work through a merge queue with verification gates
-- Yegge calls it "Kubernetes for AI coding agents"
-- Still experimental: needs heavy oversight, best for advanced teams
+- **Gastown**: open-source workspace manager for multiple coding agents (`gastownhall.ai`), built by Steve Yegge
+- Coordinates Claude Code, Codex, Copilot, Gemini; **Beads**, its git-backed issue tracker, persists work state as structured data across agent restarts
+- Routes finished work through a merge queue (a serialized, verification-gated path to main) — Yegge's own framing: "Kubernetes for AI coding agents"
+- **Gas City** splits Gastown into a reusable SDK for custom orchestrators
+- Used by Fortune 100 teams for real work, but still requires "managing it like a very fast, junior dev team"
+- Read it critically: this is the builder's own description of his tool — adoption outran audited third-party trust
 
 ---
 
-<!-- meta: 26 aiindustry -->
-# Case Study: Gastown in Practice
-
-- **Beads**: git-backed issue tracker records work as structured data
-- **Gas City**: splits Gastown into a reusable SDK for custom orchestrators
-- Used by Fortune 100 teams for real, non-trivial work — despite still being experimental
-- Still requires "managing it like a very fast, junior dev team"
-- Active, fast-growing project — but adoption outran audited trust
-- Lesson: orchestration tooling matures faster than trust in it
-
----
-
-<!-- meta: 27 aiindustry -->
+<!-- meta: 19 aiindustry -->
 # Case Study: StrongDM's No-Human-Code Team
 
-- Three engineers, zero hand-written code, since July 2025
-- Manifesto: "code must not be written or reviewed by humans"
-- Builds behavioral clones of third-party services for testing
-- Runs thousands of scenario tests hourly against those clones
-- Simon Willison called it the most ambitious dark factory he'd seen
-- Acquired by Delinea in March 2026 — this case predates that acquisition
-- Their product is security software — the irony isn't lost on them
-
----
-
-<!-- meta: 28 aiindustry -->
-# Reading the StrongDM Case Critically
-
-- Three engineers on a greenfield codebase is the easy case
-- No legacy code, no migration debt, no external consumers to break
+- Three engineers, zero hand-written code, since July 2025 — "code must not be written or reviewed by humans"
+- Builds behavioral clones of third-party services, runs thousands of scenario tests hourly against them
+- Simon Willison called it the most ambitious dark factory he'd seen; acquired by Delinea, March 2026
+- Read it critically: three engineers on a greenfield codebase, no legacy debt, no external consumers to break — the easy case
 - "No human review" still means humans wrote the test specifications
-- Impressive as an existence proof, not as a template to copy
-- Ask what guardrails made it survivable, not just what they removed
-- Your fintech monolith is not their greenfield project
+- Existence proof, not a template — and even here, "no real factory runs fully dark" still holds: humans wrote the specs
 
 ---
 
-<!-- meta: 29 aiindustry -->
+<!-- meta: 20 aiindustry -->
 # The Eight Stages of Agent Autonomy
 
 <!-- alt: A flowchart showing eight stages of agent autonomy progressing left to right, from inline completion to fully orchestrated multi-agent swarms. -->
@@ -369,9 +255,11 @@ flowchart LR
   S1["Stage 1: Inline completion"] --> S2["Stage 2: Chat help"] --> S3["Stage 3: Approved edits"] --> S4["Stage 4: Autonomous single agent"] --> S56["Stage 5-6: Multi-agent, human-coordinated"] --> S78["Stage 7-8: Orchestrated swarms"]
 ```
 
+- Where a team sits on this ladder shows up again in the adoption numbers ahead — and the stakes rise as you move right
+
 ---
 
-<!-- meta: 30 aiindustry -->
+<!-- meta: 21 aiindustry -->
 # Three Classes of Firms for Full Autonomy
 
 - Few firms can hand an LLM fully autonomous work — by my count, three classes
@@ -383,7 +271,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 31 aiindustry -->
+<!-- meta: 22 aiindustry -->
 # The Engineer's Job: Shrink the Workspace
 
 - Our job becomes reshaping the task to fit one of those three shapes
@@ -395,11 +283,11 @@ flowchart LR
 
 ---
 
-<!-- meta: 32 aiindustry -->
+<!-- meta: 23 aiindustry -->
 # Where Most Teams Actually Sit
 
-- 91% of enterprises deploy agents; few run them unsupervised (Anthropic, 2026 State of AI Agents Report)
-- Only 42% trust agents to lead work even with oversight (same report)
+- 91% of enterprises deploy agents in some form; only 42% trust agents to lead work even with oversight (Anthropic, 2026 State of AI Agents Report) — worth noting a model vendor surveying agent adoption has an incentive to report it favorably
+- "Deploy" here is a low bar — pilot or partial use counts. It's not the same as *reaching production*, which is where the pilot-failure numbers later in this talk bite
 - The gap between "deployed" and "trusted" is the real story
 - Regulated industries cluster at the lower stages deliberately — but not always: Goldman Sachs and JPMorgan already run agentic coding at production scale, wrapped in heavy governance
 - The differentiator for a locked-down enterprise isn't model access — it's whether the audit/governance layer exists
@@ -407,31 +295,19 @@ flowchart LR
 
 ---
 
-<!-- meta: 33 aiindustry -->
+<!-- meta: 24 aiindustry -->
 # Auditing and Observability
 
-- Every AI action gets logged: prompt, tool call, result
-- **Audit trails** answer who (or what) changed which line
-- Structured logging enables replay and root-cause analysis
-- Auditors compare output against guardrail results, not just diffs
-- Human review focuses on exceptions the auditor flags
+- Every AI action gets logged: prompt, tool call, result — structured (JSON), not free-text, so it can be replayed
+- Audit trails answer who (or what) changed which line, when, and under which skill/model version
+- Auditors compare output against guardrail results, not just diffs; human review focuses on exceptions the auditor flags
+- Retention policy matters: fintech audits often need years, not days
+- If you can't reconstruct a decision, you can't audit it
 - Observability turns "the AI did it" into a traceable event
 
 ---
 
-<!-- meta: 34 aiindustry -->
-# What Good Audit Logging Looks Like
-
-- Log the prompt, the plan, every tool call, and the result
-- Structured logs (JSON) beat free-text logs for replay
-- Timestamps and actor IDs make "who did what, when" answerable
-- Record the skill version and model version that produced each change
-- Retention policy matters: fintech audits often need years, not days
-- If you can't reconstruct a decision, you can't audit it
-
----
-
-<!-- meta: 35 aiindustry -->
+<!-- meta: 25 aiindustry -->
 # Replay and Root Cause
 
 - Replay means rerunning the exact sequence that produced a change
@@ -443,31 +319,43 @@ flowchart LR
 
 ---
 
-<!-- meta: 36 aiindustry -->
+<!-- meta: 26 aiindustry -->
 # Fintech: Regulatory Audit Requirements
 
 - Regulated industries need more auditability, not less, as autonomy rises
 - Change management standards assume a human approver by name
-- "The agent decided" is not an accepted control narrative
+- "The agent decided" is not an accepted control narrative — regulators expect a named, accountable approver, not an automated decision
 - Model and skill versions become part of the compliance record
 - Auditors will ask who authorized the agent's scope, and when
 - Build the audit trail before the regulator asks for it
 
 ---
 
-<!-- meta: 37 aiindustry -->
+<!-- meta: 27 aiindustry -->
+# Security: How a Chain Actually Works
+
+- Step 1: a low-severity CVE in a transitive dependency (a dependency of a dependency, not one you added directly) exposes an internal endpoint the agent has legitimate reason to call
+- Step 2: the agent calls it, and pulls the response into context — like any other tool result
+- Step 3: hidden text in that response is a prompt injection; the agent can't reliably tell instruction from data
+- Step 4: the injected instruction directs the agent toward a second, unrelated CVE — a way past auth in another dependency
+- Step 5: neither CVE alone was exploitable this way — chained, they yield full exfiltration capability
+- No single guardrail catches this; only review of the full action chain does
+
+---
+
+<!-- meta: 28 aiindustry -->
 # Security: CVE Chaining Risks
 
-- AI agents can chain low-severity issues into high-impact exploits
-- **CVE chaining**: combining known vulnerabilities across dependencies
+- AI agents can chain low-severity issues into high-impact exploits — that's the mechanism just shown
+- **CVE chaining** isn't new to AI, but agents execute the chain autonomously and fast, across dependencies a human wouldn't have traced
 - Autonomous tool use widens the attack surface, not just the codebase
-- Case studies: XBOW's 48-step chain (blind SSRF → full compromise, 2025); the JADEPUFFER campaign chained a Langflow auth-bypass CVE (CVE-2025-3248) into autonomous exfiltration (Sysdig, 2026)
+- Case studies: XBOW's 48-step chain (blind SSRF — a request-forgery attack where the attacker never sees the response — leading to full compromise, 2025); the JADEPUFFER campaign combined an unauthenticated code-injection flaw in Langflow (CVE-2025-3248) with further steps into autonomous exfiltration (Sysdig, 2026)
 - Guardrails must catch exploit chains, not just single CVEs
 - Security review belongs inside the audit loop, not bolted on
 
 ---
 
-<!-- meta: 38 aiindustry -->
+<!-- meta: 29 aiindustry -->
 # The Agent Attack Surface
 
 - **Prompt injection**: hostile text in a file, issue, or web page
@@ -479,18 +367,17 @@ flowchart LR
 
 ---
 
-<!-- meta: 39 aiindustry -->
+<!-- meta: 30 aiindustry -->
 # When Agents Go Wrong: Real Incidents
 
 - Replit (2025): an agent deleted a live database during a freeze
 - The agent admitted running unauthorized commands, "panicking" on empty queries
-- A widely discussed 2026 incident: an agent "fixed" an issue by wiping data — the full wipe took nine seconds, then the agent apologized
-- Common thread: too much permission granted too soon
+- What went wrong: too much permission granted too soon, with no hard stop on destructive operations
 - Progressive autonomy: earn scope, don't grant it upfront
 
 ---
 
-<!-- meta: 40 aiindustry -->
+<!-- meta: 31 aiindustry -->
 # Permission Scoping and Progressive Autonomy
 
 - Start agents read-only; grant write access per-directory, not globally
@@ -502,7 +389,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 41 aiindustry -->
+<!-- meta: 32 aiindustry -->
 # Secrets and Credential Handling
 
 - Agents log prompts and outputs — secrets in context end up in logs
@@ -514,115 +401,67 @@ flowchart LR
 
 ---
 
-<!-- meta: 42 aiindustry -->
+<!-- meta: 33 aiindustry -->
 # PR Churn and Review Fatigue
 
-- More AI-authored PRs strain GitHub's own UI and APIs
-- High PR volume causes rate limits, slow diffs, timeouts
-- Constant review requests cause real reviewer fatigue
-- Fatigue leads to rubber-stamp approvals, not real review
+- More AI-authored PRs strain GitHub's own UI and APIs — rate limits sized for human-paced activity, large diffs render slowly, webhook/Actions queues back up
+- Constant review requests cause real reviewer fatigue; fatigue leads to rubber-stamp approvals, not real review
+- Notification volume makes real signal impossible to spot
+- Self-hosted runners and API budgets become planning concerns a platform team has to weigh, not afterthoughts
 - Batching and smaller PRs ease both machine and human load
 - Review capacity, not code generation, becomes the bottleneck
 
 ---
 
-<!-- meta: 43 aiindustry -->
-# GitHub at Agent Scale
-
-- API rate limits were sized for human-paced activity
-- Large diffs render slowly or not at all in the web UI
-- Webhook and Actions queues back up under agent-driven volume
-- Notification volume makes real signal impossible to spot
-- Self-hosted runners and API budgets become planning concerns
-- The platform is a capacity constraint, not just a tool
-
----
-
-<!-- meta: 44 aiindustry -->
-# Fixing the Bottleneck: Smaller, Batched PRs
-
-- Cap PR size: agents should split large changes automatically
-- Batch related small PRs into one review window, not ten
-- Auto-merge low-risk changes that pass every guardrail
-- Reserve human review for the PRs that actually need judgment
-- Rotate review load so no one person absorbs the volume
-- The goal: fewer decisions, not just fewer keystrokes, for reviewers
-
----
-
-<!-- meta: 45 aiindustry -->
+<!-- meta: 34 aiindustry -->
 # Review Triage: What Humans Should See
 
-- Not every agent PR deserves equal human attention
-- Auto-merge: dependency bumps, formatting, generated code updates
-- Always review: auth, payments, data migrations, public interfaces
-- Let the auditor rank PRs by risk, not arrival order
-- Humans review the risky 10%, deeply, instead of 100% shallowly
-- Triage is what makes review sustainable at volume
+- Cap PR size and batch related small PRs into one review window, not ten
+- Auto-merge low-risk changes that pass every guardrail: dependency bumps, formatting, generated code updates
+- Always review, deeply: auth, payments, data migrations, public interfaces
+- Let the auditor rank PRs by risk, not arrival order — humans review the risky 10% deeply instead of 100% shallowly
+- Rotate review load across a team so no one person absorbs the volume
+- Triage, not more reviewers, is what makes review sustainable at volume
 
 ---
 
-<!-- meta: 46 aiindustry -->
-# The Human Cost of Constant Review
+<!-- meta: 35 aiindustry -->
+# What Review Culture Looks Like From Outside
 
-- Reviewing agent output all day is genuinely draining work
-- Review is high-vigilance, low-authorship — the worst combination
-- Engineers report feeling like QA for a machine, not builders
-- Burnout shows up as rubber-stamping long before it shows up in surveys
-- Protect authorship time; nobody should review full-time
+- Reviewing agent output all day is genuinely draining work — high-vigilance, low-authorship, the worst combination
+- If you join a team doing this badly, you'll feel like QA for a machine, not a builder — worth asking about in an interview
+- Burnout shows up as rubber-stamping long before it shows up in a survey — watch for it in how a team actually reviews, not how they say they review
+- A healthy team protects authorship time; nobody should review full-time
+- Ask, when you're interviewing: how much of my week will be review versus building
 - Team health is a guardrail too, and it degrades quietly
 
 ---
 
-<!-- meta: 47 aiindustry -->
+<!-- meta: 36 aiindustry -->
 # Context Management Discipline
 
-- Long agent sessions accumulate stale, irrelevant context
-- Clearing context frequently keeps responses sharp and grounded
+- Long agent sessions accumulate stale, irrelevant context and drift from original intent
+- Treat context like a stack: push, use, pop — shorter, focused sessions beat one long marathon
 - Stale context causes drift: agent forgets original intent
-- Treat context like a stack: push, use, pop
-- Shorter, focused sessions outperform one long marathon session
+- Every token in context is a token someone pays for, every turn — the cost angle gets its own slide later
+- Clearing context cuts spend and improves quality at the same time — a rare alignment
 - Simple habit, outsized effect on output quality
 
 ---
 
-<!-- meta: 48 aiindustry -->
-# Context Economics
+<!-- meta: 37 aiindustry -->
+# Worktrees and Subagents in Practice
 
-- Every token in context is a token you pay for, every turn
-- Long sessions re-send accumulated history on each request
-- Cost grows superlinearly as sessions drag on
-- Clearing context cuts spend and improves quality simultaneously
-- Caching helps, but discipline helps more
-- One of the few places where cheaper and better align perfectly
-
----
-
-<!-- meta: 49 aiindustry -->
-# Worktrees, Trunks, and Subagents
-
-- **Git worktrees** let multiple branches check out in parallel
-- Work trunks isolate a subagent's changes from the main branch
-- Subagents work in their own worktree, merge back when done
-- Parallel worktrees enable parallel agents without branch conflicts
-- Trunk-based isolation limits blast radius of a bad agent run
-- Cleanup matters: stale worktrees pile up fast
-
----
-
-<!-- meta: 50 aiindustry -->
-# Worktree Hygiene in Practice
-
-- One worktree per agent task, named for the task, not the agent
-- Tear down the worktree when the branch merges or is abandoned
-- Shared build caches across worktrees save real time and disk
-- Watch for `.env` and local config drift between worktrees
+- **Git worktrees** let multiple branches check out in parallel; work trunks isolate a subagent's changes from main
+- Subagents work in their own worktree, merge back when done — parallel agents without branch conflicts
+- One worktree per agent task, named for the task, not the agent; tear down when the branch merges or is abandoned
+- Shared build caches across worktrees save real time and disk — but watch for `.env` and local config drift between them
 - Automate cleanup — nobody does it manually past week two
-- Stale worktrees are where confusing "it worked yesterday" bugs live
+- Stale worktrees are where confusing "it worked yesterday" bugs live; trunk-based isolation limits the blast radius of a bad agent run
 
 ---
 
-<!-- meta: 51 aiindustry -->
+<!-- meta: 38 aiindustry -->
 # Practical Habits: Commit Often
 
 - Small, frequent commits make agent work easy to review
@@ -634,70 +473,44 @@ flowchart LR
 
 ---
 
-<!-- meta: 52 aiindustry -->
+<!-- meta: 39 aiindustry -->
 # Enterprise Adoption: Pilots vs. Production
 
-- 88% of agent pilots never reach production (Northflank)
-- The blocker is rarely the model — it's deployment infrastructure: isolation, SSO, RBAC, audit logging
+- 88% of agent pilots never reach production, per Northflank — a deployment-platform vendor repeating research that traces back further (MIT's "GenAI Divide" work put a similar failure rate even higher); the number is worth taking seriously, the framing less so
 - Gartner expects 40%+ of agentic projects canceled by 2027
-- A working demo and a production system are different projects
-- Most enterprise teams sit at stage 2-3: AI drafts, human approves; full stage 7-8 dark factory is still rare and high-risk
-- Budget for the boring infrastructure, not just the agent
+- The blocker is rarely the model — it's deployment infrastructure: isolation, SSO (single sign-on), RBAC (role-based access control), audit logging
+- Security review of agent permissions takes months, not days; compliance needs an audit story nobody wrote during the pilot
+- Cost modeling arrives after the first surprise invoice; CI/CD integration is harder than the demo suggested
+- A working demo and a production system are different projects — the model was never the hard part
 
 ---
 
-<!-- meta: 53 aiindustry -->
-# What Actually Blocks Production
+<!-- meta: 40 aiindustry -->
+# Economics: Token Costs and the Enterprise Bill
 
-- Security review of agent permissions takes months, not days
-- Compliance needs an audit story nobody wrote during the pilot
-- Cost modeling arrives after the first surprise invoice
-- Integration with existing CI/CD is harder than the demo suggested
-- Nobody owns the agents operationally once the pilot team disbands
-- The model was never the hard part
-
----
-
-<!-- meta: 54 aiindustry -->
-# Economics: Token Costs Are Falling
-
-- Inference token costs dropped roughly 280x over two years — a figure that shows up consistently across independent industry trackers
-- Falling costs are why dark-factory-scale usage became affordable
-- Enterprise AI dev tool spend: ~$12B (2025) toward an estimated $18B (2026)
-- Cheaper tokens don't mean cheap at enterprise scale
-- Usage-based billing behaves nothing like flat per-seat SaaS
-- The cost curve bends down; the usage curve bends up faster
+- Inference cost for a fixed level of model performance dropped roughly 280x from late 2022 to late 2024 (Stanford AI Index / a16z) — a specific, well-documented drop, not a universal price trend
+- Falling costs are why dark-factory-scale usage became affordable; estimates put enterprise AI dev tool spend in the low tens of billions and climbing, though analysts disagree on the exact figure
+- Cheaper unit costs don't mean cheap at enterprise scale: usage-based bills have reportedly reached $500-$2,000 per engineer per month at large shops — a wide range, but real money either way
+- The heaviest users generate the largest bills — usually your strongest engineers, since they use it most
+- Per-seat budgeting breaks completely under usage-based pricing; finance wants predictability, agents produce variance
+- Cost governance is now an engineering management problem, not just a finance one
 
 ---
 
-<!-- meta: 55 aiindustry -->
-# Economics: The Enterprise AI Bill
-
-- Usage-based bills can reportedly reach $2.5M-$10M/month across 5,000 engineers
-- Your best engineers generate the largest bills — they use it most
-- Per-seat budgeting breaks completely under usage-based pricing
-- Finance wants predictability; agents produce variance
-- Chargeback models push teams to self-limit, sometimes too much
-- Cost governance is now an engineering management problem
-
----
-
-<!-- meta: 56 aiindustry -->
+<!-- meta: 41 aiindustry -->
 # Economics: Layoffs
 
-- 2026 tech layoffs already top 150,000-170,000, AI cited as a factor
-- Some cuts reportedly fund the AI bill, not just automation gains
+- 2026 tech layoffs have topped 150,000, per Layoffs.fyi tracking, with AI cited as a factor in many
 - ~32% of managers have rehired roles they cut after adopting AI (Robert Half survey)
-- "AI efficiency" is sometimes a cleaner story than "we overhired"
-- Cost pressure and AI adoption arrived in the same quarter
-- Correlation is obvious; causation is genuinely murky
+- Correlation between AI adoption and layoffs is obvious; causation is genuinely murky
+- My read, not a finding: some cuts likely fund the AI bill as much as they reflect automation gains, and "AI efficiency" is sometimes a cleaner story than "we overhired"
 
 ---
 
-<!-- meta: 57 aiindustry -->
+<!-- meta: 42 aiindustry -->
 # Is AI Actually Replacing Developers?
 
-- Oxford Economics: firms "don't appear to be replacing workers" at scale
+- Oxford Economics (2024 graduate-labor report): firms "don't appear to be replacing workers" at scale
 - Junior developer hiring has contracted the most, not senior roles
 - Some layoffs are framed as AI even without measurable AI cause
 - Adoption varies widely: some firms hold headcount, others cut deep
@@ -706,7 +519,19 @@ flowchart LR
 
 ---
 
-<!-- meta: 58 aiindustry -->
+<!-- meta: 43 aiindustry -->
+# Do Agents Actually Make You Faster?
+
+- METR ran a randomized controlled trial with experienced open-source developers doing real tasks in their own repos, 2025
+- Result: developers using AI tools were about 19% *slower* — while believing they were 20% *faster*
+- The gap between felt speed and measured speed is the whole talk in one data point
+- This doesn't mean agents don't help — it means the help is task- and context-dependent, and self-report is a bad measure
+- Matches everything else in this deck: guardrails, audits, and review exist because intuition about AI output is unreliable
+- Ask for the data, not the vibe — on this, and on everything else in this talk
+
+---
+
+<!-- meta: 44 aiindustry -->
 # What This Means as You Enter Industry
 
 - The junior rung of the ladder is the one under pressure right now
@@ -718,75 +543,75 @@ flowchart LR
 
 ---
 
-<!-- meta: 59 aiindustry -->
+<!-- meta: 45 aiindustry -->
 # Why Human Review Still Matters
 
-- Not a self-correcting loop — it's self-poisoning
+- Not a self-correcting loop — potentially a self-poisoning one
 - Think ouroboros: consuming itself, not learning from itself
-- Bad AI code trains future bad AI models
-- **Model collapse**: quality erodes as synthetic data compounds
+- If bad AI code trains future AI models, quality erodes as synthetic data compounds — this is **model collapse**, next slide
 - Guardrails don't catch what nobody's watching anymore
-- Human review breaks the cycle before it compounds
+- Human review is the check that breaks the cycle before it compounds
 - Non-negotiable: a human validates the input, not just the output
 
 ---
 
-<!-- meta: 60 aiindustry -->
+<!-- meta: 46 aiindustry -->
 # Model Collapse: The Mechanism
 
 - Models train on public code; public code is increasingly AI-generated
-- Each generation inherits and amplifies the last one's blind spots
-- Rare, correct edge-case patterns get sampled out over time
-- The distribution narrows toward the confidently average
-- Human-authored, human-reviewed code is the corrective signal
-- This is a slow failure, which makes it easy to ignore
+- In controlled recursive-training experiments, each generation inherits and amplifies the last one's blind spots (Shumailov et al., *Nature*, 2024)
+- Whether this is happening at scale in real training pipelines is contested — production pipelines filter and curate; the lab experiment isn't the real pipeline
+- The risk, proven or not: rare, correct edge-case patterns get sampled out, and the distribution narrows toward the confidently average
+- Human-authored, human-reviewed code is the hedge either way
+- Worth tracking as a slow, easy-to-ignore risk — not a settled fact
 
 ---
 
-<!-- meta: 61 aiindustry -->
+<!-- meta: 47 aiindustry -->
 # Risks, Limits, and What's Next
 
 - Guardrails only catch what they're written to catch
 - Overtrust in green checkmarks is its own failure mode
 - Skills drift as models and libraries update over time
-- Regulated industries like fintech need more auditability, not less
 - Expect tighter planner-auditor loops and shared skill registries
 - Humans shift from writing code to reviewing systems
+- The stages, roles, and guardrails in this talk are today's answer — expect the shape to keep changing
 
 ---
 
-<!-- meta: 62 aiindustry -->
+<!-- meta: 48 aiindustry -->
 # Discussion: Questions for the Room
 
-- What's the biggest blocker to dark-factory adoption on your team
-- Where would you draw the line on agent autonomy today
+- What would make you trust an agent's PR on your first day at a new job
+- Where would you draw the line on agent autonomy, given a choice
 - How would you audit an agent you didn't build
-- What guardrail would you add first, given a blank slate
+- What guardrail would you want in place before you'd touch production code
 - What do you want to know about the industry side, going in
-- Open floor: bring your own war stories
+- Open floor: bring your own questions
 
 ---
 
-<!-- meta: 63 aiindustry -->
+<!-- meta: 49 aiindustry -->
 # Further Reading
 
-- `gastownhall.ai`: Gas Town docs and community hub
+- `gastownhall.ai`: Gastown docs and community hub
 - StrongDM's "Software Factory" writeup (Simon Willison, Feb 2026)
 - OpenAI's "Harness Engineering" post on structured repo knowledge
 - Anthropic's 2026 State of AI Agents Report
 - Northflank's enterprise AI coding agent deployment guide
 - Sysdig's JADEPUFFER/Langflow campaign writeup (CVE-2025-3248)
 - Robert Half's 2026 AI hiring and rehiring survey
-- Slides and sources available on request
+- METR's agentic coding RCT and task-horizon research (metr.org)
+- Slides and full citation list available on request
 
 ---
 
-<!-- meta: 64 summary -->
+<!-- meta: 50 summary -->
 # Summary
 
 - Dark factories run on layered guardrails, not on trust
 - Orchestration — planner to auditor — is maturing faster than confidence in it
 - Security, permission scoping, and audit trails are the hard parts
 - Small commits, clean context, and triaged review keep teams functional
-- Adoption is near-universal; autonomy is not, and shouldn't be yet
-- Human review is the only thing breaking the self-poisoning loop
+- Adoption is near-universal; autonomy and trust are not, and shouldn't be yet
+- Human review is the check that keeps the loop from poisoning itself
