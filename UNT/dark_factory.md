@@ -6,6 +6,7 @@
 # Agenda
 
 - **Foundations**: what a dark factory is and why now
+- **The lifecycle**: from SSDLC to a dark-factory SDLC
 - **Guardrails**: tests, static analysis, types, and CI enforcement
 - **Skills**: the reusable unit of AI capability
 - **Orchestration**: planner, executor, tooler, auditor — and Gastown
@@ -43,27 +44,68 @@
 ---
 
 <!-- meta: 4 aiindustry -->
+# From SSDLC to Dark Factory SDLC
+
+<!-- alt: Two stacked lifecycle diagrams. The top lane, Traditional SSDLC, shows six phases in sequence — Requirements, Design, Implement, Verify/Test, Release, Respond — each with a human gate. The bottom lane, Dark Factory SDLC, shows Spec, Plan, then a compressed box containing Implement and Verify running concurrently, then Release and Respond — gates now owned by agent roles except where a named human approver remains for high-risk releases. An arrow labeled "agent attack surface, no traditional counterpart" points into the compressed Implement/Verify box. -->
+> The gates don't disappear — they move left into the spec and down into CI. The ones that stay human are tied to accountability, not detection.
+
+```mermaid
+flowchart TB
+  subgraph TRAD["Traditional SSDLC — human gate every phase, weeks to quarters"]
+    direction LR
+    T1["Requirements<br/>gate: threat model"] --> T2["Design<br/>gate: security design review"] --> T3["Implement<br/>gate: peer code review"] --> T4["Verify/Test<br/>gate: SAST/DAST + pen test"] --> T5["Release<br/>gate: CAB sign-off"] --> T6["Respond<br/>gate: incident SLA"]
+  end
+  subgraph DARK["Dark Factory SDLC — gate only where accountability requires it, minutes"]
+    direction LR
+    D1["Spec<br/>human writes intent + test spec"] --> D2["Plan<br/>Planner agent, reviewable artifact"]
+    D2 --> D3
+    subgraph COMPRESSED["compressed: concurrent, continuous"]
+      direction LR
+      D3["Implement<br/>Executor, types/lint/tests every commit"] --> D4["Verify<br/>Tooler, continuous, not a phase"]
+    end
+    D4 --> D5["Release<br/>merge queue; named approver, high-risk only"] --> D6["Respond<br/>Auditor + replay, pinned versions"]
+    D6 -.->|feedback| D2
+  end
+  T1 ~~~ D1
+  T2 ~~~ D2
+  T3 ~~~ D3
+  T4 ~~~ D4
+  T5 ~~~ D5
+  T6 ~~~ D6
+  ATTACK["Agent attack surface:<br/>prompt injection, CVE chaining<br/>(no traditional counterpart)"] -.-> D3
+```
+
+- Design, implement, and verify compress into one continuous, concurrent loop instead of three sequenced phases
+- Per-change human review and phase-based pen testing are gone — named-approver sign-off survives only where the release is high-risk (auth, payments, migrations, regulated industries — more in the auditing and security sections ahead)
+- The one new box in this picture: agents receive untrusted input mid-build, something no traditional phase ever had to defend against
+
+---
+
+<!-- meta: 5 aiindustry -->
 # Guardrails: Defense in Depth
 
-<!-- alt: A flowchart showing types, linters, and tests running inside a CI box, which then feeds into audit and human review downstream. -->
-> Types, linters, and tests run inside CI; audit and human review sit downstream of it.
+<!-- alt: A flowchart showing agent output feeding three parallel checks — types, linters, tests, each labeled with how fast it runs — that converge on a merge gate, which then feeds audit and human review downstream. -->
+> Layers run in parallel, not in sequence — the agent hits cheap friction in seconds; humans see it only after everything else has passed.
 
 ```mermaid
 flowchart LR
-  subgraph CI["Continuous Integration"]
-    A[Types] --> B[Linters] --> C[Tests]
-  end
-  CI --> D[Audit] --> E[Human Review]
+  AGENT["Agent output"] --> TY["Types<br/>seconds"]
+  AGENT --> LI["Linters<br/>seconds"]
+  AGENT --> TE["Tests<br/>minutes"]
+  TY --> GATE(("Merge gate"))
+  LI --> GATE
+  TE --> GATE
+  GATE --> AU["Audit<br/>hours"]
+  AU --> HR["Human review<br/>hours"]
 ```
 
 - No single check catches everything an agent might get wrong
 - Each layer catches a different class of failure
 - **Defense in depth** borrowed directly from security engineering
-- The agent should hit friction long before a human does
 
 ---
 
-<!-- meta: 5 aiindustry -->
+<!-- meta: 6 aiindustry -->
 # Guardrails: Automated Testing
 
 - Tests are the first guardrail an agent's output has to pass
@@ -75,7 +117,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 6 aiindustry -->
+<!-- meta: 7 aiindustry -->
 # Testing Pitfall: Agents Writing Their Own Tests
 
 - Agents will happily write tests that pass against broken code
@@ -87,7 +129,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 7 aiindustry -->
+<!-- meta: 8 aiindustry -->
 # Guardrails: Static Analysis
 
 - **Static analysis** (`golangci-lint`, `staticcheck`) enforces style and safety without running the code
@@ -99,7 +141,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 8 aiindustry -->
+<!-- meta: 9 aiindustry -->
 # Type Systems as Free Guardrails
 
 - A strong type system rejects bad code before any test runs
@@ -111,7 +153,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 9 aiindustry -->
+<!-- meta: 10 aiindustry -->
 # CI as the Enforcement Point
 
 - Guardrails only count if something blocks merge when they fail
@@ -123,7 +165,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 10 aiindustry -->
+<!-- meta: 11 aiindustry -->
 # Guardrail Metrics That Actually Matter
 
 - Coverage percentage alone is easy to game and often misleading
@@ -135,7 +177,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 11 aiindustry -->
+<!-- meta: 12 aiindustry -->
 # LLM Skills as Building Blocks
 
 - A **skill** packages instructions, examples, and tools for one task — narrow skills outperform one giant, do-everything prompt
@@ -146,7 +188,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 12 aiindustry -->
+<!-- meta: 13 aiindustry -->
 # Anatomy of a Skill
 
 - **Description**: when this skill should trigger, in plain language
@@ -158,7 +200,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 13 aiindustry -->
+<!-- meta: 14 aiindustry -->
 # Skill Versioning and Reuse
 
 - Skills live in version control, just like application code
@@ -170,21 +212,22 @@ flowchart LR
 
 ---
 
-<!-- meta: 14 aiindustry -->
+<!-- meta: 15 aiindustry -->
 # Orchestration Flow
 
-<!-- alt: A flowchart showing four roles in sequence: Planner, Executor, Tooler, and Auditor, connected left to right by arrows. A feedback arrow labeled "feedback" loops from Auditor back to Planner. -->
-> The auditor closes the loop, feeding results back into planning.
+<!-- alt: A flowchart showing four roles in sequence — Planner, Executor, Tooler, Auditor — each edge labeled with the artifact handed off: task list, commits and diff, test and lint results. A feedback edge labeled "reject: replan" loops from Auditor back to Planner, and a "sign-off" edge goes from Auditor to a Merge node. -->
+> Each handoff passes a specific artifact — that's what "structured handoff" means on the next slide.
 
 ```mermaid
 flowchart LR
-  Planner --> Executor --> Tooler --> Auditor
-  Auditor -- feedback --> Planner
+  Planner -->|task list| Executor -->|commits/diff| Tooler -->|test + lint results| Auditor
+  Auditor -.->|reject: replan| Planner
+  Auditor -->|sign-off| Merge(("Merge"))
 ```
 
 ---
 
-<!-- meta: 15 aiindustry -->
+<!-- meta: 16 aiindustry -->
 # Why Separate Roles at All
 
 - One agent doing everything blurs planning and execution errors
@@ -196,7 +239,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 16 aiindustry -->
+<!-- meta: 17 aiindustry -->
 # The Four Roles
 
 - **Planner**: breaks a goal into concrete steps, reads context, decides ordering and what needs human sign-off — outputs a task list, never touches code directly
@@ -208,19 +251,26 @@ flowchart LR
 
 ---
 
-<!-- meta: 17 aiindustry -->
+<!-- meta: 18 aiindustry -->
 # Handoff Failure Modes
 
-- Plan drift: executor quietly solves a different problem
-- Context loss at handoff — the next role lacks the "why"
-- Silent tool failure reported upstream as success
-- Auditor rubber-stamping because everything technically passed
-- Infinite loops: auditor rejects, planner replans, nothing converges
+<!-- alt: The same Planner-Executor-Tooler-Auditor flowchart from two slides ago, but now each edge is labeled with the failure mode that can occur there instead of the artifact handed off. -->
+> Every failure mode below lives on one of these edges — proof that boundaries, not roles, are where things break.
+
+```mermaid
+flowchart LR
+  Planner -->|"drift: quietly solves a different problem"| Executor
+  Executor -->|"context loss: next role lacks the why"| Tooler
+  Tooler -->|"silent failure reported as success"| Auditor
+  Auditor -.->|"rubber-stamp: passed, but shouldn't have"| Merge(("Merge"))
+  Auditor -.->|"reject, replan — risk: never converges"| Planner
+```
+
 - Fix: structured handoff artifacts, retry budgets, escalation to humans
 
 ---
 
-<!-- meta: 18 aiindustry -->
+<!-- meta: 19 aiindustry -->
 # Gastown: Orchestrating Agents at Scale
 
 - **Gastown**: open-source workspace manager for multiple coding agents (`gastownhall.ai`), built by Steve Yegge
@@ -232,7 +282,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 19 aiindustry -->
+<!-- meta: 20 aiindustry -->
 # Case Study: StrongDM's No-Human-Code Team
 
 - Three engineers, zero hand-written code, since July 2025 — "code must not be written or reviewed by humans"
@@ -244,37 +294,64 @@ flowchart LR
 
 ---
 
-<!-- meta: 20 aiindustry -->
+<!-- meta: 21 aiindustry -->
 # The Eight Stages of Agent Autonomy
 
-<!-- alt: A flowchart showing eight stages of agent autonomy progressing left to right, from inline completion to fully orchestrated multi-agent swarms. -->
+<!-- alt: A flowchart banding eight stages of agent autonomy into three groups left to right: human-driven (stages 1-3, rectangles), human-in-the-loop (stage 4), and human-on-the-loop (stages 5-6 and 7-8, drawn as stadium shapes to signal they're ranges, not single stages). -->
 > Most enterprise teams sit around stage 2-3 today.
 
 ```mermaid
 flowchart LR
-  S1["Stage 1: Inline completion"] --> S2["Stage 2: Chat help"] --> S3["Stage 3: Approved edits"] --> S4["Stage 4: Autonomous single agent"] --> S56["Stage 5-6: Multi-agent, human-coordinated"] --> S78["Stage 7-8: Orchestrated swarms"]
+  subgraph HD["Human-driven"]
+    S1["Stage 1<br/>Inline completion"] --> S2["Stage 2<br/>Chat help"] --> S3["Stage 3<br/>Approved edits"]
+  end
+  subgraph HITL["Human-in-the-loop"]
+    S4["Stage 4<br/>Autonomous single agent"]
+  end
+  subgraph HOTL["Human-on-the-loop"]
+    S56(["Stage 5-6<br/>Multi-agent, human-coordinated"])
+    S78(["Stage 7-8<br/>Orchestrated swarms"])
+  end
+  S3 --> S4 --> S56 --> S78
 ```
 
 - Where a team sits on this ladder shows up again in the adoption numbers ahead — and the stakes rise as you move right
 
 ---
 
-<!-- meta: 21 aiindustry -->
+<!-- meta: 22 aiindustry -->
 # Three Classes of Firms for Full Autonomy
 
-- Few firms can hand an LLM fully autonomous work — by my count, three classes
+<!-- alt: A quadrant chart plotting firms by rigor already required on the x-axis and cost of failure on the y-axis. Cheap-failure work sits low on both axes; narrow-and-guardrailed work sits high on cost with rigor added by the guardrail; rigor-already-required domains like chip design sit high on both. Most firms plot in the unsafe upper-left quadrant — high cost of failure, low existing rigor. StrongDM straddles the cheap-failure and rigor-required quadrants at once. -->
+> Most firms fit none of these natively — that's the point.
+
+```mermaid
+quadrantChart
+    title Three Classes of Firms for Full Autonomy
+    x-axis Low rigor already required --> High rigor already required
+    y-axis Low cost of failure --> High cost of failure
+    quadrant-1 Rigor already required
+    quadrant-2 Most firms: unsafe to autonomize
+    quadrant-3 Cheap failure
+    quadrant-4 Narrow + guardrailed
+    Cheap failure: [0.15, 0.15]
+    Narrow + guardrailed: [0.8, 0.3]
+    Rigor already required: [0.85, 0.85]
+    Most firms: [0.25, 0.75]
+    StrongDM: [0.55, 0.7]
+```
+
 - **Cheap failure**: work that would otherwise go to an intern, rapid prototyping
 - **Narrow + guardrailed**: repetitive physical labor in a controlled cell, call-center/chat
 - **Rigor already required**: chip design, drug discovery — spec and validation aren't optional there anyway
-- Most firms fit none of these natively — that's the point
-- StrongDM leaned class 1 and 3 at once: greenfield, and security has zero tolerance for failure
+- StrongDM leaned class 1 and 3 at once: greenfield, and security has zero tolerance for failure — the diagram shows why that's an unusual combination
 
 ---
 
-<!-- meta: 22 aiindustry -->
+<!-- meta: 23 aiindustry -->
 # The Engineer's Job: Shrink the Workspace
 
-- Our job becomes reshaping the task to fit one of those three shapes
+- Using the same map: our job becomes reshaping the task to fit one of those three shapes
 - Cheap failure: sandbox it, make retries free, lower the stakes of a miss
 - Narrow + guardrailed: scope the task down, build the guardrail *before* delegating
 - Rigor required: write the spec, make validation cheap, then hand it off
@@ -283,7 +360,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 23 aiindustry -->
+<!-- meta: 24 aiindustry -->
 # Where Most Teams Actually Sit
 
 - 91% of enterprises deploy agents in some form; only 42% trust agents to lead work even with oversight (Anthropic, 2026 State of AI Agents Report) — worth noting a model vendor surveying agent adoption has an incentive to report it favorably
@@ -295,7 +372,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 24 aiindustry -->
+<!-- meta: 25 aiindustry -->
 # Auditing and Observability
 
 - Every AI action gets logged: prompt, tool call, result — structured (JSON), not free-text, so it can be replayed
@@ -307,19 +384,26 @@ flowchart LR
 
 ---
 
-<!-- meta: 25 aiindustry -->
+<!-- meta: 26 aiindustry -->
 # Replay and Root Cause
+
+<!-- alt: The same Planner-Executor-Tooler-Auditor flowchart, with the Planner node highlighted and labeled as where root cause usually lives. -->
+> Root cause usually lives in the plan, not the generated code — that's why replay has to start there.
+
+```mermaid
+flowchart LR
+  Planner["Planner<br/>★ root cause usually lives here"] --> Executor --> Tooler --> Auditor
+```
 
 - Replay means rerunning the exact sequence that produced a change
 - Nondeterminism makes exact replay hard — log inputs, not just outputs
 - Pin model and skill versions so a replay is meaningful later
-- Root cause usually lives in the plan, not the generated code
 - "Which step introduced this" is the question logs must answer
 - Without replay, postmortems become speculation
 
 ---
 
-<!-- meta: 26 aiindustry -->
+<!-- meta: 27 aiindustry -->
 # Fintech: Regulatory Audit Requirements
 
 - Regulated industries need more auditability, not less, as autonomy rises
@@ -331,19 +415,30 @@ flowchart LR
 
 ---
 
-<!-- meta: 27 aiindustry -->
+<!-- meta: 28 aiindustry -->
 # Security: How a Chain Actually Works
 
-- Step 1: a low-severity CVE in a transitive dependency (a dependency of a dependency, not one you added directly) exposes an internal endpoint the agent has legitimate reason to call
-- Step 2: the agent calls it, and pulls the response into context — like any other tool result
-- Step 3: hidden text in that response is a prompt injection; the agent can't reliably tell instruction from data
-- Step 4: the injected instruction directs the agent toward a second, unrelated CVE — a way past auth in another dependency
-- Step 5: neither CVE alone was exploitable this way — chained, they yield full exfiltration capability
-- No single guardrail catches this; only review of the full action chain does
+<!-- alt: A flowchart showing a trust boundary around the agent's context. A low-severity CVE in a transitive dependency exposes an endpoint; its response is pulled into context; hidden text in that response is a prompt injection that directs the agent toward a second CVE, an auth-bypass in another dependency. A dashed line connects the two CVEs, labeled "neither alone was exploitable." Combined, they lead to full exfiltration. -->
+> No single guardrail catches this — only review of the full action chain does.
+
+```mermaid
+flowchart LR
+  subgraph CTX["Agent's context — trust boundary"]
+    CVE1["CVE-1: transitive dependency<br/>exposes internal endpoint<br/>(low severity alone)"]
+    RESP["Endpoint response<br/>pulled into context"]
+    INJ["Hidden prompt injection<br/>in that response"]
+  end
+  CVE1 --> RESP --> INJ
+  INJ -.->|directs agent toward| CVE2["CVE-2: auth-bypass<br/>in a second dependency<br/>(low severity alone)"]
+  CVE1 -.->|neither alone was exploitable| CVE2
+  CVE2 --> EXFIL["Full exfiltration capability"]
+```
+
+- This is the mechanism behind the case studies on the next slide — XBOW's 48-step chain and the JADEPUFFER/Langflow campaign
 
 ---
 
-<!-- meta: 28 aiindustry -->
+<!-- meta: 29 aiindustry -->
 # Security: CVE Chaining Risks
 
 - AI agents can chain low-severity issues into high-impact exploits — that's the mechanism just shown
@@ -355,7 +450,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 29 aiindustry -->
+<!-- meta: 30 aiindustry -->
 # The Agent Attack Surface
 
 - **Prompt injection**: hostile text in a file, issue, or web page
@@ -367,7 +462,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 30 aiindustry -->
+<!-- meta: 31 aiindustry -->
 # When Agents Go Wrong: Real Incidents
 
 - Replit (2025): an agent deleted a live database during a freeze
@@ -377,7 +472,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 31 aiindustry -->
+<!-- meta: 32 aiindustry -->
 # Permission Scoping and Progressive Autonomy
 
 - Start agents read-only; grant write access per-directory, not globally
@@ -389,7 +484,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 32 aiindustry -->
+<!-- meta: 33 aiindustry -->
 # Secrets and Credential Handling
 
 - Agents log prompts and outputs — secrets in context end up in logs
@@ -401,7 +496,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 33 aiindustry -->
+<!-- meta: 34 aiindustry -->
 # PR Churn and Review Fatigue
 
 - More AI-authored PRs strain GitHub's own UI and APIs — rate limits sized for human-paced activity, large diffs render slowly, webhook/Actions queues back up
@@ -413,19 +508,26 @@ flowchart LR
 
 ---
 
-<!-- meta: 34 aiindustry -->
+<!-- meta: 35 aiindustry -->
 # Review Triage: What Humans Should See
 
+<!-- alt: A decision tree. An agent PR feeds into a risk classification diamond, which routes low-risk changes like dependency bumps, formatting, and generated code updates to auto-merge, and high-risk changes like auth, payments, migrations, and public interfaces to deep human review. -->
+> Humans review the risky 10%, deeply, instead of 100% shallowly.
+
+```mermaid
+flowchart TD
+  PR["Agent PR"] --> RISK{"Risk classification"}
+  RISK -->|"low: dep bumps, formatting, codegen"| AUTO["Auto-merge"]
+  RISK -->|"high: auth, payments, migrations, public interfaces"| DEEP["Deep human review"]
+```
+
 - Cap PR size and batch related small PRs into one review window, not ten
-- Auto-merge low-risk changes that pass every guardrail: dependency bumps, formatting, generated code updates
-- Always review, deeply: auth, payments, data migrations, public interfaces
-- Let the auditor rank PRs by risk, not arrival order — humans review the risky 10% deeply instead of 100% shallowly
-- Rotate review load across a team so no one person absorbs the volume
+- Let the auditor rank PRs by risk, not arrival order
 - Triage, not more reviewers, is what makes review sustainable at volume
 
 ---
 
-<!-- meta: 35 aiindustry -->
+<!-- meta: 36 aiindustry -->
 # What Review Culture Looks Like From Outside
 
 - Reviewing agent output all day is genuinely draining work — high-vigilance, low-authorship, the worst combination
@@ -437,7 +539,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 36 aiindustry -->
+<!-- meta: 37 aiindustry -->
 # Context Management Discipline
 
 - Long agent sessions accumulate stale, irrelevant context and drift from original intent
@@ -449,7 +551,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 37 aiindustry -->
+<!-- meta: 38 aiindustry -->
 # Worktrees and Subagents in Practice
 
 - **Git worktrees** let multiple branches check out in parallel; work trunks isolate a subagent's changes from main
@@ -461,7 +563,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 38 aiindustry -->
+<!-- meta: 39 aiindustry -->
 # Practical Habits: Commit Often
 
 - Small, frequent commits make agent work easy to review
@@ -473,7 +575,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 39 aiindustry -->
+<!-- meta: 40 aiindustry -->
 # Enterprise Adoption: Pilots vs. Production
 
 - 88% of agent pilots never reach production, per Northflank — a deployment-platform vendor repeating research that traces back further (MIT's "GenAI Divide" work put a similar failure rate even higher); the number is worth taking seriously, the framing less so
@@ -485,7 +587,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 40 aiindustry -->
+<!-- meta: 41 aiindustry -->
 # Economics: Token Costs and the Enterprise Bill
 
 - Inference cost for a fixed level of model performance dropped roughly 280x from late 2022 to late 2024 (Stanford AI Index / a16z) — a specific, well-documented drop, not a universal price trend
@@ -497,7 +599,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 41 aiindustry -->
+<!-- meta: 42 aiindustry -->
 # Economics: Layoffs
 
 - 2026 tech layoffs have topped 150,000, per Layoffs.fyi tracking, with AI cited as a factor in many
@@ -507,7 +609,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 42 aiindustry -->
+<!-- meta: 43 aiindustry -->
 # Is AI Actually Replacing Developers?
 
 - Oxford Economics (2024 graduate-labor report): firms "don't appear to be replacing workers" at scale
@@ -519,19 +621,28 @@ flowchart LR
 
 ---
 
-<!-- meta: 43 aiindustry -->
+<!-- meta: 44 aiindustry -->
 # Do Agents Actually Make You Faster?
 
+<!-- alt: A two-bar chart comparing perceived versus measured change in developer speed when using AI tools. Perceived speed is up 20 percent; measured speed is down 19 percent. -->
+> The gap between felt speed and measured speed is the whole talk in one data point.
+
+```mermaid
+xychart-beta
+    title "Perceived vs. Measured Speed with AI Tools (METR RCT, 2025)"
+    x-axis [Perceived, Measured]
+    y-axis "Change in speed (%)" -30 --> 30
+    bar [20, -19]
+```
+
 - METR ran a randomized controlled trial with experienced open-source developers doing real tasks in their own repos, 2025
-- Result: developers using AI tools were about 19% *slower* — while believing they were 20% *faster*
-- The gap between felt speed and measured speed is the whole talk in one data point
 - This doesn't mean agents don't help — it means the help is task- and context-dependent, and self-report is a bad measure
 - Matches everything else in this deck: guardrails, audits, and review exist because intuition about AI output is unreliable
 - Ask for the data, not the vibe — on this, and on everything else in this talk
 
 ---
 
-<!-- meta: 44 aiindustry -->
+<!-- meta: 45 aiindustry -->
 # What This Means as You Enter Industry
 
 - The junior rung of the ladder is the one under pressure right now
@@ -543,7 +654,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 45 aiindustry -->
+<!-- meta: 46 aiindustry -->
 # Why Human Review Still Matters
 
 - Not a self-correcting loop — potentially a self-poisoning one
@@ -555,7 +666,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 46 aiindustry -->
+<!-- meta: 47 aiindustry -->
 # Model Collapse: The Mechanism
 
 - Models train on public code; public code is increasingly AI-generated
@@ -567,7 +678,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 47 aiindustry -->
+<!-- meta: 48 aiindustry -->
 # Risks, Limits, and What's Next
 
 - Guardrails only catch what they're written to catch
@@ -579,7 +690,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 48 aiindustry -->
+<!-- meta: 49 aiindustry -->
 # Discussion: Questions for the Room
 
 - What would make you trust an agent's PR on your first day at a new job
@@ -591,7 +702,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 49 aiindustry -->
+<!-- meta: 50 aiindustry -->
 # Further Reading
 
 - `gastownhall.ai`: Gastown docs and community hub
@@ -606,10 +717,11 @@ flowchart LR
 
 ---
 
-<!-- meta: 50 summary -->
+<!-- meta: 51 summary -->
 # Summary
 
 - Dark factories run on layered guardrails, not on trust
+- The SSDLC doesn't disappear — its gates move left into the spec and down into CI
 - Orchestration — planner to auditor — is maturing faster than confidence in it
 - Security, permission scoping, and audit trails are the hard parts
 - Small commits, clean context, and triaged review keep teams functional
