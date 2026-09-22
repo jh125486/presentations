@@ -323,14 +323,14 @@ flowchart LR
 - Narrow and guardrailed: controlled-cell labor, call-center chat
 - Rigor already required: chip design, drug discovery
 - Most firms fit none of these natively
-- StrongDM leaned cheap-failure and rigor-required at once
+  - Aside: StrongDM straddled cheap-failure and rigor-required at once
 
 ---
 
 <!-- meta: 25 aiindustry -->
 # Mapping the Three Classes
 
-<!-- alt: A quadrant chart plotting firms by rigor already required on the x-axis and cost of failure on the y-axis. Cheap-failure work sits low on both axes; narrow-and-guardrailed work sits high on cost with rigor added by the guardrail; rigor-already-required domains like chip design sit high on both. A typical firm plots in the unsafe upper-left quadrant — high cost of failure, low existing rigor. StrongDM straddles the cheap-failure and rigor-required quadrants at once. -->
+<!-- alt: A quadrant chart plotting firms by rigor already required on the x-axis and cost of failure on the y-axis. Cheap-failure work sits low on both axes; narrow-and-guardrailed work sits high on cost with rigor added by the guardrail; rigor-already-required domains like chip design sit high on both. A typical firm plots in the unsafe upper-left quadrant — high cost of failure, low existing rigor. -->
 > Most firms fit none of these natively — that’s the point.
 
 ```mermaid
@@ -346,7 +346,6 @@ quadrantChart
     Narrow and guardrailed: [0.8, 0.3]
     Rigor already required: [0.85, 0.85]
     Typical firm: [0.25, 0.75]
-    StrongDM: [0.55, 0.7]
 ```
 
 ---
