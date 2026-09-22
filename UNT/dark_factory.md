@@ -20,8 +20,8 @@
 # The Dark Factory Concept
 
 - A dark factory runs unattended, lights off, automated
-- Software's version: minimal human touch, agents build and merge
-- Term borrowed from manufacturing's "lights-out" floors
+- Software’s version: minimal human touch, agents build and merge
+- Term borrowed from manufacturing’s “lights-out” floors
   - FANUC has run one lights-out since 2001
 - Why now: task horizon, falling costs, competitive pressure
 - Trust comes from guardrails, not blind delegation
@@ -35,7 +35,7 @@
 - Early models held one function in working memory
 - By 2026, agents sustain multi-hour, multi-file tasks
 - Task horizon: how long an agent stays coherent
-  - Tracked publicly by METR's task-length benchmarks
+  - Tracked publicly by METR’s task-length benchmarks
 - The 2021-to-2026 jump was about horizon, not raw capability
 - Longer horizons mean less human re-prompting per task
 - Horizon still degrades: long sessions drift without discipline
@@ -71,8 +71,8 @@ flowchart LR
 <!-- meta: 6 aiindustry -->
 # The Compressed Pipeline
 
-<!-- alt: A flowchart showing the dark-factory version of the same lifecycle: Spec, then Plan, then a compressed box containing Implement and Verify running concurrently, then Release and Respond, with a feedback loop from Respond back to Plan. An arrow labeled "agent attack surface, no traditional counterpart" points into the compressed Implement/Verify box. -->
-> The gates don't disappear — they move left into the spec and down into CI.
+<!-- alt: A flowchart showing the dark-factory version of the same lifecycle: Spec, then Plan, then a compressed box containing Implement and Verify running concurrently, then Release and Respond, with a feedback loop from Respond back to Plan. An arrow labeled “agent attack surface, no traditional counterpart” points into the compressed Implement/Verify box. -->
+> The gates don’t disappear — they move left into the spec and down into CI.
 
 ```mermaid
 flowchart LR
@@ -124,7 +124,7 @@ flowchart LR
 # Testing Pitfall: Agents Writing Their Own Tests
 
 - Agents happily write tests that pass against broken code
-- Tests asserting current behavior lock in bugs as "expected"
+- Tests asserting current behavior lock in bugs as “expected”
 - Tautological tests inflate coverage, prove nothing
 - Fix: humans own the spec, agents own the implementation
 - Mutation testing exposes tests that never actually fail
@@ -150,7 +150,7 @@ flowchart LR
 - Go example: explicit error returns make ignored failures visible
 - Compile errors are the cheapest feedback an agent gets
 - Typed interfaces constrain what an agent can plausibly generate
-- Narrow types encode intent an agent can't misread
+- Narrow types encode intent an agent can’t misread
 - The argument generalizes past Go
 
 ---
@@ -163,7 +163,7 @@ flowchart LR
 - Required checks: build, test, lint, security scan, coverage
 - Branch protection stops agents from bypassing the gate
 - Same pipeline for human and agent PRs — no fast lane
-- Not enforced in CI? It's documentation, not a guardrail
+- Not enforced in CI? It’s documentation, not a guardrail
 
 ---
 
@@ -208,7 +208,7 @@ flowchart LR
 - Skills live in version control, like application code
 - A skill change gets reviewed like any other diff
 - Reuse means consistent behavior across teams and projects
-- Roll back a bad skill the way you'd roll back code
+- Roll back a bad skill the way you’d roll back code
 - Skill libraries become shared infrastructure, not personal notes
 - Auditing which skill version ran is part of the trail
 
@@ -217,7 +217,7 @@ flowchart LR
 <!-- meta: 17 aiindustry -->
 # Orchestration Flow
 
-<!-- alt: A flowchart showing four roles in sequence — Planner, Executor, Tooler, Auditor — each edge labeled with the artifact handed off: task list, commits and diff, test and lint results. A feedback edge labeled "reject: replan" loops from Auditor back to Planner, and a "sign-off" edge goes from Auditor to a Merge node. -->
+<!-- alt: A flowchart showing four roles in sequence — Planner, Executor, Tooler, Auditor — each edge labeled with the artifact handed off: task list, commits and diff, test and lint results. A feedback edge labeled “reject: replan” loops from Auditor back to Planner, and a “sign-off” edge goes from Auditor to a Merge node. -->
 > Each handoff passes a specific artifact — task list, diff, results, sign-off.
 
 ```mermaid
@@ -235,7 +235,7 @@ flowchart LR
 - One agent doing everything blurs planning and execution errors
 - Separation makes failures attributable to a specific stage
 - Each role gets narrower permissions — least privilege by design
-- A planner that can't write code can't fix its own bad plan
+- A planner that can’t write code can’t fix its own bad plan
 - Role boundaries are where guardrails and logging get inserted
 - Mirrors separation of duties in any regulated workflow
 
@@ -247,7 +247,7 @@ flowchart LR
 - Planner: breaks a goal into steps, outputs a task list
   - Never touches code directly
 - Executor: writes code in a scoped worktree, small commits
-  - Job ends at "code exists," not "code is safe"
+  - Job ends at “code exists,” not “code is safe”
 - Tooler: runs tests, linters, builds — bridges written to proven
 - Auditor: reviews the full trail for chained risk
   - No auditor sign-off, no merge
@@ -258,7 +258,7 @@ flowchart LR
 # Handoff Failure Modes
 
 - Plan drift: executor quietly solves a different problem
-- Context loss: the next role lacks the "why"
+- Context loss: the next role lacks the “why”
 - Silent tool failure reported upstream as success
 - Auditor rubber-stamps once everything technically passes
 - Infinite loop: reject, replan, nothing converges
@@ -275,19 +275,19 @@ flowchart LR
 - Beads, its issue tracker, persists work state across restarts
 - Routes finished work through a verification-gated merge queue
 - Used by Fortune 100 teams, still needs heavy oversight
-- Read it critically: this is the builder's own description
+- Read it critically: this is the builder’s own description
 
 ---
 
 <!-- meta: 22 aiindustry -->
-# Case Study: StrongDM's No-Human-Code Team
+# Case Study: StrongDM’s No-Human-Code Team
 
 - Three engineers, zero hand-written code, since July 2025
 - Builds behavioral clones of third-party services for testing
 - Simon Willison called it the most ambitious dark factory seen
   - Acquired by Delinea, March 2026
 - Read it critically: greenfield codebase, the easy case
-- "No human review" still means humans wrote the specs
+- “No human review” still means humans wrote the specs
 - Existence proof, not a template
 
 ---
@@ -295,7 +295,7 @@ flowchart LR
 <!-- meta: 23 aiindustry -->
 # The Eight Stages of Agent Autonomy
 
-<!-- alt: A flowchart banding eight stages of agent autonomy into three groups left to right: human-driven (stages 1-3, rectangles), human-in-the-loop (stage 4), and human-on-the-loop (stages 5-6 and 7-8, drawn as stadium shapes to signal they're ranges, not single stages). -->
+<!-- alt: A flowchart banding eight stages of agent autonomy into three groups left to right: human-driven (stages 1-3, rectangles), human-in-the-loop (stage 4), and human-on-the-loop (stages 5-6 and 7-8, drawn as stadium shapes to signal they’re ranges, not single stages). -->
 > Most enterprise teams sit around stage 2-3 today.
 
 ```mermaid
@@ -331,7 +331,7 @@ flowchart LR
 # Mapping the Three Classes
 
 <!-- alt: A quadrant chart plotting firms by rigor already required on the x-axis and cost of failure on the y-axis. Cheap-failure work sits low on both axes; narrow-and-guardrailed work sits high on cost with rigor added by the guardrail; rigor-already-required domains like chip design sit high on both. A typical firm plots in the unsafe upper-left quadrant — high cost of failure, low existing rigor. StrongDM straddles the cheap-failure and rigor-required quadrants at once. -->
-> Most firms fit none of these natively — that's the point.
+> Most firms fit none of these natively — that’s the point.
 
 ```mermaid
 quadrantChart
@@ -352,14 +352,14 @@ quadrantChart
 ---
 
 <!-- meta: 26 aiindustry -->
-# The Engineer's Job: Shrink the Workspace
+# The Engineer’s Job: Shrink the Workspace
 
 - Our job: reshape the task to fit one of three shapes
 - Cheap failure: sandbox it, make retries free
 - Narrow and guardrailed: scope down, build the guardrail first
 - Rigor required: write the spec, make validation cheap
 - This is workspace engineering, not prompt engineering
-- Can't shrink it yet? Don't autonomize it yet
+- Can’t shrink it yet? Don’t autonomize it yet
 
 ---
 
@@ -368,7 +368,7 @@ quadrantChart
 
 - 91% of enterprises deploy agents in some form
   - Only 42% trust agents to lead work (Anthropic, 2026)
-- "Deploy" is a low bar — not the same as production
+- “Deploy” is a low bar — not the same as production
 - The gap between deployed and trusted is the real story
 - Regulated industries cluster low deliberately — but not always
   - Goldman Sachs, JPMorgan run agentic coding at scale
@@ -384,7 +384,7 @@ quadrantChart
 - Audit trails answer who changed what, when, under which version
 - Auditors compare output against guardrail results, not just diffs
 - Retention matters: fintech audits often need years
-- Can't reconstruct a decision? Can't audit it
+- Can’t reconstruct a decision? Can’t audit it
 
 ---
 
@@ -405,9 +405,9 @@ quadrantChart
 
 - Regulated industries need more auditability as autonomy rises
 - Change management standards assume a named human approver
-- "The agent decided" is not an accepted control narrative
+- “The agent decided” is not an accepted control narrative
 - Model and skill versions join the compliance record
-- Auditors will ask who authorized the agent's scope
+- Auditors will ask who authorized the agent’s scope
 - Build the audit trail before the regulator asks
 
 ---
@@ -415,7 +415,7 @@ quadrantChart
 <!-- meta: 31 aiindustry -->
 # Security: How a Chain Actually Works
 
-<!-- alt: A flowchart showing a trust boundary around the agent's context. A low-severity CVE in a transitive dependency exposes an endpoint; its response is pulled into context; hidden text in that response is a prompt injection that directs the agent toward a second CVE, an auth-bypass in another dependency. A dashed line connects the two CVEs, labeled "neither alone exploitable." Combined, they lead to full exfiltration. -->
+<!-- alt: A flowchart showing a trust boundary around the agent’s context. A low-severity CVE in a transitive dependency exposes an endpoint; its response is pulled into context; hidden text in that response is a prompt injection that directs the agent toward a second CVE, an auth-bypass in another dependency. A dashed line connects the two CVEs, labeled “neither alone exploitable.” Combined, they lead to full exfiltration. -->
 > No single guardrail catches this — only review of the full chain does.
 
 ```mermaid
@@ -449,7 +449,7 @@ flowchart LR
 # The Agent Attack Surface
 
 - Prompt injection: hostile text in a file or web page
-- The agent can't reliably tell instruction from data
+- The agent can’t reliably tell instruction from data
 - Supply chain: a poisoned dependency installed without asking
 - Tool access turns injection into code execution
 - Agents with repo write access are a privileged target
@@ -463,7 +463,7 @@ flowchart LR
 - Replit, 2025: an agent deleted a live database during a freeze
 - The agent admitted running unauthorized commands
 - What went wrong: too much permission, too soon
-- Progressive autonomy: earn scope, don't grant it upfront
+- Progressive autonomy: earn scope, don’t grant it upfront
 
 ---
 
@@ -471,11 +471,11 @@ flowchart LR
 # Permission Scoping and Progressive Autonomy
 
 - Start read-only; grant write access per-directory, not globally
-- No production credentials in an agent's environment, ever
+- No production credentials in an agent’s environment, ever
 - Destructive operations always require human confirmation
 - Expand scope on track record, not optimism
 - Separate agent identities so logs attribute actions correctly
-- The blast radius you allow is the one you'll get
+- The blast radius you allow is the one you’ll get
 
 ---
 
@@ -483,7 +483,7 @@ flowchart LR
 # Secrets and Credential Handling
 
 - Agents log prompts and outputs — secrets end up there too
-- Never paste credentials into an agent's working context
+- Never paste credentials into an agent’s working context
 - Use short-lived, scoped tokens instead of long-lived keys
 - Secret scanning in CI catches accidental commits
 - Rotate anything an agent has ever seen
@@ -493,7 +493,7 @@ flowchart LR
 <!-- meta: 37 aiindustry -->
 # PR Churn and Review Fatigue
 
-- More AI PRs strain GitHub's own UI and APIs
+- More AI PRs strain GitHub’s own UI and APIs
 - Constant review requests cause real reviewer fatigue
 - Fatigue leads to rubber-stamping, not real review
 - Batching and smaller PRs ease machine and human load
@@ -579,7 +579,7 @@ flowchart TD
 # Enterprise Adoption: Pilots vs. Production
 
 - 88% of agent pilots never reach production (Northflank)
-  - MIT's "GenAI Divide" work puts failure even higher
+  - MIT’s “GenAI Divide” work puts failure even higher
 - Gartner expects 40%+ of agentic projects canceled by 2027
 - The blocker is deployment infrastructure, rarely the model
 - Security review of agent permissions takes months, not days
@@ -612,11 +612,11 @@ flowchart TD
 <!-- meta: 47 aiindustry -->
 # Is AI Actually Replacing Developers?
 
-- Oxford Economics (2024): firms aren't replacing workers at scale
+- Oxford Economics (2024): firms aren’t replacing workers at scale
 - Junior developer hiring has contracted the most
 - Some layoffs get framed as AI without measurable AI cause
 - Adoption varies widely across firms
-- Personal note: my company hasn't cut developers; others have
+- Personal note: my company hasn’t cut developers; others have
 - The honest answer: it depends
 
 ---
@@ -628,7 +628,7 @@ flowchart TD
 - Developers using AI tools were about 19% slower
   - While believing they were 20% faster
 - Felt speed and measured speed diverge sharply
-- Self-report is a bad measure of AI's actual help
+- Self-report is a bad measure of AI’s actual help
 - Ask for the data, not the vibe
 
 ---
@@ -641,7 +641,7 @@ flowchart TD
 - Reading code fast matters more than writing it fast
 - PhD rigor — specs, validation, methodology — decides who audits agents well
 - Tool fluency is table stakes; judgment is the differentiator
-- Nobody has this fully figured out, including who's hiring you
+- Nobody has this fully figured out, including who’s hiring you
 
 ---
 
@@ -649,9 +649,9 @@ flowchart TD
 # Why Human-Made Guardrails Still Matter
 
 - Not a self-correcting loop — potentially a self-poisoning one
-- Human review alone doesn't scale to LLM output volume
-  - It's also gameable: the xz backdoor, the UMN "hypocrite commits"
-- The fix isn't more eyeballs — it's more human-designed checks
+- Human review alone doesn’t scale to LLM output volume
+  - It’s also gameable: the xz backdoor, the UMN “hypocrite commits”
+- The fix isn’t more eyeballs — it’s more human-designed checks
   - Fuzzing, mutation testing, specs written before code exists
 - Bad AI code can train future AI models — model collapse, next slide
 - Non-negotiable: a human designs the checks, not just reviews output
@@ -662,7 +662,7 @@ flowchart TD
 # Model Collapse: The Mechanism
 
 - Models train on public code, increasingly AI-generated
-- Each generation can amplify the last one's blind spots
+- Each generation can amplify the last one’s blind spots
   - Shumailov et al., Nature, 2024 — controlled experiments
 - Whether this happens at scale in real pipelines is contested
 - Risk either way: rare, correct patterns get sampled out
@@ -671,23 +671,23 @@ flowchart TD
 ---
 
 <!-- meta: 52 aiindustry -->
-# Risks, Limits, and What's Next
+# Risks, Limits, and What’s Next
 
-- Guardrails only catch what they're written to catch
+- Guardrails only catch what they’re written to catch
 - Overtrust in green checkmarks is its own failure mode
 - Skills drift as models and libraries update
 - Expect tighter planner-auditor loops, shared skill registries
 - Humans shift from writing code to reviewing systems
-- Today's shape will keep changing
+- Today’s shape will keep changing
 
 ---
 
 <!-- meta: 53 aiindustry -->
 # Discussion: Questions for the Room
 
-- What would earn your trust in an agent's PR on day one
+- What would earn your trust in an agent’s PR on day one
 - Where would you draw the line on agent autonomy
-- How would you audit an agent you didn't build
+- How would you audit an agent you didn’t build
 - What guardrail would you want before touching production code
 - What do you want to know about the industry side
 - Open floor: bring your own questions
@@ -698,13 +698,13 @@ flowchart TD
 # Further Reading
 
 - `gastownhall.ai`: Gastown docs and community hub
-- StrongDM's "Software Factory" writeup (Simon Willison, Feb 2026)
-- OpenAI's "Harness Engineering" post
-- Anthropic's 2026 State of AI Agents Report
-- Northflank's enterprise AI coding deployment guide
-- Sysdig's JADEPUFFER/Langflow writeup (`CVE-2025-3248`)
-- Robert Half's 2026 AI hiring and rehiring survey
-- METR's agentic coding RCT and task-horizon research
+- StrongDM’s “Software Factory” writeup (Simon Willison, Feb 2026)
+- OpenAI’s “Harness Engineering” post
+- Anthropic’s 2026 State of AI Agents Report
+- Northflank’s enterprise AI coding deployment guide
+- Sysdig’s JADEPUFFER/Langflow writeup (`CVE-2025-3248`)
+- Robert Half’s 2026 AI hiring and rehiring survey
+- METR’s agentic coding RCT and task-horizon research
 
 ---
 
