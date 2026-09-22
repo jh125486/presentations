@@ -1,6 +1,6 @@
 # Modern Databases
 Persistent storage in three flavors
-08:30 03 Mar 2025
+14:30 08 Oct 2025
 
 Dr. Jacob Hochstetler
 Distinguished Engineer, Vice President, Fidelity Investments
@@ -8,6 +8,9 @@ Clinical Assistant Professor, University of North Texas
 Jacob.Hochstetler@UNT.edu
 Jacob.Hochstetler@Fidelity.com
 https://github.com/jh125486
+
+: Welcome, quick context on dual industry/academic role.
+: Thread for the talk: distributed systems shape modern databases; we’ll see three concrete designs.
 
 ## Agenda
 
@@ -17,6 +20,8 @@ https://github.com/jh125486
 - Cockroach Labs' *CockroachDB*
 - TigerBeetle Inc.'s *TigerBeetle*
 - Conclusion
+
+: Roadmap and expectations; we’ll connect theory ↔ systems; questions welcome anytime.
 
 ## Introduction
 
@@ -36,6 +41,9 @@ https://github.com/jh125486
 
   👮 Security/privacy: Avoid hackers, observe policies, and comply with regulations.
 
+: Use this as the “why now” slide.
+: Prompt: who’s run into cross-region latency/consistency pain in production?
+
 ## Background
 
 - Networks?
@@ -46,12 +54,16 @@ https://github.com/jh125486
 .image images/database_background.png 320 _
 .caption Image generated using Adobe Photoshop.
 
+: This section sets shared vocabulary; don’t rush—later slides lean on it.
+
 ## Background: Networks?
 
 <p style="text-align:center;"><i>...I thought this was a database class?</i></p>
 
 .image images/osi_model.png 450 _ 
 .caption Open Systems Interconnection model (OSI model) reference model for how applications communicate over a network.
+
+: Joke lands, then segue: every distributed DB problem starts as a network problem (latency, loss, partitions).
 
 ## Background: Networked databases
 
@@ -67,6 +79,8 @@ https://github.com/jh125486
 - **Clustered** database ⇌ **multiple** clients:
 > *Networked...maybe **multiple** networks*
 
+: Escalate scope; once you cross a host boundary, you inherit failures and variability.
+
 ## Background: Distributed computing
 
 - Terms
@@ -77,6 +91,8 @@ https://github.com/jh125486
 
 .image images/database_distributed_computing.png 280 _
 .caption Image generated using Adobe Photoshop.
+
+: Definition + why it matters: coordination cost and failure modes dominate design.
 
 ## Background: Distributed computing
 
@@ -95,6 +111,8 @@ https://github.com/jh125486
 
 **Biggest single challenge:** Keeping data **consistent** across nodes can be *difficult*.
 
+: Emphasize: scaling compute is easy; scaling *correctness* is hard.
+
 ## Background: Distributed databases key terms
 
 - **[Shared-Nothing Architecture](https://en.wikipedia.org/wiki/Shared-nothing_architecture):** Each node is independent and self-sufficient, with no shared components that could become a bottleneck.
@@ -105,6 +123,8 @@ https://github.com/jh125486
 - **[Vector Clocks](https://en.wikipedia.org/wiki/Vector_clock):** Tracks causal relationships between events and ensure data consistency by associating a timestamp with each update.
 - **[Scaling](https://en.wikipedia.org/wiki/Scalability):** [*Scale-out* (horizontal)](https://en.wikipedia.org/wiki/Database_scalability#Horizontal) → more `nodes`. [*Scale-up* (vertical)](https://en.wikipedia.org/wiki/Database_scalability#Vertical) → more `resources`.
 - **[Distributed Transactions](https://en.wikipedia.org/wiki/Distributed_transaction):** Spans multiple nodes, requiring coordination.
+
+: Don’t read all; highlight shared-nothing, sharding, quorum, and 2PC as anchors for later.
 
 ## Background: Data partitioning
 
@@ -125,6 +145,8 @@ Dividing the database into smaller, manageable segments.
 **Question:** 
   - *Which type is better?*
 
+: Answer: depends on access patterns, hotspots, resharding cost, and operational constraints.
+
 ## Background: Replication
 
 Copying data across different nodes for redundancy and availability.
@@ -140,6 +162,12 @@ Copying data across different nodes for redundancy and availability.
   - The primary node handles write operations, while replica nodes are read-only.
   - Changes are propagated from the primary to the replicas.
   - Provides data redundancy and read scalability.
+
+: Define **RPO** (Recovery Point Objective): how much data you can lose after failure. Sync replication targets ≈ 0; async may lose recent writes.
+: Define **RTO** (Recovery Time Objective): how long until service is restored. Influenced by failure detection, promotion, and replay.
+: Sync → RPO≈0, higher tail latency. Async → better latency, non-zero RPO. Many prod setups mix: sync within region, async cross-region.
+: Tie sync vs async to RPO/RTO and user-visible staleness; this reappears in CockroachDB.
+: Sync → RPO≈0, higher tail latency. Async → better latency, non-zero RPO. Many prod setups mix: sync within region, async cross-region.
 
 ## Background: Data consistency
 
@@ -159,7 +187,14 @@ Ensuring that all nodes in a distributed system have the same data.
 **Question:** 
   - *Why different models?*
 
-## Background: Consensus algorithms
+: Because users value latency and availability differently per workload; correctness needs vary (banking vs analytics).
+
+: **Strong consistency** example: a bank transfer on a single DB cluster. When Alice transfers $100 to Bob, the system must guarantee that *any subsequent read — from any region — reflects the new balances immediately*. No client should ever see “$100 still in Alice’s account” after it’s been debited.
+: **Eventual consistency** example: DNS. When you update a DNS record, some clients may see the old IP for minutes or hours because the update hasn’t propagated to all resolvers yet — but eventually, all caches expire and everyone converges on the new record.
+: **Causal consistency** example: social media timelines. If you post “Hello world,” then immediately comment on your post, followers should see the post before the comment, even if the system is geo-distributed. Other unrelated posts may arrive in different orders — only *causally related* operations must be ordered.
+: **Weak consistency** example: Caches that have very long TTL/expirys without cache invalidation mechanisms. They'll keep serving the stale data until cache is purged.
+
+## Background: Consensus algorithms and Linearizability
 
 [Achieve agreement](https://en.wikipedia.org/wiki/Consensus_(computer_science)) on a distributed *single data value*, even in the presence of failures.
 
@@ -174,13 +209,30 @@ Ensuring that all nodes in a distributed system have the same data.
 
 **[Raft](https://raft.github.io/raft.pdf):**
 - Developed by Diego Ongaro and John Ousterhout in 2013.
-- Designed for simplicity, easier to understand and implement than Paxos.
+- Designed for [simplicity](https://thesecretlivesofdata.com/raft/), easier to understand and implement than Paxos.
+
+: Map each system: Physalia uses Paxos variants; CockroachDB uses Raft; TigerBeetle uses VR.
+: Define **linearizability**: every operation appears to take effect atomically at some instant between invocation and response, preserving real-time order.
+: Linearizable systems behave like a single correct object—simplifies reasoning, strong but expensive model.
+: Consensus protocols (Raft/Paxos/VR) are typically used to implement linearizability by ordering operations consistently.
+: CockroachDB and TigerBeetle both rely on linearizability to ensure correctness across replicas.
 
 ## Background: Raft example
 
 [https://raft.github.io/](https://raft.github.io/)
 
 <iframe src="https://raft.github.io/raftscope/index.html" title="raft visualization" aria-hidden="true" style="border: 0; width: 1000px; height: 600px; margin-left: 100px"></iframe>
+
+: Before we run the sim: this is a live Raft cluster in your browser. You’ll see nodes (replicas) and their logs side-by-side.  
+: The goal: illustrate election, log replication, leader failure, and reconfiguration in action.
+
+: As we start, point out **leader election**: one node becomes leader, sends heartbeats to others.  
+: Ask: “How many votes does a node need to be elected leader in a 5-node cluster?” (Answer: majority = 3).  
+: When a client issues a command (e.g. “set x = 5”), show how the leader appends it to its log, then replicates to followers.  
+: Emphasize: only after a majority of replicas acknowledge does the leader **commit** the entry and apply it to its state machine.
+
+: Now simulate a leader crash. Observe: the follower with the highest term or recent log wins the new election.  
+: Ask: “Why does Raft restrict candidates from elections with stale logs?” (To preserve safety / linearizability).  
 
 ## Background: Types of Failures in Distributed Systems
 
@@ -202,6 +254,8 @@ Ensuring that all nodes in a distributed system have the same data.
 **Question:** 
   - *What is "blast radius"?* 
 
+: Define blast radius as the scope of impact; Physalia’s design aims to shrink this.
+
 ## Background: Failure effect "Split-Brain"
 
 - A split-brain occurs when a network partition divides a cluster into subclusters.
@@ -211,6 +265,8 @@ Ensuring that all nodes in a distributed system have the same data.
 .image images/split_brain.png _ 800
 .caption Illustration of a split-brain scenario caused by a network partition in a clustered system, leading to two separate subclusters operating independently.
 
+: Stress quorum write requirements and fencing to prevent dual primaries.
+
 ## Background: CAP Theorem with PACELC Extension
 
 [CAP Theorem](https://en.wikipedia.org/wiki/CAP_theorem) (2000): any distributed data store can provide only 2 of 3 guarantees.
@@ -218,6 +274,11 @@ Ensuring that all nodes in a distributed system have the same data.
 
 .image images/pacelc_extension.png 410 _
 .caption If a partition (P) occurs, the system must balance availability (A) and consistency (C); otherwise (E), in normal operation without partitions, it must balance latency (L) and consistency (C).
+
+: PACELC frames steady-state tradeoffs (latency vs consistency), not just partition scenarios.
+: CockroachDB favors C under P; in E, it pays L to keep C. 
+: Physalia is strongly C by design.
+: TigerBeetle uses VR + strict recovery for C.
 
 ## Background: Back to Databases with 'ACID' vs. 'BASE'
 
@@ -237,6 +298,8 @@ ACID is used in relational databases for strict consistency.
   - ***E*ventual Consistency:** Consistency achieved over time, not immediately.
 
 BASE is common in distributed databases for scalability and availability.
+
+: Frame ACID/BASE as design goals, not religions; systems mix techniques.
 
 ## Background: Back to networks...
 
@@ -260,6 +323,7 @@ The ["Fallacies of distributed computing"](https://en.wikipedia.org/wiki/Fallaci
   - *What are the implications for distributed databases?*
   - *Better to scale "up" or scale "out"?*
 
+: Ask for war stories; tie choices back to latency budgets and failure isolation.
 
 ## Background: Database of Databases
 
@@ -276,6 +340,8 @@ DB-engines: [https://db-engines.com/](https://db-engines.com/)
 - Contains more "mainstream" databases.
 - [Encyclopedia Index](https://db-engines.com/en/articles) is a glossary of database terms.
 
+: Encourage students to use these for project scouting and reading lists.
+
 ## Physalia
 
 - Overview
@@ -284,6 +350,8 @@ DB-engines: [https://db-engines.com/](https://db-engines.com/)
 
 .image images/aws_physalia.png 380 _
 .caption Portuguese man-of-war (Physalia physalis). Image courtesy of NSDI '20 AWS Physalia presentation.
+
+: Pivot to case studies; Physalia is a control-plane store, not a general data store.
 
 ## Physalia: An Overview
 
@@ -300,6 +368,8 @@ NSDI'20: Proceedings of the 17th Usenix Conference on Networked Systems Design a
 .image images/physalia_cell.png 200 _
 .caption Figure 2: Overview of the relationship between the colony, cell and node.
 
+: Key idea: shard config into tiny cells to shrink blast radius; cells grouped into colonies.
+
 ## Physalia: Handling failures
 
 - Designed to minimize the blast radius of network partitions and fail gracefully.
@@ -312,11 +382,16 @@ For a more in-depth exploration, read Adrian Colyer's summary on [The Morning Pa
 .image images/physalia_downtime.png 190 _
 .caption Figure 9: Number of hours per month where EBS masters experienced an error rate > 0.05% in a production colony. The vertical line shows the deployment of Physalia.
 
+: Emphasize deployment discipline and formal methods; outcome shown in outage reduction.
+: Chain replication: writes flow head→tail; tail acks; linearizable reads at tail; simpler failover path shrinks coordination surface.
+
 ## Physalia: Millions of Tiny Databases [NSDI '20]
 
 <iframe width="952" height="535" src="https://www.youtube.com/embed/ZO9AxJTlgsU?si=AdUpW5O9e24f21Ul" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 [NSDI '20 presentation](https://youtu.be/ZO9AxJTlgsU?si=X9V-FQHf4uGLhVqm)
+
+: Optional clip (couple minutes) to show context, then move on.
 
 ## CockroachDB
 
@@ -326,6 +401,8 @@ For a more in-depth exploration, read Adrian Colyer's summary on [The Morning Pa
 
 .image https://upload.wikimedia.org/wikipedia/en/3/31/Cockroach_Labs_Logo.png 350 _
 .caption Cockroach Labs logo. Image courtesy of Cockroach Labs.
+
+: CockroachDB goal: SQL semantics with global distribution; Postgres wire compatible.
 
 ## CockroachDB: An Overview
 
@@ -340,6 +417,13 @@ SIGMOD '20: Proceedings of the 2020 ACM SIGMOD International Conference on Manag
 
 .image images/crdb_global.png 220 _
 .caption Figure 1: A global CockroachDB cluster (showing Replicas and Leaseholder Replicas)
+
+: Explain **locality**: every node carries region/zone tags (e.g., region=eu-west, zone=b). The cluster uses these to place replicas and ranges.
+: Define **leaseholder**: for each Raft range, one replica is the leaseholder; it serves reads and coordinates writes for that range.
+: Reads go to the leaseholder; coordinating writes there cuts round trips. Placing leaseholders near users slashes tail latency.
+: Example: EU traffic prefers EU leaseholders to avoid transatlantic hops; the system rebalances leaseholders as load/topology change.
+: This is CockroachDB’s main lever on PACELC (latency vs consistency) while keeping linearizability.
+: Raft still needs quorum for writes; leaseholder placement decides where reads and txn coord happen.
 
 ## CockroachDB: Transactions techniques
 
@@ -356,9 +440,11 @@ SIGMOD '20: Proceedings of the 2020 ACM SIGMOD International Conference on Manag
 
 ## CRDB: The Resilient Geo-Distributed SQL Database [SIGMOD '20]
 
-<iframe width="952" height="535" src="https://www.youtube.com/embed/ivVFAd9erfo?si=L9Bt_0VaNLfOee8Z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="952" height="535" src="https://iframe.videodelivery.net/eyJraWQiOiI3YjgzNTg3NDZlNWJmNDM0MjY5YzEwZTYwMDg0ZjViYiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI4ZjMzMGEzZDQzMGZhMjE2MWI5YzJkNTk5NTQ3NGRmYSIsImV4cCI6MTc1OTk2NzcwMywia2lkIjoiN2I4MzU4NzQ2ZTViZjQzNDI2OWMxMGU2MDA4NGY1YmIifQ.kIfmOU9SM38jINnMgjEfKrIH582F0QvfPJ9n0WxlotClhF5mjdDDRw-Pe3Ph2yGlE5WT7jPJlQKwF8yiHHNL2NRH2crzm89-PyrrxvMqoyTykEIxQMEmRlHm2UVLgwLjkcqZYDtFAsEDB-JXHAfgiFq04X8DsyYRvVJ0mvwjFCuaBkdu4iPPdvDi6sM6029T5pdowOl2s5xTDdf-hbRyY0WIZth7AhOwLdjPYR-rhEPLpanr1drDkcPgrF7NmLyKccflLOHDUl0kBkTF5C1P3veWJw1bPrwyOST1G2fwlr6sgsLVl6XRUOKS42lkVoz6t4l64v3XNKUa4zdpd7Bs-A?poster=https%3A%2F%2Fvideodelivery.net%2FeyJraWQiOiI3YjgzNTg3NDZlNWJmNDM0MjY5YzEwZTYwMDg0ZjViYiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI4ZjMzMGEzZDQzMGZhMjE2MWI5YzJkNTk5NTQ3NGRmYSIsImV4cCI6MTc1OTk2NzcwMywia2lkIjoiN2I4MzU4NzQ2ZTViZjQzNDI2OWMxMGU2MDA4NGY1YmIifQ.kIfmOU9SM38jINnMgjEfKrIH582F0QvfPJ9n0WxlotClhF5mjdDDRw-Pe3Ph2yGlE5WT7jPJlQKwF8yiHHNL2NRH2crzm89-PyrrxvMqoyTykEIxQMEmRlHm2UVLgwLjkcqZYDtFAsEDB-JXHAfgiFq04X8DsyYRvVJ0mvwjFCuaBkdu4iPPdvDi6sM6029T5pdowOl2s5xTDdf-hbRyY0WIZth7AhOwLdjPYR-rhEPLpanr1drDkcPgrF7NmLyKccflLOHDUl0kBkTF5C1P3veWJw1bPrwyOST1G2fwlr6sgsLVl6XRUOKS42lkVoz6t4l64v3XNKUa4zdpd7Bs-A%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D10.0s" title="DOI Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 [SIGMOD '20 presentation](https://youtu.be/ivVFAd9erfo)
+
+: Optional clip: architecture overview around minute 5.
 
 ## TigerBeetle
 
@@ -368,6 +454,8 @@ SIGMOD '20: Proceedings of the 2020 ACM SIGMOD International Conference on Manag
 
 .image images/tigerbeetle.png 350 _
 .caption TigerBeetle mascot. Courtesy of TigerBeetle Inc.
+
+: Pivot: domain-specific database for financial accounting; different target, different tradeoffs.
 
 ## TigerBeetle: An Overview
 
@@ -382,26 +470,18 @@ SIGMOD '20: Proceedings of the 2020 ACM SIGMOD International Conference on Manag
 .image images/tigerbeetle_vr.png 220 _
 .caption Viewstamped Replication: Normal case processing in VR for a configuration with 𝑓 = 1
 
+: **Viewstamped Replication (VR)**: Developed by Oki & Liskov (1988), runs with one primary replica (leader) and multiple backups.
+: Unlike Paxos, VR uses *passive replication*: only the primary executes client requests, then sends results (not the original operation) to backups for replication.
+: This can be simpler and more efficient in high-throughput workloads like financial ledgers, where determinism matters and you want to avoid duplicate execution.
+: TigerBeetle builds on VR for its consensus, which fits its accounting model well — deterministic state machine, linearizable, but simpler to implement than Raft in this domain.
+
 ## TigerBeetle: Safety and testing
 
 - Utilizes the [Zig programming language](https://ziglang.org/) for safety features such as OOM safety, bounds checking, and explicit control flow.
 - Protects against varying storage-related failures with a robust storage fault model.
 - Rigorous testing regime, including automated testing, audits of consensus and replication protocols, and state machine verification.
-- *Viewstamped Operation Replicator ([VOPR](https://tigerbeetle.com/blog/2023-07-11-we-put-a-distributed-database-in-the-browser/))* is a deterministic game to simulate TigerBeetle's protocol to test distributed behaviors.
 
-.image https://tigerbeetle.com/blog/2023-07-11-we-put-a-distributed-database-in-the-browser/sim-city-breeze.webp 190 _
-.caption VOPR Level 1: City Breeze, simulating a perfect environment. No network partitions. No packet loss or replays. No crashes or disk corruption, and, of course, low latency network and disk I/O.
-
-## TigerBeetle: SimTigerBeetle [The TigerBeetle Sessions]
-
-<iframe width="952" height="535" src="https://www.youtube.com/embed/Vch4BWUVzMM?si=yGPnBH0D5fUBIMk4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-[SimTigerBeetle Director's Cut!](https://youtu.be/Vch4BWUVzMM): [SimTigerBeetle](https://sim.tigerbeetle.com/), a TigerBeetle simulator in your browser.
-
-## Conclusion
-
-- **Evolution of Databases:** From primitive to NewSQL and distributed databases, adapting to modern challenges like scalability, availability, and security.
-- **Distributed Systems:** Key concepts like CAP/PACELC, consensus algorithms, and types of failures highlight the complexities of distributed computing.
-- **Physalia:** Demonstrates fault isolation and graceful failure handling in AWS' EBS control plane.
-- **CockroachDB:** Combines ACID compliance with fault tolerance and high availability in a geo-distributed setup.
-- **TigerBeetle:** Specializes in financial transactions with high performance and safety, leveraging Zig for robustness.
+: **Protocol-Aware Recovery for Consensus-Based Storage** refers to a FAST '18 paper (Alagappan et al.) that shows how to do **crash recovery that respects the semantics of the consensus protocol**, not just the storage layer.
+: In many systems, recovery is storage-centric: replay logs, hope the state machine is consistent. TigerBeetle instead makes recovery an explicit *part of the consensus algorithm*, ensuring that after a crash, the replica re-enters with a state that's valid according to the protocol.
+: This prevents subtle inconsistencies like "phantom writes" or diverging histories during crash/restart cycles.
+: Combine VR + protocol-aware recovery → deterministic, correct recovery even in tricky failure sequences — essential for financial correctness.
