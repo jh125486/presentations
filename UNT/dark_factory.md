@@ -322,7 +322,8 @@ flowchart LR
 - Cheap failure: intern-level work, rapid prototyping
 - Narrow and guardrailed: controlled-cell labor, call-center chat
 - Rigor already required: chip design, drug discovery
-- Most firms fit none of these natively
+- These are classes of *work*, not classes of firm
+  - A firm’s internal tools, product code, and core ledger can each sit in a different class
   - Aside: StrongDM straddled cheap-failure and rigor-required at once
 
 ---
@@ -331,7 +332,7 @@ flowchart LR
 # Mapping the Three Classes
 
 <!-- alt: A quadrant chart plotting ten software engineering tasks and industries by existing rigor on the x-axis and cost of failure on the y-axis. Internal admin tooling, ML experiments, and game scripting sit low on both axes. Call-center IVR scripts, linter rule authoring, and crypto known-answer test vectors sit mid-to-high rigor, low-cost. Kubernetes operators, social-feed ranking, and production cloud infrastructure-as-code sit in the unsafe upper-left region — real stakes without matching rigor. E-commerce checkout, bank core ledgers, and avionics flight control sit high on both axes. -->
-> Most firms fit none of these natively — that’s the point.
+> A firm doesn’t sit at one point — different work inside the same firm scatters across every quadrant.
 
 ```mermaid
 quadrantChart
