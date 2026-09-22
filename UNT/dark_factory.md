@@ -330,7 +330,7 @@ flowchart LR
 <!-- meta: 25 aiindustry -->
 # Mapping the Three Classes
 
-<!-- alt: A quadrant chart plotting firms by rigor already required on the x-axis and cost of failure on the y-axis. Cheap-failure work sits low on both axes; narrow-and-guardrailed work sits high on cost with rigor added by the guardrail; rigor-already-required domains like chip design sit high on both. A typical firm plots in the unsafe upper-left quadrant — high cost of failure, low existing rigor. -->
+<!-- alt: A quadrant chart plotting ten software engineering tasks and industries by existing rigor on the x-axis and cost of failure on the y-axis. Internal admin tooling, ML experiments, and game scripting sit low on both axes. Call-center IVR scripts sit mid-rigor, low-cost. Kubernetes operators, social-feed ranking, and production cloud infrastructure-as-code sit in the unsafe upper-left region — real stakes without matching rigor. E-commerce checkout, bank core ledgers, and avionics flight control sit high on both axes. -->
 > Most firms fit none of these natively — that’s the point.
 
 ```mermaid
@@ -342,10 +342,16 @@ quadrantChart
     quadrant-2 Most firms sit here, unsafe
     quadrant-3 Cheap failure
     quadrant-4 Narrow and guardrailed
-    Cheap failure: [0.15, 0.15]
-    Narrow and guardrailed: [0.8, 0.3]
-    Rigor already required: [0.85, 0.85]
-    Typical firm: [0.25, 0.75]
+    Internal admin tooling: [0.1, 0.1]
+    ML feature experiments: [0.15, 0.2]
+    Game gameplay scripting: [0.2, 0.15]
+    Call-center IVR scripts: [0.55, 0.3]
+    Kubernetes operators: [0.5, 0.6]
+    Social-feed ranking: [0.25, 0.65]
+    Production cloud IaC: [0.3, 0.75]
+    E-commerce checkout: [0.7, 0.75]
+    Bank core ledger: [0.85, 0.9]
+    Avionics flight control: [0.95, 0.95]
 ```
 
 ---
