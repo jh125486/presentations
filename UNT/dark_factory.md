@@ -330,7 +330,7 @@ flowchart LR
 <!-- meta: 25 aiindustry -->
 # Mapping the Three Classes
 
-<!-- alt: A quadrant chart plotting ten software engineering tasks and industries by existing rigor on the x-axis and cost of failure on the y-axis. Internal admin tooling, ML experiments, and game scripting sit low on both axes. Call-center IVR scripts and linter rule authoring sit mid-to-high rigor, low-cost. Kubernetes operators, social-feed ranking, and production cloud infrastructure-as-code sit in the unsafe upper-left region — real stakes without matching rigor. E-commerce checkout, bank core ledgers, and avionics flight control sit high on both axes. -->
+<!-- alt: A quadrant chart plotting ten software engineering tasks and industries by existing rigor on the x-axis and cost of failure on the y-axis. Internal admin tooling, ML experiments, and game scripting sit low on both axes. Call-center IVR scripts, linter rule authoring, and crypto known-answer test vectors sit mid-to-high rigor, low-cost. Kubernetes operators, social-feed ranking, and production cloud infrastructure-as-code sit in the unsafe upper-left region — real stakes without matching rigor. E-commerce checkout, bank core ledgers, and avionics flight control sit high on both axes. -->
 > Most firms fit none of these natively — that’s the point.
 
 ```mermaid
@@ -347,6 +347,7 @@ quadrantChart
     Game gameplay scripting: [0.2, 0.15]
     Call-center IVR scripts: [0.55, 0.3]
     Linter rule authoring: [0.8, 0.15]
+    Crypto known-answer vectors: [0.9, 0.2]
     Kubernetes operators: [0.5, 0.6]
     Social-feed ranking: [0.25, 0.65]
     Production cloud IaC: [0.3, 0.75]
