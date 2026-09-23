@@ -322,7 +322,7 @@ flowchart LR
 - Cheap failure: intern-level work, rapid prototyping
 - Narrow and guardrailed: controlled-cell labor, call-center chat
 - Rigor already required: chip design, drug discovery
-- These are classes of *work*, not classes of firm
+- Same firm, different classes of work
   - A firm’s internal tools, product code, and core ledger can each sit in a different class
   - Aside: StrongDM straddled cheap-failure and rigor-required at once
 
