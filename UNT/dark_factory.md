@@ -17,6 +17,16 @@
 ---
 
 <!-- meta: 2 aiindustry -->
+# No Crystal Ball
+
+- Not a fortune teller — no crystal ball here
+- This talk shows what's happening now, not what's coming next
+- Every stat and framework is a snapshot, not a prophecy
+- "Why now" means as of today, not a forecast
+
+---
+
+<!-- meta: 3 aiindustry -->
 # The Dark Factory Concept
 
 - A dark factory runs unattended, lights off, automated
@@ -29,7 +39,7 @@
 
 ---
 
-<!-- meta: 3 aiindustry -->
+<!-- meta: 4 aiindustry -->
 # What Actually Changed: Task Horizon
 
 - Early models held one function in working memory
@@ -42,7 +52,7 @@
 
 ---
 
-<!-- meta: 4 aiindustry -->
+<!-- meta: 5 aiindustry -->
 # From SSDLC to Dark Factory SDLC
 
 - Traditional SSDLC: human gate at every phase
@@ -55,7 +65,7 @@
 
 ---
 
-<!-- meta: 5 aiindustry -->
+<!-- meta: 6 aiindustry -->
 # The Traditional Pipeline
 
 <!-- alt: A flowchart showing six phases of a traditional secure software development lifecycle in sequence: Requirements, Design, Implement, Verify/Test, Release, Respond. Each phase has a human gate. -->
@@ -68,7 +78,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 6 aiindustry -->
+<!-- meta: 7 aiindustry -->
 # The Compressed Pipeline
 
 <!-- alt: A flowchart showing the dark-factory version of the same lifecycle: Spec, then Plan, then a compressed box containing Implement and Verify running concurrently, then Release and Respond, with a feedback loop from Respond back to Plan. An arrow labeled “agent attack surface, no traditional counterpart” points into the compressed Implement/Verify box. -->
@@ -88,7 +98,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 7 aiindustry -->
+<!-- meta: 8 aiindustry -->
 # Guardrails: Defense in Depth
 
 <!-- alt: A flowchart showing agent output feeding three parallel checks — types, linters, tests, each labeled with how fast it runs — that converge on a merge gate, which then feeds audit and human review downstream. -->
@@ -108,7 +118,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 8 aiindustry -->
+<!-- meta: 9 aiindustry -->
 # Guardrails: Automated Testing
 
 - Tests are the first guardrail agent output must pass
@@ -120,7 +130,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 9 aiindustry -->
+<!-- meta: 10 aiindustry -->
 # Testing Pitfall: Agents Writing Their Own Tests
 
 - Agents happily write tests that pass against broken code
@@ -132,7 +142,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 10 aiindustry -->
+<!-- meta: 11 aiindustry -->
 # Guardrails: Static Analysis
 
 - Static analysis (`golangci-lint`, `staticcheck`) enforces safety without running code
@@ -143,7 +153,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 11 aiindustry -->
+<!-- meta: 12 aiindustry -->
 # Type Systems as Free Guardrails
 
 - A strong type system rejects bad code before any test
@@ -155,7 +165,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 12 aiindustry -->
+<!-- meta: 13 aiindustry -->
 # CI as the Enforcement Point
 
 - Guardrails only count if something blocks a failing merge
@@ -167,7 +177,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 13 aiindustry -->
+<!-- meta: 14 aiindustry -->
 # Guardrail Metrics That Actually Matter
 
 - Coverage percentage alone is easy to game
@@ -179,7 +189,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 14 aiindustry -->
+<!-- meta: 15 aiindustry -->
 # LLM Skills as Building Blocks
 
 - A skill packages instructions, examples, and tools for one task
@@ -190,7 +200,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 15 aiindustry -->
+<!-- meta: 16 aiindustry -->
 # Anatomy of a Skill
 
 - Description: when this skill should trigger
@@ -202,7 +212,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 16 aiindustry -->
+<!-- meta: 17 aiindustry -->
 # Skill Versioning and Reuse
 
 - Skills live in version control, like application code
@@ -214,7 +224,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 17 aiindustry -->
+<!-- meta: 18 aiindustry -->
 # Orchestration Flow
 
 <!-- alt: A flowchart showing four roles in sequence — Planner, Executor, Tooler, Auditor — each edge labeled with the artifact handed off: task list, commits and diff, test and lint results. A feedback edge labeled “reject: replan” loops from Auditor back to Planner, and a “sign-off” edge goes from Auditor to a Merge node. -->
@@ -229,7 +239,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 18 aiindustry -->
+<!-- meta: 19 aiindustry -->
 # Why Separate Roles at All
 
 - One agent doing everything blurs the line between planning and execution
@@ -241,7 +251,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 19 aiindustry -->
+<!-- meta: 20 aiindustry -->
 # The Four Roles
 
 - Planner: breaks a goal into steps, outputs a task list
@@ -254,7 +264,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 20 aiindustry -->
+<!-- meta: 21 aiindustry -->
 # Handoff Failure Modes
 
 - Plan drift: executor quietly solves a different problem
@@ -266,7 +276,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 21 aiindustry -->
+<!-- meta: 22 aiindustry -->
 # Gastown: Orchestrating Agents at Scale
 
 - Gastown: open-source workspace manager for coding agents
@@ -279,7 +289,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 22 aiindustry -->
+<!-- meta: 23 aiindustry -->
 # The Eight Stages of Agent Autonomy
 
 <!-- alt: A flowchart banding eight stages of agent autonomy into three groups left to right: human-driven (stages 1-3, rectangles), human-in-the-loop (stage 4), and human-on-the-loop (stages 5-6 and 7-8, drawn as stadium shapes to signal they’re ranges, not single stages). -->
@@ -302,7 +312,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 23 aiindustry -->
+<!-- meta: 24 aiindustry -->
 # Three Classes of Firms for Full Autonomy
 
 - Few firms can hand fully autonomous work to an LLM
@@ -315,7 +325,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 24 aiindustry -->
+<!-- meta: 25 aiindustry -->
 # Mapping the Three Classes
 
 <!-- alt: A quadrant chart plotting ten software engineering tasks and industries by existing rigor on the x-axis and cost of failure on the y-axis. Internal admin tooling, ML experiments, and game scripting sit low on both axes. Call-center IVR scripts, linter rule authoring, and crypto known-answer test vectors sit mid-to-high rigor, low-cost. Kubernetes operators, social-feed ranking, and production cloud infrastructure-as-code sit in the unsafe upper-left region — real stakes without matching rigor. E-commerce checkout, bank core ledgers, and avionics flight control sit high on both axes. -->
@@ -346,7 +356,7 @@ quadrantChart
 
 ---
 
-<!-- meta: 25 aiindustry -->
+<!-- meta: 26 aiindustry -->
 # The Engineer’s Job: Shrink the Workspace
 
 - Our job: reshape the task to fit one of three shapes
@@ -358,7 +368,7 @@ quadrantChart
 
 ---
 
-<!-- meta: 26 aiindustry -->
+<!-- meta: 27 aiindustry -->
 # Where Most Teams Actually Sit
 
 - 91% of enterprises deploy agents in some form
@@ -371,7 +381,7 @@ quadrantChart
 
 ---
 
-<!-- meta: 27 aiindustry -->
+<!-- meta: 28 aiindustry -->
 # Auditing and Observability
 
 - Every AI action gets logged: prompt, tool call, result
@@ -383,7 +393,7 @@ quadrantChart
 
 ---
 
-<!-- meta: 28 aiindustry -->
+<!-- meta: 29 aiindustry -->
 # Replay and Root Cause
 
 - Replay reruns the exact sequence behind a change
@@ -395,7 +405,7 @@ quadrantChart
 
 ---
 
-<!-- meta: 29 aiindustry -->
+<!-- meta: 30 aiindustry -->
 # Fintech: Regulatory Audit Requirements
 
 - Regulated industries need more auditability as autonomy rises
@@ -407,7 +417,7 @@ quadrantChart
 
 ---
 
-<!-- meta: 30 aiindustry -->
+<!-- meta: 31 aiindustry -->
 # Security: How a Chain Actually Works
 
 <!-- alt: A flowchart showing a trust boundary around the agent’s context. A low-severity CVE in a transitive dependency exposes an endpoint; its response is pulled into context; hidden text in that response is a prompt injection that directs the agent toward a second CVE, an auth-bypass in another dependency. A dashed line connects the two CVEs, labeled “neither alone exploitable.” Combined, they lead to full exfiltration. -->
@@ -428,7 +438,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 31 aiindustry -->
+<!-- meta: 32 aiindustry -->
 # Security: CVE Chaining Risks
 
 - Agents chain low-severity issues into high-impact exploits
@@ -440,7 +450,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 32 aiindustry -->
+<!-- meta: 33 aiindustry -->
 # The Agent Attack Surface
 
 - Prompt injection: hostile text in a file or web page
@@ -452,7 +462,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 33 aiindustry -->
+<!-- meta: 34 aiindustry -->
 # When Agents Go Wrong: Real Incidents
 
 - Replit, 2025: an agent deleted a live database during a freeze
@@ -462,7 +472,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 34 aiindustry -->
+<!-- meta: 35 aiindustry -->
 # Permission Scoping and Progressive Autonomy
 
 - Start read-only; grant write access per-directory, not globally
@@ -474,7 +484,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 35 aiindustry -->
+<!-- meta: 36 aiindustry -->
 # Secrets and Credential Handling
 
 - Agents log prompts and outputs — secrets end up there too
@@ -485,7 +495,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 36 aiindustry -->
+<!-- meta: 37 aiindustry -->
 # PR Churn and Review Fatigue
 
 - More AI PRs strain GitHub’s own UI and APIs
@@ -496,7 +506,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 37 aiindustry -->
+<!-- meta: 38 aiindustry -->
 # Review Triage: What Humans Should See
 
 - Not every agent PR deserves equal attention
@@ -507,7 +517,7 @@ flowchart LR
 
 ---
 
-<!-- meta: 38 aiindustry -->
+<!-- meta: 39 aiindustry -->
 # Routing Reviews by Risk
 
 <!-- alt: A decision tree. An agent PR feeds into a risk classification diamond, which routes low-risk changes like dependency bumps, formatting, and generated code updates to auto-merge, and high-risk changes like auth, payments, migrations, and public interfaces to deep human review. -->
@@ -522,7 +532,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 39 aiindustry -->
+<!-- meta: 40 aiindustry -->
 # What Review Culture Looks Like From Outside
 
 - Reviewing agent output all day is genuinely draining
@@ -535,7 +545,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 40 aiindustry -->
+<!-- meta: 41 aiindustry -->
 # Context Management Discipline
 
 - Long sessions accumulate stale, irrelevant context
@@ -547,7 +557,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 41 aiindustry -->
+<!-- meta: 42 aiindustry -->
 # Worktrees and Subagents in Practice
 
 - Git worktrees check out multiple branches in parallel
@@ -559,7 +569,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 42 aiindustry -->
+<!-- meta: 43 aiindustry -->
 # Practical Habits: Commit Often
 
 - Small, frequent commits make agent work easy to review
@@ -570,7 +580,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 43 aiindustry -->
+<!-- meta: 44 aiindustry -->
 # Enterprise Adoption: Pilots vs. Production
 
 - 88% of agent pilots never reach production (Northflank)
@@ -582,7 +592,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 44 aiindustry -->
+<!-- meta: 45 aiindustry -->
 # Economics: Token Costs and the Enterprise Bill
 
 - Inference cost dropped roughly 280x, late 2022 to late 2024
@@ -594,7 +604,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 45 aiindustry -->
+<!-- meta: 46 aiindustry -->
 # Economics: Layoffs
 
 - 2026 tech layoffs have topped 150,000 (Layoffs.fyi)
@@ -604,7 +614,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 46 aiindustry -->
+<!-- meta: 47 aiindustry -->
 # Is AI Actually Replacing Developers?
 
 - Oxford Economics (2024): firms aren’t replacing workers at scale
@@ -616,7 +626,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 47 aiindustry -->
+<!-- meta: 48 aiindustry -->
 # Do Agents Actually Make You Faster?
 
 - METR ran an RCT with experienced developers, 2025
@@ -628,7 +638,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 48 aiindustry -->
+<!-- meta: 49 aiindustry -->
 # What This Means as You Enter Industry
 
 - The junior rung of the ladder is under pressure now
@@ -640,7 +650,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 49 aiindustry -->
+<!-- meta: 50 aiindustry -->
 # Why Human-Made Guardrails Still Matter
 
 - Not a self-correcting loop — potentially a self-poisoning one
@@ -653,7 +663,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 50 aiindustry -->
+<!-- meta: 51 aiindustry -->
 # Model Collapse: The Mechanism
 
 - Models train on public code, increasingly AI-generated
@@ -665,7 +675,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 51 aiindustry -->
+<!-- meta: 52 aiindustry -->
 # Risks, Limits, and What’s Next
 
 - Guardrails only catch what they’re written to catch
@@ -677,7 +687,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 52 aiindustry -->
+<!-- meta: 53 aiindustry -->
 # Discussion: Questions for the Room
 
 - What would earn your trust in an agent’s PR on day one
@@ -689,7 +699,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 53 aiindustry -->
+<!-- meta: 54 aiindustry -->
 # Further Reading
 
 - `gastownhall.ai`: Gastown docs and community hub
@@ -703,7 +713,7 @@ flowchart TD
 
 ---
 
-<!-- meta: 54 summary -->
+<!-- meta: 55 summary -->
 # Summary
 
 - Dark factories run on layered guardrails, not trust
