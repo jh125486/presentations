@@ -435,7 +435,7 @@ flowchart LR
 - Not new to AI — but agents chain fast, autonomously
 - XBOW: 48-step blind-SSRF chain to full compromise, 2025
 - JADEPUFFER chained a Langflow code-injection flaw (`CVE-2025-3248`), 2026
-  - Sysdig writeup — full autonomous exfiltration
+  - Sysdig writeup — autonomous ransomware and extortion, not just theft
 - Guardrails must catch chains, not just single CVEs
 
 ---
