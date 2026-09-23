@@ -35,7 +35,7 @@
 - Early models held one function in working memory
 - By 2026, agents sustain multi-hour, multi-file tasks
 - Task horizon: how long an agent stays coherent
-  - Tracked publicly by METR’s task-length benchmarks
+  - METR tracks this publicly as “task length”
 - The 2021-to-2026 jump was about horizon, not raw capability
 - Longer horizons mean less human re-prompting per task
 - Horizon still degrades: long sessions drift without discipline
@@ -51,7 +51,7 @@
 - Design, implement, and verify compress into one continuous loop
 - Per-change human review and phase-based pen testing disappear
   - Named-approver sign-off survives only for high-risk releases
-- New: agents receive untrusted input mid-build, no traditional phase for that
+- New: agents receive untrusted input mid-build, with no traditional phase to handle it
 
 ---
 
@@ -112,7 +112,7 @@ flowchart LR
 # Guardrails: Automated Testing
 
 - Tests are the first guardrail agent output must pass
-- Unit tests catch logic errors before any human looks
+- Unit tests catch logic errors before any human looks at it
 - Integration tests catch wiring and contract failures
 - Property-based and scenario tests probe edge cases automatically
 - A failing test blocks merge — no exceptions for agents
@@ -232,7 +232,7 @@ flowchart LR
 <!-- meta: 18 aiindustry -->
 # Why Separate Roles at All
 
-- One agent doing everything blurs planning and execution errors
+- One agent doing everything blurs the line between planning and execution
 - Separation makes failures attributable to a specific stage
 - Each role gets narrower permissions — least privilege by design
 - A planner that can’t write code can’t fix its own bad plan
@@ -305,7 +305,7 @@ flowchart LR
 <!-- meta: 23 aiindustry -->
 # Three Classes of Firms for Full Autonomy
 
-- Few firms can hand an LLM fully autonomous work
+- Few firms can hand fully autonomous work to an LLM
 - Cheap failure: intern-level work, rapid prototyping
 - Narrow and guardrailed: controlled-cell labor, call-center chat
 - Rigor already required: chip design, drug discovery
@@ -378,7 +378,7 @@ quadrantChart
 - Structured JSON, not free text, so it can replay
 - Audit trails answer who changed what, when, under which version
 - Auditors compare output against guardrail results, not just diffs
-- Retention matters: fintech audits often need years
+- Retention windows matter: fintech audits often span years
 - Can’t reconstruct a decision? Can’t audit it
 
 ---
@@ -435,7 +435,7 @@ flowchart LR
 - Not new to AI — but agents chain fast, autonomously
 - XBOW: 48-step blind-SSRF chain to full compromise, 2025
 - JADEPUFFER chained a Langflow code-injection flaw (`CVE-2025-3248`), 2026
-  - Sysdig writeup; full autonomous exfiltration
+  - Sysdig writeup — full autonomous exfiltration
 - Guardrails must catch chains, not just single CVEs
 
 ---
@@ -598,7 +598,7 @@ flowchart TD
 # Economics: Layoffs
 
 - 2026 tech layoffs have topped 150,000 (Layoffs.fyi)
-- ~32% of managers rehired roles they cut after adopting AI
+- ~32% of managers refilled roles they cut after adopting AI
 - Correlation is obvious; causation is genuinely murky
 - My read: some cuts fund the AI bill, not just efficiency
 
@@ -634,7 +634,7 @@ flowchart TD
 - The junior rung of the ladder is under pressure now
 - Review, debugging, and systems judgment are appreciating skills
 - Reading code fast matters more than writing it fast
-- PhD rigor — specs, validation, methodology — decides who audits agents well
+- PhD rigor — specs, validation, methodology — determines who audits agents well
 - Tool fluency is table stakes; judgment is the differentiator
 - Nobody has this fully figured out, including who’s hiring you
 
