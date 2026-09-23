@@ -324,7 +324,6 @@ flowchart LR
 - Rigor already required: chip design, drug discovery
 - Same firm, different classes of work
   - A firm’s internal tools, product code, and core ledger can each sit in a different class
-  - Aside: StrongDM straddled cheap-failure and rigor-required at once
 
 ---
 
