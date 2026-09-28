@@ -1,10 +1,10 @@
 package main
 
 import (
-    "fmt"
-    "github.com/dtung2008/fortune"
+	"fmt"
+	"github.com/dtung2008/fortune"
 )
 
 func main() {
-    fmt.Println(fortune.Cookie())
+	fmt.Println(fortune.Cookie())
 }

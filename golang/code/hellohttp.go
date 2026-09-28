@@ -1,13 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 )
 
 // helloHandler is an HTTP handler that writes a "hello, world" response.
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello, World"))
+	fmt.Fprintf(w, "Hello, World! The time is %s.", time.Now().Format(time.Kitchen))
 }
 
 func main() {
