@@ -1,0 +1,11 @@
+%%{init: {"themeVariables": {"fontSize": "26px"}, "flowchart": {"wrappingWidth": 600, "nodeSpacing": 50, "rankSpacing": 30}}}%%
+flowchart TB
+  A["<b>Private data</b><br/>repos, secrets, email"] --- CA["To cut: no private data<br/>in this session"] --> X(("Agent"))
+  B["<b>Untrusted content</b><br/>issues, web, docs"] --- CB["To cut: no untrusted<br/>input in this session"] --> X
+  X --- CC["To cut: egress allowlist<br/>or approve outward writes"] --> C["<b>Exfiltration channel</b><br/>HTTP, PRs, email"]
+  classDef d fill:#ffe5e5,stroke:#b22222
+  classDef cut fill:#ffffff,stroke:#555,stroke-dasharray:6 4,color:#1f4e9c
+  classDef ag fill:#1f3a8a,stroke:#12255c,color:#ffffff,font-size:30px
+  class A,B,C d
+  class CA,CB,CC cut
+  class X ag

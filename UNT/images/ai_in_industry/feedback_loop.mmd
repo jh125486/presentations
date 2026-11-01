@@ -1,0 +1,16 @@
+%%{init: {"themeVariables": {"fontSize": "22px"}, "flowchart": {"wrappingWidth": 600, "nodeSpacing": 50, "rankSpacing": 70}}}%%
+flowchart TB
+  E["Agent edits code"] --> L["Format, lint,<br/>typecheck"]
+  L -- "pass" --> T["Run tests"]
+  T -- "pass" --> D["GREEN:<br/>ready for human review"]
+  L -- "errors" --> C["FAIL: exact tool output<br/>back into context"]
+  T -- "failures" --> C
+  C -- "retry" --> E
+  classDef n fill:#eef4ff,stroke:#1f4e9c
+  classDef bad fill:#ffe5e5,stroke:#b22222
+  classDef good fill:#e5f7e5,stroke:#2e7d32
+  class L,T n
+  class C bad
+  class D good
+  classDef m fill:#1f3a8a,stroke:#12255c,color:#ffffff
+  class E m

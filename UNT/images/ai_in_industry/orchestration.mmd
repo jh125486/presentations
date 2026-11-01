@@ -1,0 +1,21 @@
+%%{init: {"sequence": {"useMaxWidth": false, "width": 145, "height": 56, "actorMargin": 18, "messageMargin": 4, "boxMargin": 8, "noteMargin": 8, "mirrorActors": false, "actorFontSize": 21, "messageFontSize": 22, "noteFontSize": 22}}}%%
+sequenceDiagram
+  participant H as Human
+  participant P as Planner<br/>large
+  participant I as Implementer<br/>medium
+  participant T as Helper<br/>small
+  participant C as Tests + CI<br/>no model
+  participant A as Auditor<br/>large<br/>fresh context
+  H->>P: spec
+  P-->>H: plan
+  H->>I: approve plan
+  I->>T: grep, fetch
+  I->>C: code + tests
+  loop until gates + audit pass
+    C-->>I: failures
+    I->>C: fixes
+    C->>A: green run
+    A-->>I: findings
+  end
+  A->>H: audit report
+  Note over H: decides merge
