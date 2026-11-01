@@ -1,0 +1,16 @@
+%%{init: {"themeVariables": {"fontSize": "20px"}, "flowchart": {"wrappingWidth": 600}}}%%
+flowchart LR
+  A["Agent PR"] --> B["CI gates<br/>lint, types,<br/>tests, SAST,<br/>secrets scan"]
+  B -- "fail" --> A
+  B --> C["AI review<br/>large, fresh context"]
+  C -- "comments" --> A
+  C --> D["Human review<br/>owns the merge"]
+  D --> E["Merge"]
+  classDef n fill:#eef4ff,stroke:#1f4e9c,font-size:20px
+  classDef h fill:#fff3c4,stroke:#b8860b,font-size:20px
+  classDef g fill:#e5f7e5,stroke:#2e7d32,font-size:20px
+  class B n
+  class D h
+  class E g
+  classDef m fill:#1f3a8a,stroke:#12255c,color:#ffffff
+  class A,C m

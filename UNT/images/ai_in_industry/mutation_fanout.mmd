@@ -1,0 +1,19 @@
+%%{init: {"themeVariables": {"fontSize": "26px"}, "flowchart": {"wrappingWidth": 600, "nodeSpacing": 30, "rankSpacing": 60}}}%%
+flowchart LR
+  G["AI proposes<br/>mutants"]
+  G --> P["Parallel workers<br/>one mutant each,<br/>run tests"]
+  P --> K["KILLED<br/>a test caught it"]
+  P --> S["SURVIVED<br/>possible gap"]
+  S -- "equivalent" --> EQ["Drop it<br/>no behavior change"]
+  S -- "real gap" --> A["Agent writes<br/>a new test<br/>large model"]
+  A --> V["Human verifies<br/>the new test"]
+  classDef n fill:#eef4ff,stroke:#1f4e9c
+  classDef bad fill:#ffe5e5,stroke:#b22222
+  classDef good fill:#e5f7e5,stroke:#2e7d32
+  classDef gray fill:#f5f5f5,stroke:#555
+  class P n
+  class S bad
+  class K,V good
+  class EQ gray
+  classDef m fill:#1f3a8a,stroke:#12255c,color:#ffffff
+  class G,A m
