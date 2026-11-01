@@ -342,6 +342,21 @@ Review **test diffs** harder than code diffs since they define what "correct" me
 : Read it two ways. First, the ceiling is low: on the tax benchmark, which scores the share of attempts passing a 95% rubric threshold, the best result is 10.8%, and healthcare and finance top out under 50%. Second, no column wins every row, so you cannot just pick the best model and trust it. Either way someone who knows the domain has to judge the output.
 : The page shows no date and scores change often, so treat this as an illustration of the pattern, not a current standing. The "Adaptive/Max" labels are reasoning-effort settings; the page does not define them precisely.
 
+## Model Knowledge Goes Stale
+
+- A model only knows the world up to its **training cutoff**
+- It is released *after* that cutoff, then used for a long time
+- **Web search** does not fully fix it: the model can still answer from stale memory
+- Put current facts in the **context**: docs, files, and tools, not model memory
+
+.image images/UNT_green.png 3 850
+
+- Check how stale yours is: **https://stale.jock.pl/**
+
+: Second kind of domain gap, and the one that gets worse the longer you use the same model. The previous slide was about what models never learned; this one is about what they learned and has since changed: library versions, APIs, prices, even which models are current.
+: The site lists current models with their release date and training cutoff, and shows how long each has been out. Only some labs publish a cutoff at all, so for the rest it is an estimate. The point is the gap: the model you are talking to may be a year past what it knows.
+: Tie back to the workshop: this is why the setup pins tool versions and has the agent look things up and run the gate instead of trusting memory. If a model confidently names the latest version of something, treat it as a claim to check. The site also offers a short instruction for AGENTS.md that tells an agent to check its data before naming any model or date as current.
+
 ## Takeaways: A Checklist
 
 - **Plan first**, small tasks, fresh contexts
